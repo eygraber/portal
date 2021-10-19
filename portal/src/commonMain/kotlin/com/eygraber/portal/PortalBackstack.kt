@@ -43,7 +43,7 @@ public interface PortalBackstack<PortalKey> : ReadOnlyBackstack {
       key: PortalKey,
       isAttachedToComposition: Boolean = true,
       transitionsOverride: PortalTransitions? = null,
-      render: PortalRender,
+      portal: Portal,
     )
 
     public fun attachToComposition(
