@@ -1,0 +1,48 @@
+[versions]
+agp = "7.0.2"
+
+compose = "1.0.0-alpha4-build398"
+
+detekt = "1.18.1"
+detektEygraber = "1.0.10"
+
+dokka = "1.5.31"
+
+jdk = "11"
+
+kotlin = "1.5.31"
+
+kotlinx-coroutines = "1.5.2"
+kotlinx-atomicFu = "0.16.3"
+
+publish = "0.18.0"
+
+[plugins]
+agp = { id = "com.android.application", version.ref = "agp" }
+atomicFu = { id = "kotlinx-atomicfu", version.ref = "kotlinx-atomicFu" }
+compose = { id = "org.jetbrains.compose", version = "compose" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
+kotlin = { id = "kotlin-multiplatform", version.ref = "kotlin" }
+publish = { id = "com.vanniktech.maven.publish", version.ref = "publish" }
+serialization = { id = "kotlin-serialization", version.ref = "kotlin" }
+
+[libraries]
+buildscript-agp = { module = "com.android.tools.build:gradle", version.ref = "agp" }
+buildscript-atomicFu = { module = "org.jetbrains.kotlinx:atomicfu-gradle-plugin", version.ref = "kotlinx-atomicFu" }
+buildscript-compose = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "compose" }
+buildscript-detekt = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
+buildscript-dokka = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "dokka" }
+buildscript-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+buildscript-publish = { module = "com.vanniktech:gradle-maven-publish-plugin", version.ref = "publish" }
+buildscript-serialization = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlin" }
+
+detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
+detekt-eygraberFormatting = { module = "com.eygraber.detekt.rules:formatting", version.ref = "detektEygraber" }
+detekt-eygraberStyle = { module = "com.eygraber.detekt.rules:style", version.ref = "detektEygraber" }
+
+kotlinx-atomicFu = { module = "org.jetbrains.kotlinx:atomicfu", version.ref = "kotlinx-atomicFu" }
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
+kotlinx-serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0"
+
+kotlinDurationExtensions = "com.eygraber:kotlin-duration-extensions:1.0.1"

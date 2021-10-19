@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+
+./gradlew :portal:clean :portal:build :portal:publish $@ --no-daemon --no-parallel
