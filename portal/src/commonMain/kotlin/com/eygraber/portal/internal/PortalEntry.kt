@@ -1,7 +1,7 @@
 package com.eygraber.portal.internal
 
 import androidx.compose.runtime.Immutable
-import com.eygraber.portal.PortalRender
+import com.eygraber.portal.Portal
 import com.eygraber.portal.PortalTransitions
 
 @Immutable
@@ -12,7 +12,7 @@ internal data class PortalEntry<PortalKey>(
   val isDisappearing: Boolean,
   val isBackstackMutation: Boolean,
   val transitions: PortalTransitions,
-  val render: PortalRender
+  val portal: Portal
 ) {
   override fun toString() =
     """$name(

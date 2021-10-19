@@ -1,7 +1,7 @@
 package com.eygraber.portal.internal
 
+import com.eygraber.portal.Portal
 import com.eygraber.portal.PortalBackstack
-import com.eygraber.portal.PortalRender
 import com.eygraber.portal.PortalTransitions
 
 internal class PortalBackstackEntryBuilder<PortalKey>(
@@ -13,9 +13,9 @@ internal class PortalBackstackEntryBuilder<PortalKey>(
     key: PortalKey,
     isAttachedToComposition: Boolean,
     transitionsOverride: PortalTransitions?,
-    render: PortalRender
+    portal: Portal
   ) {
-    builder.add(key, isAttachedToComposition, transitionsOverride, render)
+    builder.add(key, isAttachedToComposition, transitionsOverride, portal)
 
     backstackMutations += PortalBackstackMutation.Remove(
       key = key,

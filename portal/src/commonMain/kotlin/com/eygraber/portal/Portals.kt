@@ -14,7 +14,7 @@ import kotlinx.atomicfu.locks.withLock
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-public fun interface PortalRender {
+public fun interface Portal {
   @Composable
   public fun render()
 }
@@ -106,7 +106,7 @@ public class Portals<PortalKey>(
       enter = enterTransition,
       exit = exitTransition
     ) {
-      with(entry.render) {
+      with(entry.portal) {
         render()
       }
 
@@ -141,7 +141,7 @@ public class Portals<PortalKey>(
       key: PortalKey,
       isAttachedToComposition: Boolean = true,
       transitionsOverride: PortalTransitions? = null,
-      render: PortalRender,
+      portal: Portal,
     )
 
     public fun attachToComposition(

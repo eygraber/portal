@@ -1,7 +1,7 @@
 package com.eygraber.portal.internal
 
+import com.eygraber.portal.Portal
 import com.eygraber.portal.PortalBackstack
-import com.eygraber.portal.PortalRender
 import com.eygraber.portal.PortalTransactionBuilderDsl
 import com.eygraber.portal.PortalTransitions
 import com.eygraber.portal.PortalTransitionsProvider
@@ -26,7 +26,7 @@ internal class PortalEntryBuilder<PortalKey>(
     key: PortalKey,
     isAttachedToComposition: Boolean,
     transitionsOverride: PortalTransitions?,
-    render: PortalRender
+    portal: Portal
   ) {
     transactionPortalEntries += PortalEntry(
       key = key,
@@ -35,7 +35,7 @@ internal class PortalEntryBuilder<PortalKey>(
       isDisappearing = false,
       isBackstackMutation = false,
       transitions = transitionsOverride ?: defaultTransitions,
-      render = render
+      portal = portal
     )
   }
 
