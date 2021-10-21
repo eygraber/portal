@@ -3,7 +3,6 @@ import org.jetbrains.compose.compose
 plugins {
   kotlin("jvm")
   id("org.jetbrains.compose")
-  kotlin("plugin.serialization")
   detekt
 }
 
@@ -15,7 +14,6 @@ dependencies {
   implementation(compose.desktop.currentOs)
 
   implementation(libs.kotlinx.coroutines.core)
-  implementation(libs.kotlinx.serialization)
 }
 
 compose.desktop {

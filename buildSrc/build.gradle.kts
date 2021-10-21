@@ -17,5 +17,4 @@ dependencies {
   implementation(libs.buildscript.dokka)
   implementation(libs.buildscript.kotlin)
   implementation(libs.buildscript.publish)
-  implementation(libs.buildscript.serialization)
 }
