@@ -1,6 +1,5 @@
 plugins {
   kotlin("multiplatform")
-  kotlin("plugin.serialization")
   id("org.jetbrains.compose")
   id("kotlinx-atomicfu")
   detekt
@@ -18,7 +17,6 @@ kotlin {
         api(libs.kotlinx.atomicFu)
 
         implementation(libs.kotlinx.coroutines.core)
-        implementation(libs.kotlinx.serialization)
 
         implementation(compose.animation)
       }
