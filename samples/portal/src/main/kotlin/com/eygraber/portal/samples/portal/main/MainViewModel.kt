@@ -9,13 +9,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import com.eygraber.portal.PortalManager
 import com.eygraber.portal.PortalTransitions
-import com.eygraber.portal.Portals
 import com.eygraber.portal.samples.portal.VM
 import com.eygraber.portal.samples.portal.main.home.HomeView
 
 class MainViewModel(
-  private val mainPortals: Portals<MainPortalKey>
+  private val mainPortalManager: PortalManager<MainPortalKey>
 ) : VM<MainState> {
   private val mutableState = object : MainState {
     override var selectedTab by mutableStateOf(MainPortalKey.One)
@@ -25,7 +25,7 @@ class MainViewModel(
   private val homeView = HomeView()
 
   init {
-    mainPortals.withTransaction {
+    mainPortalManager.withTransaction {
       add(MainPortalKey.One) {
         homeView.render()
       }
@@ -76,7 +76,7 @@ class MainViewModel(
     val tabMovingFrom = state.selectedTab
     mutableState.selectedTab = tab
 
-    mainPortals.withTransaction {
+    mainPortalManager.withTransaction {
       val transition = tab.getTransitionOverride(tabMovingFrom)
       detachFromComposition(tabMovingFrom, transition)
       attachToComposition(tab, transition)

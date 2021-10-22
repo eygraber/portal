@@ -19,8 +19,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.window.singleWindowApplication
+import com.eygraber.portal.PortalManager
 import com.eygraber.portal.PortalTransitions
-import com.eygraber.portal.Portals
 import com.eygraber.portal.push
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
@@ -50,7 +50,7 @@ fun NumberBox(text: String) {
 }
 
 fun main() {
-  val portals = Portals<PortalKey>(
+  val portalManager = PortalManager<PortalKey>(
     defaultTransitions = PortalTransitions(
       enter = slideInHorizontally(
         animationSpec = tween(1000),
@@ -71,8 +71,8 @@ fun main() {
 
   @OptIn(DelicateCoroutinesApi::class)
   GlobalScope.launch {
-    portals.updates().collect {
-      println(portals.size)
+    portalManager.updates().collect {
+      println(portalManager.size)
     }
   }
 
@@ -80,11 +80,11 @@ fun main() {
   GlobalScope.launch {
     delay(500)
 
-    portals.addTen()
+    portalManager.addTen()
 
     delay(2500)
 
-    portals.withTransaction {
+    portalManager.withTransaction {
       backstack.clear(suppressTransitions = false) { key ->
         val initialWaveDuration = 3000
         val secondWaveDuration = 6000
@@ -185,13 +185,13 @@ fun main() {
       Surface(
         modifier = Modifier.fillMaxSize()
       ) {
-        portals.render()
+        portalManager.render()
       }
     }
   }
 }
 
-suspend fun Portals<PortalKey>.addTen() {
+suspend fun PortalManager<PortalKey>.addTen() {
   val addDelay = 1000L
 
   withTransaction {

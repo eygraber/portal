@@ -4,7 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.eygraber.portal.samples.portal.VM
-import com.eygraber.portal.samples.portal.appPortals
+import com.eygraber.portal.samples.portal.appPortalManager
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
@@ -35,7 +35,7 @@ class AlarmListViewModel : VM<AlarmListState> {
   override val state = mutableState
 
   fun backClicked() {
-    appPortals.withTransaction {
+    appPortalManager.withTransaction {
       backstack.pop()
     }
   }
