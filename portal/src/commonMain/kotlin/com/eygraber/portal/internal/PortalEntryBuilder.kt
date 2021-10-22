@@ -2,10 +2,10 @@ package com.eygraber.portal.internal
 
 import com.eygraber.portal.Portal
 import com.eygraber.portal.PortalBackstack
+import com.eygraber.portal.PortalManager
 import com.eygraber.portal.PortalTransactionBuilderDsl
 import com.eygraber.portal.PortalTransitions
 import com.eygraber.portal.PortalTransitionsProvider
-import com.eygraber.portal.Portals
 
 internal class PortalEntryBuilder<PortalKey>(
   override val backstack: PortalBackstack<PortalKey>,
@@ -14,7 +14,7 @@ internal class PortalEntryBuilder<PortalKey>(
   private val isForBackstack: Boolean,
   private val defaultTransitions: PortalTransitions,
   private val doesIncompatibleStateThrow: Boolean
-) : Portals.EntryBuilder<PortalKey> {
+) : PortalManager.EntryBuilder<PortalKey> {
   override val size get() = transactionPortalEntries.filterNot { it.isDisappearing }.size
 
   override fun contains(key: PortalKey) =

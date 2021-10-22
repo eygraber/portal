@@ -14,12 +14,7 @@ import kotlinx.atomicfu.locks.withLock
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-public fun interface Portal {
-  @Composable
-  public fun render()
-}
-
-public interface PortalQueries<in PortalKey> {
+public interface PortalManagerQueries<in PortalKey> {
   public val size: Int
 
   public operator fun contains(key: PortalKey): Boolean
@@ -28,10 +23,10 @@ public interface PortalQueries<in PortalKey> {
 @DslMarker
 internal annotation class PortalTransactionBuilderDsl
 
-public class Portals<PortalKey>(
+public class PortalManager<PortalKey>(
   defaultTransitions: PortalTransitions = PortalTransitions.Default,
   doesIncompatibleStateThrow: Boolean = false
-) : PortalQueries<PortalKey> {
+) : PortalManagerQueries<PortalKey> {
   override val size: Int get() = portalState.portalEntries.filterNot { it.isDisappearing }.size
 
   override operator fun contains(key: PortalKey): Boolean =
@@ -134,7 +129,7 @@ public class Portals<PortalKey>(
 
   public val backstack: ReadOnlyBackstack = _backstack
 
-  public interface EntryBuilder<PortalKey> : PortalQueries<PortalKey> {
+  public interface EntryBuilder<PortalKey> : PortalManagerQueries<PortalKey> {
     public val backstack: PortalBackstack<PortalKey>
 
     public fun add(

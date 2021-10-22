@@ -17,15 +17,15 @@ import androidx.compose.material.icons.filled.Whatshot
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.eygraber.portal.Portals
+import com.eygraber.portal.PortalManager
 import com.eygraber.portal.samples.portal.View
-import com.eygraber.portal.samples.portal.appPortals
+import com.eygraber.portal.samples.portal.appPortalManager
 
 class MainView : View<MainState> {
-  private val mainPortals = Portals<MainPortalKey>()
+  private val mainPortalManager = PortalManager<MainPortalKey>()
 
   override val vm = MainViewModel(
-    mainPortals
+    mainPortalManager
   )
 
   @Composable
@@ -36,7 +36,7 @@ class MainView : View<MainState> {
     ) {
       BottomNav()
 
-      appPortals.render()
+      appPortalManager.render()
     }
   }
 
@@ -58,7 +58,7 @@ class MainView : View<MainState> {
         .fillMaxWidth()
         .weight(.90F)
     ) {
-      mainPortals.render()
+      mainPortalManager.render()
     }
   }
 

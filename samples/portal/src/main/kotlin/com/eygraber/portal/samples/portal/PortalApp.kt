@@ -8,8 +8,8 @@ import androidx.compose.material.Surface
 import androidx.compose.material.darkColors
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.window.singleWindowApplication
+import com.eygraber.portal.PortalManager
 import com.eygraber.portal.PortalTransitions
-import com.eygraber.portal.Portals
 import com.eygraber.portal.samples.portal.main.MainView
 import javax.swing.UIManager
 
@@ -17,7 +17,7 @@ enum class AppPortalKey {
   AlarmList
 }
 
-val appPortals = Portals<AppPortalKey>(
+val appPortalManager = PortalManager<AppPortalKey>(
   defaultTransitions = PortalTransitions(
     enter = slideInVertically(animationSpec = tween(durationMillis = 400)) { it * 2 },
     exit = slideOutVertically(animationSpec = tween(durationMillis = 750)) { it * 2 }
