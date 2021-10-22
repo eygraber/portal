@@ -1,7 +1,7 @@
 [versions]
 agp = "7.0.2"
 
-compose = "1.0.0-alpha4-build411"
+compose = "1.0.0-beta1"
 
 detekt = "1.18.1"
 detektEygraber = "1.0.10"
