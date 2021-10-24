@@ -1,6 +1,5 @@
 package com.eygraber.portal.internal
 
-import com.eygraber.portal.ChildPortal
 import com.eygraber.portal.ParentPortal
 import com.eygraber.portal.Portal
 import com.eygraber.portal.PortalBackstack
@@ -18,8 +17,7 @@ internal class PortalEntryBuilder<PortalKey>(
   private val transactionBackstackEntries: MutableList<PortalBackstackEntry<PortalKey>>,
   private val isForBackstack: Boolean,
   private val defaultTransitions: PortalTransitions,
-  private val validation: PortalManagerValidation,
-  private val parentPortal: ParentPortal?
+  private val validation: PortalManagerValidation
 ) : PortalManager.EntryBuilder<PortalKey> {
   private val _postTransactionOps = atomic(emptyList<() -> Unit>())
   internal val postTransactionOps get() = _postTransactionOps.value
@@ -39,19 +37,6 @@ internal class PortalEntryBuilder<PortalKey>(
     transitionsOverride: PortalTransitions?,
     portal: Portal
   ) {
-    if(validation.validatePortalHierarchy) {
-      if(parentPortal == null) {
-        require(portal !is ChildPortal) {
-          "Can't add a ChildPortal to a PortalManager that doesn't have a ParentPortal"
-        }
-      }
-      else {
-        require(portal is ChildPortal && portal.parent == parentPortal) {
-          "Can't add a ChildPortal that isn't a child of this PortalManager's ParentPortal"
-        }
-      }
-    }
-
     transactionPortalEntries += PortalEntry(
       key = key,
       wasContentPreviouslyVisible = false,
@@ -180,8 +165,7 @@ internal class PortalEntryBuilder<PortalKey>(
     backstack = backstack,
     isForBackstack = true,
     defaultTransitions = defaultTransitions,
-    validation = validation,
-    parentPortal = parentPortal
+    validation = validation
   ).builder(transactionBackstackEntries)
 
   private fun PortalKey.applyMutationToPortalEntries(

@@ -28,8 +28,7 @@ internal annotation class PortalTransactionBuilderDsl
 public class PortalManager<PortalKey>(
   defaultTransitions: PortalTransitions = PortalTransitions.Default,
   private val defaultErrorHandler: ((Throwable) -> Unit)? = null,
-  validation: PortalManagerValidation = PortalManagerValidation(),
-  parent: ParentPortal? = null
+  validation: PortalManagerValidation = PortalManagerValidation()
 ) : PortalManagerQueries<PortalKey> {
   override val size: Int get() = portalState.portalEntries.filterNot { it.isDisappearing }.size
 
@@ -128,8 +127,7 @@ public class PortalManager<PortalKey>(
   private val lock = reentrantLock()
   private val portalState = PortalState<PortalKey>(
     defaultTransitions = defaultTransitions,
-    validation = validation,
-    parentPortal = parent
+    validation = validation
   )
 
   private val _backstack: PortalBackstack<PortalKey> = PortalBackstackImpl(portalState)
