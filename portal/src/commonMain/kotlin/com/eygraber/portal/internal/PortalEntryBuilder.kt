@@ -10,6 +10,7 @@ import com.eygraber.portal.PortalRemovedListener
 import com.eygraber.portal.PortalTransactionBuilderDsl
 import com.eygraber.portal.PortalTransitions
 import com.eygraber.portal.PortalTransitionsProvider
+import kotlinx.atomicfu.atomic
 
 internal class PortalEntryBuilder<PortalKey>(
   override val backstack: PortalBackstack<PortalKey>,
@@ -20,7 +21,8 @@ internal class PortalEntryBuilder<PortalKey>(
   private val validation: PortalManagerValidation,
   private val parentPortal: ParentPortal?
 ) : PortalManager.EntryBuilder<PortalKey> {
-  internal val postTransactionOps = ArrayList<() -> Unit>()
+  private val _postTransactionOps = atomic(emptyList<() -> Unit>())
+  internal val postTransactionOps get() = _postTransactionOps.value
 
   override val size get() = transactionPortalEntries.filterNot { it.isDisappearing }.size
 
@@ -148,7 +150,7 @@ internal class PortalEntryBuilder<PortalKey>(
   ) {
     key.applyMutationToPortalEntries { entry ->
       if(entry.isDisappearing) {
-        postTransactionOps += {
+        _postTransactionOps.value = _postTransactionOps.value.plus {
           entry.portal.notifyOfRemoval(
             isCompletelyRemoved = true
           )
@@ -204,7 +206,7 @@ internal class PortalEntryBuilder<PortalKey>(
   private fun Portal.notifyOfRemoval(
     isCompletelyRemoved: Boolean
   ) {
-    postTransactionOps += {
+    _postTransactionOps.value = _postTransactionOps.value.plus {
       if(this is ParentPortal) {
         notifyChildrenOfRemoval(isCompletelyRemoved = isCompletelyRemoved)
       }
