@@ -1,16 +1,19 @@
-package com.eygraber.portal.samples.portal.main.alarmlist
+package com.eygraber.portal.samples.portal.alarmlist
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import com.eygraber.portal.PortalManager
 import com.eygraber.portal.samples.portal.VM
-import com.eygraber.portal.samples.portal.appPortalManager
+import com.eygraber.portal.samples.portal.main.AppPortalKey
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.util.UUID
 
-class AlarmListViewModel : VM<AlarmListState> {
+class AlarmListViewModel(
+  private val appPortalManager: PortalManager<AppPortalKey>
+) : VM<AlarmListState> {
   private class MutableAlarmListAlarm(
     id: String,
     isEnabled: Boolean,

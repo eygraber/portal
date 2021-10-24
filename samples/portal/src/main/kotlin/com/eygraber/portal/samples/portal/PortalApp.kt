@@ -1,42 +1,31 @@
 package com.eygraber.portal.samples.portal
 
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.darkColors
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.window.singleWindowApplication
-import com.eygraber.portal.PortalManager
-import com.eygraber.portal.PortalTransitions
-import com.eygraber.portal.samples.portal.main.MainView
+import com.eygraber.portal.samples.portal.main.MainPortal
+import com.eygraber.portal.samples.portal.root.AppRootPortal
+import org.kodein.di.DI
+import org.kodein.di.bind
+import org.kodein.di.bindSingleton
+import org.kodein.di.direct
+import org.kodein.di.instance
+import org.kodein.di.provider
 import javax.swing.UIManager
 
-enum class AppPortalKey {
-  AlarmList
-}
+private val applicationDI by DI.lazy {
+  bindSingleton {
+    AppRootPortal(di)
+  }
 
-val appPortalManager = PortalManager<AppPortalKey>(
-  defaultTransitions = PortalTransitions(
-    enter = slideInVertically(animationSpec = tween(durationMillis = 400)) { it * 2 },
-    exit = slideOutVertically(animationSpec = tween(durationMillis = 750)) { it * 2 }
-  )
-)
+  bind<MainPortal>() with provider {
+    MainPortal(
+      parent = instance<AppRootPortal>()
+    )
+  }
+}
 
 fun main() {
   UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName())
   singleWindowApplication(title = "Portal") {
-    MaterialTheme(
-      colors = darkColors(
-        primary = Color(0xFFBB86FC),
-        primaryVariant = Color(0xFF3700B3),
-        secondary = Color(0xFF03DAC5)
-      )
-    ) {
-      Surface {
-        MainView().render()
-      }
-    }
+    applicationDI.direct.instance<AppRootPortal>().render()
   }
 }

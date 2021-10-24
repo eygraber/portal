@@ -1,4 +1,4 @@
-package com.eygraber.portal.samples.portal.main.alarmlist
+package com.eygraber.portal.samples.portal.alarmlist
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,9 +21,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.eygraber.portal.samples.portal.View
 
-class AlarmListView : View<AlarmListState> {
-  override val vm = AlarmListViewModel()
-
+class AlarmListView(
+  override val vm: AlarmListViewModel
+) : View<AlarmListState> {
   @Composable
   override fun render() {
     Surface {

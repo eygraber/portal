@@ -1,4 +1,4 @@
-package com.eygraber.portal.samples.portal.main.home
+package com.eygraber.portal.samples.portal.home
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,9 +11,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.eygraber.portal.samples.portal.View
 
-class HomeView : View<Unit> {
-  override val vm = HomeViewModel()
-
+class HomeView(
+  override val vm: HomeViewModel
+) : View<Unit> {
   @Composable
   override fun render() {
     Box(
