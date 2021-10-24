@@ -14,8 +14,10 @@ import kotlinx.atomicfu.locks.withLock
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-public interface PortalManagerQueries<in PortalKey> {
+public interface PortalManagerQueries<PortalKey> {
   public val size: Int
+
+  public val portals: List<Pair<PortalKey, Portal>>
 
   public operator fun contains(key: PortalKey): Boolean
 }
@@ -25,9 +27,12 @@ internal annotation class PortalTransactionBuilderDsl
 
 public class PortalManager<PortalKey>(
   defaultTransitions: PortalTransitions = PortalTransitions.Default,
-  doesIncompatibleStateThrow: Boolean = false
+  validation: PortalManagerValidation = PortalManagerValidation(),
+  parent: ParentPortal? = null
 ) : PortalManagerQueries<PortalKey> {
   override val size: Int get() = portalState.portalEntries.filterNot { it.isDisappearing }.size
+
+  override val portals: List<Pair<PortalKey, Portal>> get() = portalState.portalEntries.map { it.key to it.portal }
 
   override operator fun contains(key: PortalKey): Boolean =
     portalState.portalEntries.findLast { entry ->
@@ -122,7 +127,8 @@ public class PortalManager<PortalKey>(
   private val lock = reentrantLock()
   private val portalState = PortalState<PortalKey>(
     defaultTransitions = defaultTransitions,
-    doesIncompatibleStateThrow = doesIncompatibleStateThrow
+    validation = validation,
+    parentPortal = parent
   )
 
   private val _backstack: PortalBackstack<PortalKey> = PortalBackstackImpl(portalState)

@@ -1,8 +1,12 @@
 package com.eygraber.portal.internal
 
+import com.eygraber.portal.ChildPortal
+import com.eygraber.portal.ParentPortal
 import com.eygraber.portal.Portal
 import com.eygraber.portal.PortalBackstack
 import com.eygraber.portal.PortalManager
+import com.eygraber.portal.PortalManagerValidation
+import com.eygraber.portal.PortalRemovedListener
 import com.eygraber.portal.PortalTransactionBuilderDsl
 import com.eygraber.portal.PortalTransitions
 import com.eygraber.portal.PortalTransitionsProvider
@@ -13,9 +17,14 @@ internal class PortalEntryBuilder<PortalKey>(
   private val transactionBackstackEntries: MutableList<PortalBackstackEntry<PortalKey>>,
   private val isForBackstack: Boolean,
   private val defaultTransitions: PortalTransitions,
-  private val doesIncompatibleStateThrow: Boolean
+  private val validation: PortalManagerValidation,
+  private val parentPortal: ParentPortal?
 ) : PortalManager.EntryBuilder<PortalKey> {
+  internal val postTransactionOps = ArrayList<() -> Unit>()
+
   override val size get() = transactionPortalEntries.filterNot { it.isDisappearing }.size
+
+  override val portals: List<Pair<PortalKey, Portal>> get() = transactionPortalEntries.map { it.key to it.portal }
 
   override fun contains(key: PortalKey) =
     transactionPortalEntries.findLast { entry ->
@@ -28,6 +37,19 @@ internal class PortalEntryBuilder<PortalKey>(
     transitionsOverride: PortalTransitions?,
     portal: Portal
   ) {
+    if(validation.validatePortalHierarchy) {
+      if(parentPortal == null) {
+        require(portal !is ChildPortal) {
+          "Can't add a ChildPortal to a PortalManager that doesn't have a ParentPortal"
+        }
+      }
+      else {
+        require(portal is ChildPortal && portal.parent == parentPortal) {
+          "Can't add a ChildPortal that isn't a child of this PortalManager's ParentPortal"
+        }
+      }
+    }
+
     transactionPortalEntries += PortalEntry(
       key = key,
       wasContentPreviouslyVisible = false,
@@ -46,7 +68,7 @@ internal class PortalEntryBuilder<PortalKey>(
     key.applyMutationToPortalEntries { entry ->
       when {
         entry.isDisappearing -> when {
-          doesIncompatibleStateThrow -> error("Cannot attach if the entry is disappearing")
+          validation.validatePortalTransactions -> error("Cannot attach if the entry is disappearing")
           else -> entry
         }
 
@@ -67,7 +89,7 @@ internal class PortalEntryBuilder<PortalKey>(
     key.applyMutationToPortalEntries { entry ->
       when {
         entry.isDisappearing -> when {
-          doesIncompatibleStateThrow -> error("Cannot detach if the entry is disappearing")
+          validation.validatePortalTransactions -> error("Cannot detach if the entry is disappearing")
           else -> entry
         }
         else -> entry.copy(
@@ -87,16 +109,25 @@ internal class PortalEntryBuilder<PortalKey>(
     key.applyMutationToPortalEntries { entry ->
       when {
         entry.isDisappearing -> when {
-          doesIncompatibleStateThrow -> error("Cannot remove if the entry is disappearing")
+          validation.validatePortalTransactions -> error("Cannot remove if the entry is disappearing")
           else -> null
+        }.also {
+          entry.portal.notifyOfRemoval(
+            isCompletelyRemoved = true
+          )
         }
+
         else -> entry.copy(
           wasContentPreviouslyVisible = entry.isAttachedToComposition,
           isAttachedToComposition = entry.isAttachedToComposition,
           isBackstackMutation = false,
           isDisappearing = true,
           transitions = transitionsOverride ?: entry.transitions
-        )
+        ).also {
+          entry.portal.notifyOfRemoval(
+            isCompletelyRemoved = false
+          )
+        }
       }
     }
   }
@@ -117,12 +148,17 @@ internal class PortalEntryBuilder<PortalKey>(
   ) {
     key.applyMutationToPortalEntries { entry ->
       if(entry.isDisappearing) {
+        postTransactionOps += {
+          entry.portal.notifyOfRemoval(
+            isCompletelyRemoved = true
+          )
+        }
         // removes the entry from portalEntries
         null
       }
       else {
         when {
-          doesIncompatibleStateThrow -> error("Cannot disappear if the entry isn't disappearing")
+          validation.validatePortalTransactions -> error("Cannot disappear if the entry isn't disappearing")
           else -> entry
         }
       }
@@ -142,7 +178,8 @@ internal class PortalEntryBuilder<PortalKey>(
     backstack = backstack,
     isForBackstack = true,
     defaultTransitions = defaultTransitions,
-    doesIncompatibleStateThrow = doesIncompatibleStateThrow
+    validation = validation,
+    parentPortal = parentPortal
   ).builder(transactionBackstackEntries)
 
   private fun PortalKey.applyMutationToPortalEntries(
@@ -162,5 +199,35 @@ internal class PortalEntryBuilder<PortalKey>(
           transactionPortalEntries[index] = newEntry
         }
       }
+  }
+
+  private fun Portal.notifyOfRemoval(
+    isCompletelyRemoved: Boolean
+  ) {
+    postTransactionOps += {
+      if(this is ParentPortal) {
+        notifyChildrenOfRemoval(isCompletelyRemoved = isCompletelyRemoved)
+      }
+
+      if(this is PortalRemovedListener) {
+        onPortalRemoved(isCompletelyRemoved = isCompletelyRemoved)
+      }
+    }
+  }
+}
+
+private fun ParentPortal.notifyChildrenOfRemoval(
+  isCompletelyRemoved: Boolean
+) {
+  for(manager in portalManagers) {
+    for(childPortal in manager.portals) {
+      if(childPortal is ParentPortal) {
+        notifyChildrenOfRemoval(isCompletelyRemoved)
+      }
+
+      if(childPortal is PortalRemovedListener) {
+        childPortal.onPortalRemoved(isCompletelyRemoved)
+      }
+    }
   }
 }
