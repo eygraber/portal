@@ -27,6 +27,7 @@ internal annotation class PortalTransactionBuilderDsl
 
 public class PortalManager<PortalKey>(
   defaultTransitions: PortalTransitions = PortalTransitions.Default,
+  private val defaultErrorHandler: ((Throwable) -> Unit)? = null,
   validation: PortalManagerValidation = PortalManagerValidation(),
   parent: ParentPortal? = null
 ) : PortalManagerQueries<PortalKey> {
@@ -40,7 +41,7 @@ public class PortalManager<PortalKey>(
     } != null
 
   public fun withTransaction(
-    errorHandler: ((Throwable) -> Unit)? = null,
+    errorHandler: ((Throwable) -> Unit)? = defaultErrorHandler,
     @PortalTransactionBuilderDsl builder: EntryBuilder<PortalKey>.() -> Unit
   ) {
     lock.withLock {
