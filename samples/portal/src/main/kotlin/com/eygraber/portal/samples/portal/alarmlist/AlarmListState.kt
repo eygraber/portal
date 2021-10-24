@@ -1,4 +1,4 @@
-package com.eygraber.portal.samples.portal.main.alarmlist
+package com.eygraber.portal.samples.portal.alarmlist
 
 interface AlarmListAlarm {
   val id: String

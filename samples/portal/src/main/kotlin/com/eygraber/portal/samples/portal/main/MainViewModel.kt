@@ -12,23 +12,20 @@ import androidx.compose.ui.text.style.TextAlign
 import com.eygraber.portal.PortalManager
 import com.eygraber.portal.PortalTransitions
 import com.eygraber.portal.samples.portal.VM
-import com.eygraber.portal.samples.portal.main.home.HomeView
+import com.eygraber.portal.samples.portal.home.HomePortal
 
 class MainViewModel(
-  private val mainPortalManager: PortalManager<MainPortalKey>
+  private val mainPortalManager: PortalManager<MainPortalKey>,
+  private val homePortalProvider: () -> HomePortal
 ) : VM<MainState> {
   private val mutableState = object : MainState {
     override var selectedTab by mutableStateOf(MainPortalKey.One)
   }
   override val state = mutableState
 
-  private val homeView = HomeView()
-
   init {
     mainPortalManager.withTransaction {
-      add(MainPortalKey.One) {
-        homeView.render()
-      }
+      add(MainPortalKey.One, portal = homePortalProvider())
 
       add(MainPortalKey.Two, isAttachedToComposition = false) {
         Text(

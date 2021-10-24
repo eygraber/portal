@@ -8,6 +8,7 @@ plugins {
 
 dependencies {
   implementation(projects.portal)
+  implementation(projects.portalKodeinDi)
 
   implementation(compose.material)
   implementation(compose.materialIconsExtended)

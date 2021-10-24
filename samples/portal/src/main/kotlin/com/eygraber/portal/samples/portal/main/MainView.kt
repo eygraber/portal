@@ -19,15 +19,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.eygraber.portal.PortalManager
 import com.eygraber.portal.samples.portal.View
-import com.eygraber.portal.samples.portal.appPortalManager
 
-class MainView : View<MainState> {
-  private val mainPortalManager = PortalManager<MainPortalKey>()
-
-  override val vm = MainViewModel(
-    mainPortalManager
-  )
-
+class MainView(
+  private val appPortalManager: PortalManager<AppPortalKey>,
+  private val mainPortalManager: PortalManager<MainPortalKey>,
+  override val vm: MainViewModel
+) : View<MainState> {
   @Composable
   override fun render() {
     Box(
