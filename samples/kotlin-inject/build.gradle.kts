@@ -5,10 +5,12 @@ plugins {
   id("org.jetbrains.compose")
   detekt
   id("com.google.devtools.ksp") version libs.versions.ksp.get()
+  portal
 }
 
 repositories {
   maven(url = "https://oss.sonatype.org/content/repositories/snapshots")
+  maven(url = "https://s01.oss.sonatype.org/content/repositories/snapshots")
 }
 
 dependencies {

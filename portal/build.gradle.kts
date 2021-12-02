@@ -4,6 +4,7 @@ plugins {
   id("kotlinx-atomicfu")
   detekt
   publish
+  portal
 }
 
 kotlin {
