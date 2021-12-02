@@ -1,5 +1,6 @@
 package com.eygraber.portal.samples.kotlin.inject.main
 
+import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.runtime.Composable
 import com.eygraber.portal.ParentPortal
 import com.eygraber.portal.compose.ComposePortal
@@ -30,7 +31,7 @@ class MainPortal : ComposePortal, ParentPortal, InjectablePortal<MainComponent> 
   }
 
   @Composable
-  override fun render() {
+  override fun AnimatedVisibilityScope.render() {
     mainView.render()
   }
 }

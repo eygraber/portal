@@ -1,5 +1,6 @@
 package com.eygraber.portal.samples.portal.alarmlist
 
+import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.runtime.Composable
 import com.eygraber.portal.ChildPortal
 import com.eygraber.portal.Portal
@@ -32,7 +33,7 @@ class AlarmListPortal(
   }
 
   @Composable
-  override fun render() {
+  override fun AnimatedVisibilityScope.render() {
     alarmListView.render()
   }
 }

@@ -1,5 +1,6 @@
 package com.eygraber.portal.samples.portal.root
 
+import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.darkColors
@@ -8,6 +9,7 @@ import androidx.compose.ui.graphics.Color
 import com.eygraber.portal.compose.ComposePortal
 import com.eygraber.portal.compose.PortalManager
 import com.eygraber.portal.kodein.di.KodeinRootPortal
+import com.eygraber.portal.renderWithAnimatedVisibility
 import com.eygraber.portal.samples.portal.main.MainPortal
 import org.kodein.di.DI
 import org.kodein.di.instance
@@ -18,7 +20,7 @@ class AppRootPortal(di: DI) : ComposePortal, KodeinRootPortal(di) {
   private val mainPortal by instance<MainPortal>()
 
   @Composable
-  override fun render() {
+  override fun AnimatedVisibilityScope.render() {
     MaterialTheme(
       colors = darkColors(
         primary = Color(0xFFBB86FC),
@@ -27,7 +29,7 @@ class AppRootPortal(di: DI) : ComposePortal, KodeinRootPortal(di) {
       )
     ) {
       Surface {
-        mainPortal.render()
+        mainPortal.renderWithAnimatedVisibility()
       }
     }
   }
