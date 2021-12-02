@@ -13,6 +13,10 @@ jdk = "11"
 kodein = "7.8.0"
 kotlin = "1.5.31"
 
+kotlinInject = "0.4.1-SNAPSHOT"
+
+ksp = "1.5.31-1.0.1"
+
 kotlinx-coroutines = "1.5.2"
 kotlinx-atomicFu = "0.16.3"
 
@@ -44,5 +48,8 @@ kodein-core = { module = "org.kodein.di:kodein-di", version.ref = "kodein" }
 
 kotlinx-atomicFu = { module = "org.jetbrains.kotlinx:atomicfu", version.ref = "kotlinx-atomicFu" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
+
+kotlinInject-compiler = { module = "me.tatarka.inject:kotlin-inject-compiler-ksp", version.ref = "kotlinInject" }
+kotlinInject-runtime = { module = "me.tatarka.inject:kotlin-inject-runtime", version.ref = "kotlinInject" }
 
 kotlinDurationExtensions = "com.eygraber:kotlin-duration-extensions:1.0.1"
