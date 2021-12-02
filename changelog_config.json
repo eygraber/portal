@@ -19,6 +19,10 @@
     {
       "title": "## \uD83D\uDCD6 Documentation",
       "labels": ["documentation"]
+    },
+    {
+      "title": "\uD83D\uDCE6 Dependencies",
+      "labels": ["dependencies"]
     }
   ],
   "ignore_labels": [
