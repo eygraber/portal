@@ -1,5 +1,8 @@
 package com.eygraber.portal.samples.kotlin.inject.alarmlist
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.MutableTransitionState
+import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,6 +19,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -72,22 +76,31 @@ class AlarmListView(
 
   @Composable
   private fun AlarmItem(alarm: AlarmListAlarm) {
-    Row {
-      Switch(
-        checked = alarm.isEnabled,
-        onCheckedChange = {
-          vm.alarmEnabledChanged(alarm)
-        },
-        modifier = Modifier
-          .align(Alignment.CenterVertically)
-      )
+    val visibleState = remember {
+      MutableTransitionState(false)
+        .apply { targetState = true }
+    }
+    AnimatedVisibility(
+      visibleState = visibleState,
+      enter = fadeIn()
+    ) {
+      Row {
+        Switch(
+          checked = alarm.isEnabled,
+          onCheckedChange = {
+            vm.alarmEnabledChanged(alarm)
+          },
+          modifier = Modifier
+            .align(Alignment.CenterVertically)
+        )
 
-      Text(
-        text = alarm.time,
-        modifier = Modifier
-          .align(Alignment.CenterVertically)
-          .padding(start = 8.dp)
-      )
+        Text(
+          text = alarm.time,
+          modifier = Modifier
+            .align(Alignment.CenterVertically)
+            .padding(start = 8.dp)
+        )
+      }
     }
   }
 }

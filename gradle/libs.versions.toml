@@ -1,16 +1,16 @@
 [versions]
-agp = "7.0.2"
+agp = "7.0.3"
 
-compose = "1.0.0-beta5"
+compose = "1.0.0"
 
-detekt = "1.18.1"
+detekt = "1.19.0"
 detektEygraber = "1.0.10"
 
 dokka = "1.5.31"
 
 jdk = "11"
 
-kodein = "7.8.0"
+kodein = "7.9.0"
 kotlin = "1.5.31"
 
 kotlinInject = "0.4.1-SNAPSHOT"
