@@ -2,6 +2,7 @@ plugins {
   kotlin("multiplatform")
   detekt
   publish
+  portal
 }
 
 kotlin {

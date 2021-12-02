@@ -4,6 +4,7 @@ plugins {
   kotlin("jvm")
   id("org.jetbrains.compose")
   detekt
+  portal
 }
 
 dependencies {
