@@ -27,7 +27,7 @@ enum class MyPortalKey {
 }
 
 fun main() {
-  val portals = Portals<MyPortalKey>()
+  val portals = PortalManager<MyPortalKey>()
 
   thread {
     Thread.sleep(1_000)
