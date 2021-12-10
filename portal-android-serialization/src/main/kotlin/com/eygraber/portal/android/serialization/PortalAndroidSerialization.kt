@@ -1,0 +1,32 @@
+package com.eygraber.portal.android.serialization
+
+import android.os.Bundle
+import com.eygraber.portal.ParentPortal
+import com.eygraber.portal.SaveablePortal
+import com.eygraber.portal.traverseChildren
+
+interface ParcelablePortal {
+  fun saveState(bundle: Bundle)
+}
+
+fun ParentPortal.onSaveState(bundle: Bundle?) {
+  if(this is SaveablePortal) {
+    saveState()
+  }
+
+  if(bundle != null && this is ParcelablePortal) {
+    saveState(bundle)
+  }
+
+  traverseChildren(
+    onPortal = {
+      if(it is SaveablePortal) {
+        it.saveState()
+      }
+
+      if(bundle != null && it is ParcelablePortal) {
+        it.saveState(bundle)
+      }
+    }
+  )
+}

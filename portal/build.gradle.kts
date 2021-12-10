@@ -18,6 +18,7 @@ kotlin {
         api(libs.kotlinx.atomicFu)
 
         implementation(libs.kotlinx.coroutines.core)
+        implementation(libs.kotlinx.serialization.json)
 
         implementation(compose.animation)
       }

@@ -1,6 +1,8 @@
 package com.eygraber.portal
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -9,6 +11,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import com.eygraber.portal.internal.PortalEntry
 import com.eygraber.portal.internal.PortalState
+import com.eygraber.portal.internal.deserializePortalManagerState
+import com.eygraber.portal.internal.isAttachedToComposition
+import com.eygraber.portal.internal.serializePortalManagerState
 import kotlinx.atomicfu.locks.reentrantLock
 import kotlinx.atomicfu.locks.withLock
 import kotlinx.coroutines.flow.Flow
@@ -26,7 +31,7 @@ public interface PortalManagerQueries<PortalKey> {
 internal annotation class PortalTransactionBuilderDsl
 
 public class PortalManager<PortalKey>(
-  defaultTransitions: PortalTransitions = PortalTransitions.Default,
+  private val defaultTransitionsProvider: PortalTransitionsProvider = PortalTransitionsProvider.Default,
   private val defaultErrorHandler: ((Throwable) -> Unit)? = null,
   validation: PortalManagerValidation = PortalManagerValidation()
 ) : PortalManagerQueries<PortalKey> {
@@ -38,6 +43,31 @@ public class PortalManager<PortalKey>(
     portalState.portalEntries.findLast { entry ->
       entry.key == key
     } != null
+
+  public fun saveState(
+    portalKeySerializer: (PortalKey) -> String
+  ): String = lock.withLock {
+    serializePortalManagerState(portalKeySerializer, portalState)
+  }
+
+  public fun restoreState(
+    serializedState: String,
+    portalKeyDeserializer: (String) -> PortalKey,
+    portalFactory: (PortalKey) -> Portal
+  ) {
+    lock.withLock {
+      val (entries, backstack) = deserializePortalManagerState(
+        serializedState = serializedState,
+        portalKeyDeserializer = portalKeyDeserializer,
+        portalFactory = portalFactory
+      )
+
+      portalState.restoreState(
+        entries = entries,
+        backstack = backstack
+      )
+    }
+  }
 
   public fun withTransaction(
     errorHandler: ((Throwable) -> Unit)? = defaultErrorHandler,
@@ -72,8 +102,21 @@ public class PortalManager<PortalKey>(
   private fun PortalRenderer(
     entry: PortalEntry<PortalKey>
   ) {
-    val (enterTransition, exitTransition) =
-      entry.transitions.getEnterAndExitTransitions(entry.isBackstackMutation)
+    val (enterTransition, exitTransition) = when(val override = entry.transitionOverride) {
+      null -> when(val transitionProvider = entry.portal) {
+        is PortalTransitionsProvider -> transitionProvider.provideTransitions(
+          compositionState = entry.compositionState,
+          isForBackstack = entry.isBackstackMutation
+        )
+
+        else -> defaultTransitionsProvider.provideTransitions(
+          compositionState = entry.compositionState,
+          isForBackstack = entry.isBackstackMutation
+        )
+      }
+
+      else -> override
+    }
 
     val wasContentPreviouslyVisible =
       entry.isDisappearing && entry.isAttachedToComposition ||
@@ -126,7 +169,6 @@ public class PortalManager<PortalKey>(
 
   private val lock = reentrantLock()
   private val portalState = PortalState<PortalKey>(
-    defaultTransitions = defaultTransitions,
     validation = validation
   )
 
@@ -140,27 +182,27 @@ public class PortalManager<PortalKey>(
     public fun add(
       key: PortalKey,
       isAttachedToComposition: Boolean = true,
-      transitionsOverride: PortalTransitions? = null,
+      transitionOverride: EnterTransition? = null,
       portal: Portal,
     )
 
     public fun attachToComposition(
       key: PortalKey,
-      transitionsOverride: PortalTransitions? = null,
+      transitionOverride: EnterTransition? = null
     )
 
     public fun detachFromComposition(
       key: PortalKey,
-      transitionsOverride: PortalTransitions? = null,
+      transitionOverride: ExitTransition? = null
     )
 
     public fun remove(
       key: PortalKey,
-      transitionsOverride: PortalTransitions? = null,
+      transitionOverride: ExitTransition? = null
     )
 
     public fun clear(
-      transitionsOverrideProvider: PortalTransitionsProvider<PortalKey> = null
+      transitionsOverrideProvider: ((PortalKey) -> ExitTransition?)? = null
     )
   }
 }
