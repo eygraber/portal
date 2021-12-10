@@ -5,41 +5,44 @@ import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.runtime.Immutable
 
-public typealias PortalTransitionsProvider<PortalKey> = ((PortalKey) -> PortalTransitions?)?
-
 @Immutable
-public data class PortalTransitions(
+public data class PortalTransition(
   val enter: EnterTransition,
-  val exit: ExitTransition,
-  val sendToBackstack: ExitTransition = exit,
-  val restoreFromBackstack: EnterTransition = enter
+  val exit: ExitTransition
 ) {
-  public fun getEnterAndExitTransitions(
-    isForBackstack: Boolean
-  ): Pair<EnterTransition, ExitTransition> = when {
-    isForBackstack -> restoreFromBackstack to sendToBackstack
-
-    else -> enter to exit
-  }
-
   public companion object {
-    public val Default: PortalTransitions = PortalTransitions(
-      enter = slideInHorizontally(
-        initialOffsetX = { it * 2 }
-      ),
-      exit = slideOutHorizontally(
-        targetOffsetX = { -it }
-      ),
-      sendToBackstack = fadeOut(),
-      restoreFromBackstack = fadeIn()
+    public val defaultEnter: EnterTransition = slideInHorizontally(
+      initialOffsetX = { it * 2 }
     )
 
-    public val None: PortalTransitions = PortalTransitions(
+    public val defaultExit: ExitTransition = slideOutHorizontally(
+      targetOffsetX = { -it }
+    )
+
+    public val defaultEnterForBackstack: EnterTransition = fadeIn()
+
+    public val defaultExitForBackstack: ExitTransition = fadeOut()
+
+    public val defaultAttach: EnterTransition = slideInVertically(
+      initialOffsetY = { -it }
+    )
+
+    public val defaultDetach: ExitTransition = slideOutVertically(
+      targetOffsetY = { it * 2 }
+    )
+
+    public val defaultAttachForBackstack: EnterTransition = fadeIn()
+
+    public val defaultDetachForBackstack: ExitTransition = fadeOut()
+
+    public val None: PortalTransition = PortalTransition(
       enter = EnterTransition.None,
-      exit = ExitTransition.None
+      exit = ExitTransition.None,
     )
   }
 }

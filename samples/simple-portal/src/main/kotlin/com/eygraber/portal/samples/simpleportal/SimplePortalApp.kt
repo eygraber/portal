@@ -1,6 +1,5 @@
 package com.eygraber.portal.samples.simpleportal
 
-import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -20,7 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.window.singleWindowApplication
 import com.eygraber.portal.PortalManager
-import com.eygraber.portal.PortalTransitions
+import com.eygraber.portal.PortalTransition
 import com.eygraber.portal.push
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
@@ -51,22 +50,30 @@ fun NumberBox(text: String) {
 
 fun main() {
   val portalManager = PortalManager<PortalKey>(
-    defaultTransitions = PortalTransitions(
-      enter = slideInHorizontally(
-        animationSpec = tween(1000),
-        initialOffsetX = { it * 2 }
-      ),
-      exit = slideOutHorizontally(
-        animationSpec = tween(1000),
-        targetOffsetX = { it * 2 }
-      ),
-      restoreFromBackstack = fadeIn(
-        animationSpec = tween(1000)
-      ),
-      sendToBackstack = fadeOut(
-        animationSpec = tween(1000)
-      )
-    )
+    defaultTransitionsProvider = { _, isForBackstack ->
+      if(isForBackstack) {
+        PortalTransition(
+          enter = fadeIn(
+            animationSpec = tween(1000)
+          ),
+          exit = fadeOut(
+            animationSpec = tween(1000)
+          )
+        )
+      }
+      else {
+        PortalTransition(
+          enter = slideInHorizontally(
+            animationSpec = tween(1000),
+            initialOffsetX = { it * 2 }
+          ),
+          exit = slideOutHorizontally(
+            animationSpec = tween(1000),
+            targetOffsetX = { it * 2 }
+          )
+        )
+      }
+    }
   )
 
   @OptIn(DelicateCoroutinesApi::class)
@@ -85,91 +92,64 @@ fun main() {
     delay(2500)
 
     portalManager.withTransaction {
-      backstack.clear(suppressTransitions = false) { key ->
-        val initialWaveDuration = 3000
-        val secondWaveDuration = 6000
-        val lastWaveDuration = 8000
+      val initialWaveDuration = 3000
+      val secondWaveDuration = 6000
+      val lastWaveDuration = 8000
 
-        when(key) {
-          PortalKey.One -> PortalTransitions(
-            enter = EnterTransition.None,
-            exit = fadeOut(
+      backstack.clear(
+        suppressTransitions = false,
+        exitTransitionsOverride = { key ->
+          when(key) {
+            PortalKey.One -> fadeOut(
               animationSpec = tween(durationMillis = lastWaveDuration)
             )
-          )
 
-          PortalKey.Two -> PortalTransitions(
-            enter = EnterTransition.None,
-            exit = shrinkOut(
+            PortalKey.Two -> shrinkOut(
               animationSpec = tween(durationMillis = lastWaveDuration)
             )
-          )
 
-          PortalKey.Three -> PortalTransitions(
-            enter = EnterTransition.None,
-            exit = slideOutVertically(
+            PortalKey.Three -> slideOutVertically(
               animationSpec = tween(durationMillis = secondWaveDuration),
               targetOffsetY = { -it }
             )
-          )
 
-          PortalKey.Four -> PortalTransitions(
-            enter = EnterTransition.None,
-            exit = slideOutVertically(
+            PortalKey.Four -> slideOutVertically(
               animationSpec = tween(durationMillis = secondWaveDuration),
               targetOffsetY = { it * 2 }
             )
-          )
 
-          PortalKey.Five -> PortalTransitions(
-            enter = EnterTransition.None,
-            exit = slideOutHorizontally(
+            PortalKey.Five -> slideOutHorizontally(
               animationSpec = tween(durationMillis = secondWaveDuration),
               targetOffsetX = { -it }
             )
-          )
 
-          PortalKey.Six -> PortalTransitions(
-            enter = EnterTransition.None,
-            exit = slideOutHorizontally(
+            PortalKey.Six -> slideOutHorizontally(
               animationSpec = tween(durationMillis = secondWaveDuration),
               targetOffsetX = { it * 2 }
             )
-          )
 
-          PortalKey.Seven -> PortalTransitions(
-            enter = EnterTransition.None,
-            exit = slideOutVertically(
+            PortalKey.Seven -> slideOutVertically(
               animationSpec = tween(durationMillis = initialWaveDuration),
               targetOffsetY = { -it }
             )
-          )
 
-          PortalKey.Eight -> PortalTransitions(
-            enter = EnterTransition.None,
-            exit = slideOutVertically(
+            PortalKey.Eight -> slideOutVertically(
               animationSpec = tween(durationMillis = initialWaveDuration),
               targetOffsetY = { it * 2 }
             )
-          )
 
-          PortalKey.Nine -> PortalTransitions(
-            enter = EnterTransition.None,
-            exit = slideOutHorizontally(
+            PortalKey.Nine -> slideOutHorizontally(
               animationSpec = tween(durationMillis = initialWaveDuration),
               targetOffsetX = { -it }
             )
-          )
 
-          PortalKey.Ten -> PortalTransitions(
-            enter = EnterTransition.None,
-            exit = slideOutHorizontally(
+            PortalKey.Ten -> slideOutHorizontally(
               animationSpec = tween(durationMillis = initialWaveDuration),
               targetOffsetX = { it * 2 }
             )
-          )
+          }
         }
-      }
+      )
     }
   }
 

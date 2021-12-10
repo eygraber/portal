@@ -10,7 +10,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import com.eygraber.portal.PortalManager
-import com.eygraber.portal.PortalTransitions
+import com.eygraber.portal.PortalTransition
 import com.eygraber.portal.samples.kotlin.inject.VM
 import com.eygraber.portal.samples.kotlin.inject.home.HomePortal
 import me.tatarka.inject.annotations.Inject
@@ -79,8 +79,8 @@ class MainViewModel(
 
     mainBottomNavPortalManager.withTransaction {
       val transition = tab.getTransitionOverride(tabMovingFrom)
-      detachFromComposition(tabMovingFrom, transition)
-      attachToComposition(tab, transition)
+      detachFromComposition(tabMovingFrom, transition.exit)
+      attachToComposition(tab, transition.enter)
     }
   }
 }
@@ -89,19 +89,19 @@ private fun MainBottomNavPortalKey.getTransitionOverride(
   currentTab: MainBottomNavPortalKey
 ) = currentTab.selectedIndex.let { currentSelectedIndex ->
   if(currentSelectedIndex > selectedIndex) {
-    PortalTransitions(
+    PortalTransition(
       enter = slideInHorizontally { -it },
       exit = slideOutHorizontally { it * 2 }
     )
   }
   else if(currentSelectedIndex < selectedIndex) {
-    PortalTransitions(
+    PortalTransition(
       enter = slideInHorizontally { it * 2 },
       exit = slideOutHorizontally { -it }
     )
   }
   else {
-    PortalTransitions.None
+    PortalTransition.None
   }
 }
 

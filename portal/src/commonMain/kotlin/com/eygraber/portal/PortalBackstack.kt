@@ -1,5 +1,7 @@
 package com.eygraber.portal
 
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import com.eygraber.portal.internal.PortalBackstackEntry
 import com.eygraber.portal.internal.PortalBackstackEntryBuilder
 import com.eygraber.portal.internal.PortalBackstackMutation
@@ -30,30 +32,32 @@ public interface PortalBackstack<PortalKey> : ReadOnlyBackstack {
   public fun pop(
     untilBackstackEntryId: String? = null,
     inclusive: Boolean = true,
-    transitionsOverride: PortalTransitionsProvider<PortalKey> = null
+    enterTransitionsOverride: ((PortalKey) -> EnterTransition?)? = null,
+    exitTransitionsOverride: ((PortalKey) -> ExitTransition?)? = null
   ): Boolean
 
   public fun clear(
     suppressTransitions: Boolean = true,
-    transitionsOverride: PortalTransitionsProvider<PortalKey> = null
+    enterTransitionsOverride: ((PortalKey) -> EnterTransition?)? = null,
+    exitTransitionsOverride: ((PortalKey) -> ExitTransition?)? = null
   ): Boolean
 
   public interface PushBuilder<PortalKey> {
     public fun add(
       key: PortalKey,
       isAttachedToComposition: Boolean = true,
-      transitionsOverride: PortalTransitions? = null,
+      transitionOverride: EnterTransition? = null,
       portal: Portal,
     )
 
     public fun attachToComposition(
       key: PortalKey,
-      transitionsOverride: PortalTransitions? = null
+      transitionOverride: EnterTransition? = null,
     )
 
     public fun detachFromComposition(
       key: PortalKey,
-      transitionsOverride: PortalTransitions? = null
+      transitionOverride: ExitTransition? = null,
     )
   }
 }
@@ -91,20 +95,20 @@ internal class PortalBackstackImpl<PortalKey>(
 
   override fun clear(
     suppressTransitions: Boolean,
-    transitionsOverride: PortalTransitionsProvider<PortalKey>
+    enterTransitionsOverride: ((PortalKey) -> EnterTransition?)?,
+    exitTransitionsOverride: ((PortalKey) -> ExitTransition?)?
   ): Boolean = portalState.transactWithBackstack { backstackStack ->
     val originalSize = backstackStack.size
-
-    val actualTransitionOverride = when {
-      suppressTransitions -> { _: PortalKey -> PortalTransitions.None }
-      else -> transitionsOverride
-    }
 
     backstackStack
       .reversed()
       .map(PortalBackstackEntry<PortalKey>::mutations)
       .forEach { mutations ->
-        applyBackstackMutations(mutations.reversed(), actualTransitionOverride)
+        applyBackstackMutations(
+          mutations.reversed(),
+          enterTransitionsOverride,
+          exitTransitionsOverride
+        )
       }
 
     backstackStack.clear()
@@ -115,12 +119,17 @@ internal class PortalBackstackImpl<PortalKey>(
   override fun pop(
     untilBackstackEntryId: String?,
     inclusive: Boolean,
-    transitionsOverride: PortalTransitionsProvider<PortalKey>
+    enterTransitionsOverride: ((PortalKey) -> EnterTransition?)?,
+    exitTransitionsOverride: ((PortalKey) -> ExitTransition?)?
   ): Boolean = portalState.transactWithBackstack { backstackStack ->
     val originalSize = backstackStack.size
     var stop = false
     do {
-      tryToActuallyPopBackstack(backstackStack, transitionsOverride) { entryToPop ->
+      tryToActuallyPopBackstack(
+        backstackStack,
+        enterTransitionsOverride,
+        exitTransitionsOverride
+      ) { entryToPop ->
         if(untilBackstackEntryId == null || entryToPop.id == untilBackstackEntryId) {
           stop = true
 
@@ -137,7 +146,8 @@ internal class PortalBackstackImpl<PortalKey>(
 
   private fun PortalEntryBuilder<PortalKey>.tryToActuallyPopBackstack(
     backstackStack: MutableList<PortalBackstackEntry<PortalKey>>,
-    transitionsOverride: PortalTransitionsProvider<PortalKey>,
+    enterTransitionsOverride: ((PortalKey) -> EnterTransition?)?,
+    exitTransitionsOverride: ((PortalKey) -> ExitTransition?)?,
     popPredicate: (PortalBackstackEntry<PortalKey>) -> Boolean
   ) {
     when(val peek = backstackStack.lastOrNull()) {
@@ -147,7 +157,11 @@ internal class PortalBackstackImpl<PortalKey>(
         popPredicate(peek) -> {
           backstackStack.removeLast()
 
-          applyBackstackMutations(peek.mutations, transitionsOverride)
+          applyBackstackMutations(
+            peek.mutations,
+            enterTransitionsOverride,
+            exitTransitionsOverride
+          )
         }
       }
     }
@@ -162,23 +176,24 @@ internal class PortalBackstackImpl<PortalKey>(
 
 private fun <PortalKey> PortalEntryBuilder<PortalKey>.applyBackstackMutations(
   mutations: List<PortalBackstackMutation<PortalKey>>,
-  actualTransitionsOverride: PortalTransitionsProvider<PortalKey>
+  enterTransitionsOverride: ((PortalKey) -> EnterTransition?)?,
+  exitTransitionsOverride: ((PortalKey) -> ExitTransition?)?
 ) {
   mutations.forEach { mutation ->
     when(mutation) {
       is PortalBackstackMutation.Remove -> remove(
         key = mutation.key,
-        transitionsOverride = actualTransitionsOverride?.invoke(mutation.key) ?: mutation.transitionsOverride
+        transitionOverride = exitTransitionsOverride?.invoke(mutation.key)
       )
 
       is PortalBackstackMutation.AttachToComposition -> attachToComposition(
         key = mutation.key,
-        transitionsOverride = actualTransitionsOverride?.invoke(mutation.key) ?: mutation.transitionsOverride
+        transitionOverride = enterTransitionsOverride?.invoke(mutation.key)
       )
 
       is PortalBackstackMutation.DetachFromComposition -> detachFromComposition(
         key = mutation.key,
-        transitionsOverride = actualTransitionsOverride?.invoke(mutation.key) ?: mutation.transitionsOverride
+        transitionOverride = exitTransitionsOverride?.invoke(mutation.key)
       )
 
       is PortalBackstackMutation.Disappearing -> disappear(
@@ -198,8 +213,14 @@ public fun <PortalKey> PortalBackstack<PortalKey>.push(
 public fun <PortalKey> PortalBackstack<PortalKey>.pop(
   untilBackstackEntryId: PortalKey? = null,
   inclusive: Boolean = true,
-  transitionsOverride: PortalTransitionsProvider<PortalKey> = null
-): Boolean = pop(untilBackstackEntryId.toString(), inclusive, transitionsOverride)
+  enterTransitionsOverride: ((PortalKey) -> EnterTransition?)? = null,
+  exitTransitionsOverride: ((PortalKey) -> ExitTransition?)? = null
+): Boolean = pop(
+  untilBackstackEntryId.toString(),
+  inclusive,
+  enterTransitionsOverride,
+  exitTransitionsOverride
+)
 
 public operator fun <PortalKey> PortalBackstack<PortalKey>.contains(
   backstackEntryId: PortalKey

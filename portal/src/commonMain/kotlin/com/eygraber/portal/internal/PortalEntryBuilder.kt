@@ -1,14 +1,16 @@
 package com.eygraber.portal.internal
 
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import com.eygraber.portal.ParentPortal
 import com.eygraber.portal.Portal
 import com.eygraber.portal.PortalBackstack
+import com.eygraber.portal.PortalCompositionState
 import com.eygraber.portal.PortalManager
 import com.eygraber.portal.PortalManagerValidation
 import com.eygraber.portal.PortalRemovedListener
 import com.eygraber.portal.PortalTransactionBuilderDsl
-import com.eygraber.portal.PortalTransitions
-import com.eygraber.portal.PortalTransitionsProvider
+import com.eygraber.portal.PortalTransition
 import kotlinx.atomicfu.atomic
 
 internal class PortalEntryBuilder<PortalKey>(
@@ -16,7 +18,6 @@ internal class PortalEntryBuilder<PortalKey>(
   private val transactionPortalEntries: MutableList<PortalEntry<PortalKey>>,
   private val transactionBackstackEntries: MutableList<PortalBackstackEntry<PortalKey>>,
   private val isForBackstack: Boolean,
-  private val defaultTransitions: PortalTransitions,
   private val validation: PortalManagerValidation
 ) : PortalManager.EntryBuilder<PortalKey> {
   private val _postTransactionOps = atomic(emptyList<() -> Unit>())
@@ -34,23 +35,31 @@ internal class PortalEntryBuilder<PortalKey>(
   override fun add(
     key: PortalKey,
     isAttachedToComposition: Boolean,
-    transitionsOverride: PortalTransitions?,
+    transitionOverride: EnterTransition?,
     portal: Portal
   ) {
     transactionPortalEntries += PortalEntry(
       key = key,
       wasContentPreviouslyVisible = false,
-      isAttachedToComposition = isAttachedToComposition,
       isDisappearing = false,
       isBackstackMutation = false,
-      transitions = transitionsOverride ?: defaultTransitions,
+      compositionState = when {
+        isAttachedToComposition -> PortalCompositionState.Added
+        else -> PortalCompositionState.Detached
+      },
+      transitionOverride = transitionOverride?.let { enterTransition ->
+        PortalTransition(
+          enter = enterTransition,
+          exit = ExitTransition.None
+        )
+      },
       portal = portal
     )
   }
 
   override fun attachToComposition(
     key: PortalKey,
-    transitionsOverride: PortalTransitions?
+    transitionOverride: EnterTransition?
   ) {
     key.applyMutationToPortalEntries { entry ->
       when {
@@ -61,9 +70,14 @@ internal class PortalEntryBuilder<PortalKey>(
 
         else -> entry.copy(
           wasContentPreviouslyVisible = entry.isAttachedToComposition,
-          isAttachedToComposition = true,
           isBackstackMutation = isForBackstack,
-          transitions = transitionsOverride ?: entry.transitions
+          compositionState = PortalCompositionState.Attached,
+          transitionOverride = transitionOverride?.let { enterTransition ->
+            PortalTransition(
+              enter = enterTransition,
+              exit = ExitTransition.None
+            )
+          }
         )
       }
     }
@@ -71,7 +85,7 @@ internal class PortalEntryBuilder<PortalKey>(
 
   override fun detachFromComposition(
     key: PortalKey,
-    transitionsOverride: PortalTransitions?
+    transitionOverride: ExitTransition?
   ) {
     key.applyMutationToPortalEntries { entry ->
       when {
@@ -81,9 +95,14 @@ internal class PortalEntryBuilder<PortalKey>(
         }
         else -> entry.copy(
           wasContentPreviouslyVisible = entry.isAttachedToComposition,
-          isAttachedToComposition = false,
           isBackstackMutation = isForBackstack,
-          transitions = transitionsOverride ?: entry.transitions
+          compositionState = PortalCompositionState.Detached,
+          transitionOverride = transitionOverride?.let { exitTransition ->
+            PortalTransition(
+              enter = EnterTransition.None,
+              exit = exitTransition
+            )
+          }
         )
       }
     }
@@ -91,7 +110,7 @@ internal class PortalEntryBuilder<PortalKey>(
 
   override fun remove(
     key: PortalKey,
-    transitionsOverride: PortalTransitions?
+    transitionOverride: ExitTransition?
   ) {
     key.applyMutationToPortalEntries { entry ->
       when {
@@ -106,10 +125,15 @@ internal class PortalEntryBuilder<PortalKey>(
 
         else -> entry.copy(
           wasContentPreviouslyVisible = entry.isAttachedToComposition,
-          isAttachedToComposition = entry.isAttachedToComposition,
           isBackstackMutation = false,
+          compositionState = PortalCompositionState.Removed,
           isDisappearing = true,
-          transitions = transitionsOverride ?: entry.transitions
+          transitionOverride = transitionOverride?.let { exitTransition ->
+            PortalTransition(
+              enter = EnterTransition.None,
+              exit = exitTransition
+            )
+          }
         ).also {
           entry.portal.notifyOfRemoval(
             isCompletelyRemoved = false
@@ -120,12 +144,12 @@ internal class PortalEntryBuilder<PortalKey>(
   }
 
   override fun clear(
-    transitionsOverrideProvider: PortalTransitionsProvider<PortalKey>
+    transitionsOverrideProvider: ((PortalKey) -> ExitTransition?)?
   ) {
     transactionPortalEntries.reversed().forEach { entry ->
       remove(
         key = entry.key,
-        transitionsOverride = transitionsOverrideProvider?.invoke(entry.key) ?: entry.transitions
+        transitionOverride = transitionsOverrideProvider?.invoke(entry.key)
       )
     }
   }
@@ -164,7 +188,6 @@ internal class PortalEntryBuilder<PortalKey>(
     transactionBackstackEntries = transactionBackstackEntries,
     backstack = backstack,
     isForBackstack = true,
-    defaultTransitions = defaultTransitions,
     validation = validation
   ).builder(transactionBackstackEntries)
 
