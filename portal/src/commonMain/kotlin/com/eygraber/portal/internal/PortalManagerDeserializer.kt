@@ -1,7 +1,7 @@
 package com.eygraber.portal.internal
 
 import com.eygraber.portal.Portal
-import com.eygraber.portal.PortalCompositionState
+import com.eygraber.portal.PortalRendererState
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.contentOrNull
@@ -9,41 +9,44 @@ import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 
-internal fun <PortalKey> deserializePortalManagerState(
+internal fun <KeyT, EntryT, ExtraT : Extra, PortalT : Portal> deserializePortalManagerState(
   serializedState: String,
-  portalKeyDeserializer: (String) -> PortalKey,
-  portalFactory: (PortalKey) -> Portal
-): Pair<List<PortalEntry<PortalKey>>, List<PortalBackstackEntry<PortalKey>>> {
+  keyDeserializer: (String) -> KeyT,
+  portalFactory: (KeyT) -> PortalT,
+  entryCallbacks: PortalEntry.Callbacks<KeyT, EntryT, ExtraT, PortalT>
+): Pair<List<EntryT>, List<PortalBackstackEntry<KeyT>>> where EntryT : Entry<KeyT, ExtraT, PortalT> {
   val json = Json.parseToJsonElement(serializedState).jsonObject
 
   val entries = requireNotNull(json["entries"]) {
     "Serialized PortalManager state must have a top level field named \"entries\""
   }.jsonArray.deserializeToPortalEntries(
-    portalKeyDeserializer = portalKeyDeserializer,
-    portalFactory = portalFactory
+    keyDeserializer = keyDeserializer,
+    portalFactory = portalFactory,
+    entryCallbacks = entryCallbacks
   )
 
   val backstack = requireNotNull(json["backstack"]) {
     "Serialized PortalManager state must have a top level field named \"backstack\""
-  }.jsonArray.deserializeToBackstackEntries(portalKeyDeserializer)
+  }.jsonArray.deserializeToBackstackEntries(keyDeserializer)
 
   return entries to backstack
 }
 
-private fun <PortalKey> JsonArray.deserializeToPortalEntries(
-  portalKeyDeserializer: (String) -> PortalKey,
-  portalFactory: (PortalKey) -> Portal
-) = map { entry ->
+private fun <KeyT, EntryT, ExtraT, PortalT> JsonArray.deserializeToPortalEntries(
+  keyDeserializer: (String) -> KeyT,
+  portalFactory: (KeyT) -> PortalT,
+  entryCallbacks: PortalEntry.Callbacks<KeyT, EntryT, ExtraT, PortalT>
+) where EntryT : Entry<KeyT, ExtraT, PortalT>, ExtraT : Extra, PortalT : Portal = map { entry ->
   val jsonEntry = entry.jsonObject
 
-  val portalKey = requireNotNull(
+  val key = requireNotNull(
     jsonEntry["key"]?.jsonPrimitive?.contentOrNull
   ) {
     "A serialized PortalEntry needs a \"key\" field"
-  }.let(portalKeyDeserializer)
+  }.let(keyDeserializer)
 
-  PortalEntry(
-    key = portalKey,
+  entryCallbacks.create(
+    key = key,
     wasContentPreviouslyVisible = requireNotNull(
       jsonEntry["wasContentPreviouslyVisible"]?.jsonPrimitive?.contentOrNull
     ) {
@@ -59,18 +62,18 @@ private fun <PortalKey> JsonArray.deserializeToPortalEntries(
     ) {
       "A serialized PortalEntry needs a \"isBackstackMutation\" field"
     }.toBoolean(),
-    compositionState = requireNotNull(
+    rendererState = requireNotNull(
       jsonEntry["isBackstackMutation"]?.jsonPrimitive?.contentOrNull
     ) {
-      "A serialized PortalEntry needs a \"compositionState\" field"
-    }.let(PortalCompositionState::valueOf),
-    transitionOverride = null,
-    portal = portalFactory(portalKey)
+      "A serialized PortalEntry needs a \"rendererState\" field"
+    }.let(PortalRendererState::valueOf),
+    extra = null,
+    portal = portalFactory(key)
   )
 }
 
-private fun <PortalKey> JsonArray.deserializeToBackstackEntries(
-  portalKeyDeserializer: (String) -> PortalKey
+private fun <KeyT> JsonArray.deserializeToBackstackEntries(
+  keyDeserializer: (String) -> KeyT
 ) = map { entry ->
   val jsonEntry = entry.jsonObject
 
@@ -82,20 +85,20 @@ private fun <PortalKey> JsonArray.deserializeToBackstackEntries(
     },
     mutations = requireNotNull(jsonEntry["mutations"]) {
       "A serialized PortalBackstackEntry needs a \"mutations\" field"
-    }.jsonArray.deserializeToBackstackMutations(portalKeyDeserializer)
+    }.jsonArray.deserializeToBackstackMutations(keyDeserializer)
   )
 }
 
-private fun <PortalKey> JsonArray.deserializeToBackstackMutations(
-  portalKeyDeserializer: (String) -> PortalKey
+private fun <KeyT> JsonArray.deserializeToBackstackMutations(
+  keyDeserializer: (String) -> KeyT
 ) = map { mutation ->
   val jsonMutation = mutation.jsonObject
 
-  val portalKey = requireNotNull(
+  val key = requireNotNull(
     jsonMutation["key"]?.jsonPrimitive?.contentOrNull
   ) {
     "A serialized PortalBackstackMutation needs a \"key\" field"
-  }.let(portalKeyDeserializer)
+  }.let(keyDeserializer)
 
   val type = requireNotNull(
     jsonMutation["type"]?.jsonPrimitive?.contentOrNull
@@ -105,18 +108,20 @@ private fun <PortalKey> JsonArray.deserializeToBackstackMutations(
 
   when(type) {
     "remove" -> PortalBackstackMutation.Remove(
-      key = portalKey
+      key = key
     )
 
-    "attach" -> PortalBackstackMutation.AttachToComposition(
-      key = portalKey
+    "attach" -> PortalBackstackMutation.Attach(
+      key = key
     )
 
-    "detach" -> PortalBackstackMutation.DetachFromComposition(
-      key = portalKey
+    "detach" -> PortalBackstackMutation.Detach(
+      key = key
     )
 
-    "disappearing" -> PortalBackstackMutation.Disappearing(key = portalKey)
+    "disappearing" -> PortalBackstackMutation.Disappearing(
+      key = key
+    )
 
     else -> error("\"$type\" is not a valid value")
   }

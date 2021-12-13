@@ -1,21 +1,21 @@
 package com.eygraber.portal.internal
 
-internal sealed class PortalBackstackMutation<PortalKey> {
-  abstract val key: PortalKey
+public sealed class PortalBackstackMutation<KeyT> {
+  public abstract val key: KeyT
 
-  data class Remove<PortalKey>(
-    override val key: PortalKey
-  ) : PortalBackstackMutation<PortalKey>()
+  public data class Remove<KeyT>(
+    override val key: KeyT
+  ) : PortalBackstackMutation<KeyT>()
 
-  data class AttachToComposition<PortalKey>(
-    override val key: PortalKey
-  ) : PortalBackstackMutation<PortalKey>()
+  public data class Attach<KeyT>(
+    override val key: KeyT
+  ) : PortalBackstackMutation<KeyT>()
 
-  data class DetachFromComposition<PortalKey>(
-    override val key: PortalKey
-  ) : PortalBackstackMutation<PortalKey>()
+  public data class Detach<KeyT>(
+    override val key: KeyT
+  ) : PortalBackstackMutation<KeyT>()
 
-  data class Disappearing<PortalKey>(
-    override val key: PortalKey
-  ) : PortalBackstackMutation<PortalKey>()
+  public data class Disappearing<KeyT>(
+    override val key: KeyT
+  ) : PortalBackstackMutation<KeyT>()
 }

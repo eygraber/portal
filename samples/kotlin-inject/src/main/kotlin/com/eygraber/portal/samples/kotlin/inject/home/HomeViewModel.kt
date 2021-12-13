@@ -1,6 +1,6 @@
 package com.eygraber.portal.samples.kotlin.inject.home
 
-import com.eygraber.portal.PortalManager
+import com.eygraber.portal.compose.PortalManager
 import com.eygraber.portal.push
 import com.eygraber.portal.samples.kotlin.inject.VM
 import com.eygraber.portal.samples.kotlin.inject.alarmlist.AlarmListPortal

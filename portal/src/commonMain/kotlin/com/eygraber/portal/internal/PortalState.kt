@@ -1,33 +1,35 @@
 package com.eygraber.portal.internal
 
+import com.eygraber.portal.Portal
 import com.eygraber.portal.PortalBackstack
 import com.eygraber.portal.PortalManagerValidation
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-internal class PortalState<PortalKey>(
-  private val validation: PortalManagerValidation
+internal class PortalState<KeyT, EntryT : Entry<KeyT, ExtraT, PortalT>, ExtraT : Extra, PortalT : Portal>(
+  private val validation: PortalManagerValidation,
+  private val entryCallbacks: PortalEntry.Callbacks<KeyT, EntryT, ExtraT, PortalT>
 ) {
-  private val mutablePortalEntries = MutableStateFlow(emptyList<PortalEntry<PortalKey>>())
-  private val mutableBackstackEntries = MutableStateFlow(emptyList<PortalBackstackEntry<PortalKey>>())
+  private val mutablePortalEntries = MutableStateFlow(emptyList<EntryT>())
+  private val mutableBackstackEntries = MutableStateFlow(emptyList<PortalBackstackEntry<KeyT>>())
 
-  private var transactionBuilder: PortalEntryBuilder<PortalKey>? = null
+  private var transactionBuilder: PortalEntryBuilder<KeyT, EntryT, ExtraT, PortalT>? = null
 
-  inline val portalEntries: List<PortalEntry<PortalKey>> get() = mutablePortalEntries.value
-  inline val backstackEntries: List<PortalBackstackEntry<PortalKey>> get() = mutableBackstackEntries.value
+  inline val portalEntries: List<EntryT> get() = mutablePortalEntries.value
+  inline val backstackEntries: List<PortalBackstackEntry<KeyT>> get() = mutableBackstackEntries.value
 
-  fun portalEntriesUpdateFlow(): StateFlow<List<PortalEntry<PortalKey>>> = mutablePortalEntries
-  fun backstackEntriesUpdateFlow(): StateFlow<List<PortalBackstackEntry<PortalKey>>> = mutableBackstackEntries
+  fun portalEntriesUpdateFlow(): StateFlow<List<EntryT>> = mutablePortalEntries
+  fun backstackEntriesUpdateFlow(): StateFlow<List<PortalBackstackEntry<KeyT>>> = mutableBackstackEntries
 
   fun restoreState(
-    entries: List<PortalEntry<PortalKey>>,
-    backstack: List<PortalBackstackEntry<PortalKey>>
+    entries: List<EntryT>,
+    backstack: List<PortalBackstackEntry<KeyT>>
   ) {
     mutablePortalEntries.value = entries
     mutableBackstackEntries.value = backstack
   }
 
-  fun startTransaction(backstack: PortalBackstack<PortalKey>) {
+  fun startTransaction(backstack: PortalBackstack<KeyT, ExtraT, PortalT>) {
     // reentrant
     if(transactionBuilder != null) return
 
@@ -36,12 +38,13 @@ internal class PortalState<PortalKey>(
       transactionPortalEntries = mutablePortalEntries.value.toMutableList(),
       transactionBackstackEntries = mutableBackstackEntries.value.toMutableList(),
       isForBackstack = false,
-      validation = validation
+      validation = validation,
+      entryCallbacks = entryCallbacks
     )
   }
 
   fun <R> transact(
-    builder: PortalEntryBuilder<PortalKey>.() -> R
+    builder: PortalEntryBuilder<KeyT, EntryT, ExtraT, PortalT>.() -> R
   ) = requireNotNull(transactionBuilder) {
     "Cannot transact if not in a transaction"
   }.builder()

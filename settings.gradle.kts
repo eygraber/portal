@@ -2,6 +2,7 @@ rootProject.name = "portals"
 
 include(":portal")
 include(":portal-android-serialization")
+include(":portal-compose")
 include(":portal-kodein-di")
 
 include(":samples:kotlin-inject")

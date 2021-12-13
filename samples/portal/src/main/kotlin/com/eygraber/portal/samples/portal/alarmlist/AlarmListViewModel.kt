@@ -3,7 +3,7 @@ package com.eygraber.portal.samples.portal.alarmlist
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import com.eygraber.portal.PortalManager
+import com.eygraber.portal.compose.PortalManager
 import com.eygraber.portal.samples.portal.VM
 import com.eygraber.portal.samples.portal.main.AppPortalKey
 import java.time.LocalTime

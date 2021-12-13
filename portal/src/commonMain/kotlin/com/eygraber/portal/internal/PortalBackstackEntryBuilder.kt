@@ -1,22 +1,20 @@
 package com.eygraber.portal.internal
 
-import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.ExitTransition
 import com.eygraber.portal.Portal
 import com.eygraber.portal.PortalBackstack
 
-internal class PortalBackstackEntryBuilder<PortalKey>(
-  private val builder: PortalEntryBuilder<PortalKey>
-) : PortalBackstack.PushBuilder<PortalKey> {
-  private val backstackMutations = mutableListOf<PortalBackstackMutation<PortalKey>>()
+internal class PortalBackstackEntryBuilder<KeyT, EntryT, ExtraT : Extra, PortalT : Portal>(
+  private val builder: PortalEntryBuilder<KeyT, EntryT, ExtraT, PortalT>
+) : PortalBackstack.PushBuilder<KeyT, ExtraT, PortalT> where EntryT : Entry<KeyT, ExtraT, PortalT> {
+  private val backstackMutations = mutableListOf<PortalBackstackMutation<KeyT>>()
 
   override fun add(
-    key: PortalKey,
+    key: KeyT,
     isAttachedToComposition: Boolean,
-    transitionOverride: EnterTransition?,
-    portal: Portal
+    extra: ExtraT?,
+    portal: PortalT
   ) {
-    builder.add(key, isAttachedToComposition, transitionOverride, portal)
+    builder.add(key, isAttachedToComposition, extra, portal)
 
     backstackMutations += PortalBackstackMutation.Remove(
       key = key
@@ -24,19 +22,19 @@ internal class PortalBackstackEntryBuilder<PortalKey>(
   }
 
   override fun attachToComposition(
-    key: PortalKey,
-    transitionOverride: EnterTransition?
+    key: KeyT,
+    extra: ExtraT?
   ) {
-    builder.attachToComposition(key, transitionOverride)
+    builder.attachToComposition(key, extra)
   }
 
   override fun detachFromComposition(
-    key: PortalKey,
-    transitionOverride: ExitTransition?
+    key: KeyT,
+    extra: ExtraT?
   ) {
-    builder.detachFromComposition(key, transitionOverride)
+    builder.detachFromComposition(key, extra)
 
-    backstackMutations += PortalBackstackMutation.AttachToComposition(
+    backstackMutations += PortalBackstackMutation.Attach(
       key = key
     )
   }

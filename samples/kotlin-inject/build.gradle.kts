@@ -14,7 +14,7 @@ repositories {
 }
 
 dependencies {
-  implementation(projects.portal)
+  implementation(projects.portalCompose)
 
   implementation(compose.material)
   implementation(compose.materialIconsExtended)

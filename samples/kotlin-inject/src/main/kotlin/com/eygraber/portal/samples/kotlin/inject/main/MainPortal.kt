@@ -2,6 +2,7 @@ package com.eygraber.portal.samples.kotlin.inject.main
 
 import androidx.compose.runtime.Composable
 import com.eygraber.portal.ParentPortal
+import com.eygraber.portal.compose.ComposePortal
 import com.eygraber.portal.samples.kotlin.inject.AppScope
 import com.eygraber.portal.samples.kotlin.inject.InjectablePortal
 import com.eygraber.portal.samples.kotlin.inject.appComponent
@@ -9,7 +10,7 @@ import me.tatarka.inject.annotations.Inject
 
 @AppScope
 @Inject
-class MainPortal : ParentPortal, InjectablePortal<MainComponent> {
+class MainPortal : ComposePortal, ParentPortal, InjectablePortal<MainComponent> {
   override val component = MainComponent::class.create(appComponent, this)
 
   private val appPortalManager by lazy {

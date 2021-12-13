@@ -1,6 +1,6 @@
 package com.eygraber.portal.samples.portal.home
 
-import com.eygraber.portal.PortalManager
+import com.eygraber.portal.compose.PortalManager
 import com.eygraber.portal.push
 import com.eygraber.portal.samples.portal.VM
 import com.eygraber.portal.samples.portal.alarmlist.AlarmListPortal

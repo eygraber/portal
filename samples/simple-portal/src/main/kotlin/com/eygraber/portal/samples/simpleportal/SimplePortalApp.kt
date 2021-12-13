@@ -18,8 +18,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.window.singleWindowApplication
-import com.eygraber.portal.PortalManager
-import com.eygraber.portal.PortalTransition
+import com.eygraber.portal.compose.ComposePortalEntry
+import com.eygraber.portal.compose.ComposePortalTransition
+import com.eygraber.portal.compose.PortalManager
 import com.eygraber.portal.push
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
@@ -52,7 +53,7 @@ fun main() {
   val portalManager = PortalManager<PortalKey>(
     defaultTransitionsProvider = { _, isForBackstack ->
       if(isForBackstack) {
-        PortalTransition(
+        ComposePortalTransition(
           enter = fadeIn(
             animationSpec = tween(1000)
           ),
@@ -62,7 +63,7 @@ fun main() {
         )
       }
       else {
-        PortalTransition(
+        ComposePortalTransition(
           enter = slideInHorizontally(
             animationSpec = tween(1000),
             initialOffsetX = { it * 2 }
@@ -98,54 +99,94 @@ fun main() {
 
       backstack.clear(
         suppressTransitions = false,
-        exitTransitionsOverride = { key ->
+        exitExtra = { key ->
           when(key) {
-            PortalKey.One -> fadeOut(
-              animationSpec = tween(durationMillis = lastWaveDuration)
+            PortalKey.One -> ComposePortalEntry.Extra(
+              transitionOverride = ComposePortalTransition.exit(
+                fadeOut(
+                  animationSpec = tween(durationMillis = lastWaveDuration)
+                )
+              )
             )
 
-            PortalKey.Two -> shrinkOut(
-              animationSpec = tween(durationMillis = lastWaveDuration)
+            PortalKey.Two -> ComposePortalEntry.Extra(
+              transitionOverride = ComposePortalTransition.exit(
+                shrinkOut(
+                  animationSpec = tween(durationMillis = lastWaveDuration)
+                )
+              )
             )
 
-            PortalKey.Three -> slideOutVertically(
-              animationSpec = tween(durationMillis = secondWaveDuration),
-              targetOffsetY = { -it }
+            PortalKey.Three -> ComposePortalEntry.Extra(
+              transitionOverride = ComposePortalTransition.exit(
+                slideOutVertically(
+                  animationSpec = tween(durationMillis = secondWaveDuration),
+                  targetOffsetY = { -it }
+                )
+              )
             )
 
-            PortalKey.Four -> slideOutVertically(
-              animationSpec = tween(durationMillis = secondWaveDuration),
-              targetOffsetY = { it * 2 }
+            PortalKey.Four -> ComposePortalEntry.Extra(
+              transitionOverride = ComposePortalTransition.exit(
+                slideOutVertically(
+                  animationSpec = tween(durationMillis = secondWaveDuration),
+                  targetOffsetY = { it * 2 }
+                )
+              )
             )
 
-            PortalKey.Five -> slideOutHorizontally(
-              animationSpec = tween(durationMillis = secondWaveDuration),
-              targetOffsetX = { -it }
+            PortalKey.Five -> ComposePortalEntry.Extra(
+              transitionOverride = ComposePortalTransition.exit(
+                slideOutHorizontally(
+                  animationSpec = tween(durationMillis = secondWaveDuration),
+                  targetOffsetX = { -it }
+                )
+              )
             )
 
-            PortalKey.Six -> slideOutHorizontally(
-              animationSpec = tween(durationMillis = secondWaveDuration),
-              targetOffsetX = { it * 2 }
+            PortalKey.Six -> ComposePortalEntry.Extra(
+              transitionOverride = ComposePortalTransition.exit(
+                slideOutHorizontally(
+                  animationSpec = tween(durationMillis = secondWaveDuration),
+                  targetOffsetX = { it * 2 }
+                )
+              )
             )
 
-            PortalKey.Seven -> slideOutVertically(
-              animationSpec = tween(durationMillis = initialWaveDuration),
-              targetOffsetY = { -it }
+            PortalKey.Seven -> ComposePortalEntry.Extra(
+              transitionOverride = ComposePortalTransition.exit(
+                slideOutVertically(
+                  animationSpec = tween(durationMillis = initialWaveDuration),
+                  targetOffsetY = { -it }
+                )
+              )
             )
 
-            PortalKey.Eight -> slideOutVertically(
-              animationSpec = tween(durationMillis = initialWaveDuration),
-              targetOffsetY = { it * 2 }
+            PortalKey.Eight -> ComposePortalEntry.Extra(
+              transitionOverride = ComposePortalTransition.exit(
+                slideOutVertically(
+                  animationSpec = tween(durationMillis = initialWaveDuration),
+                  targetOffsetY = { it * 2 }
+                )
+              )
             )
 
-            PortalKey.Nine -> slideOutHorizontally(
-              animationSpec = tween(durationMillis = initialWaveDuration),
-              targetOffsetX = { -it }
+            PortalKey.Nine -> ComposePortalEntry.Extra(
+              transitionOverride = ComposePortalTransition.exit(
+                slideOutHorizontally(
+                  animationSpec = tween(durationMillis = initialWaveDuration),
+                  targetOffsetX = { -it }
+                )
+              )
             )
 
-            PortalKey.Ten -> slideOutHorizontally(
-              animationSpec = tween(durationMillis = initialWaveDuration),
-              targetOffsetX = { it * 2 }
+            PortalKey.Ten -> ComposePortalEntry.Extra(
+              transitionOverride = ComposePortalTransition.exit(
+                slideOutHorizontally(
+                  animationSpec = tween(durationMillis = initialWaveDuration),
+                  targetOffsetX = { it * 2 }
+                )
+              )
             )
           }
         }

@@ -1,6 +1,6 @@
 plugins {
   kotlin("multiplatform")
-  id("kotlinx-atomicfu")
+  id("org.jetbrains.compose")
   detekt
   publish
   portal
@@ -14,10 +14,8 @@ kotlin {
   sourceSets {
     val commonMain by getting {
       dependencies {
-        api(libs.kotlinx.atomicFu)
-
-        implementation(libs.kotlinx.coroutines.core)
-        implementation(libs.kotlinx.serialization.json)
+        api(projects.portal)
+        implementation(compose.animation)
       }
     }
 
