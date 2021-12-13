@@ -1,6 +1,6 @@
 package com.eygraber.portal.internal
 
-internal data class PortalBackstackEntry<PortalKey>(
+public data class PortalBackstackEntry<KeyT>(
   val id: String,
-  val mutations: List<PortalBackstackMutation<PortalKey>>
+  val mutations: List<PortalBackstackMutation<KeyT>>
 )

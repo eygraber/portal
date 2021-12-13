@@ -17,7 +17,7 @@ import androidx.compose.material.icons.filled.Whatshot
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.eygraber.portal.PortalManager
+import com.eygraber.portal.compose.PortalManager
 import com.eygraber.portal.samples.portal.View
 
 class MainView(

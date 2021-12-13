@@ -1,4 +1,4 @@
-package com.eygraber.portal
+package com.eygraber.portal.compose
 
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
@@ -11,11 +11,25 @@ import androidx.compose.animation.slideOutVertically
 import androidx.compose.runtime.Immutable
 
 @Immutable
-public data class PortalTransition(
+public data class ComposePortalTransition(
   val enter: EnterTransition,
   val exit: ExitTransition
 ) {
   public companion object {
+    public fun enter(
+      enter: EnterTransition
+    ): ComposePortalTransition = ComposePortalTransition(
+      enter = enter,
+      exit = ExitTransition.None
+    )
+
+    public fun exit(
+      exit: ExitTransition
+    ): ComposePortalTransition = ComposePortalTransition(
+      enter = EnterTransition.None,
+      exit = exit
+    )
+
     public val defaultEnter: EnterTransition = slideInHorizontally(
       initialOffsetX = { it * 2 }
     )
@@ -40,7 +54,7 @@ public data class PortalTransition(
 
     public val defaultDetachForBackstack: ExitTransition = fadeOut()
 
-    public val None: PortalTransition = PortalTransition(
+    public val None: ComposePortalTransition = ComposePortalTransition(
       enter = EnterTransition.None,
       exit = ExitTransition.None,
     )

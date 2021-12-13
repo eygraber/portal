@@ -1,6 +1,6 @@
 package com.eygraber.portal
 
-public enum class PortalCompositionState {
+public enum class PortalRendererState {
   Added,
   Attached,
   Detached,

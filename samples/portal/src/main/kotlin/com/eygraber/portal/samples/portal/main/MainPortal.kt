@@ -7,8 +7,9 @@ import androidx.compose.runtime.Composable
 import com.eygraber.portal.ChildPortal
 import com.eygraber.portal.ParentPortal
 import com.eygraber.portal.Portal
-import com.eygraber.portal.PortalManager
-import com.eygraber.portal.PortalTransition
+import com.eygraber.portal.compose.ComposePortal
+import com.eygraber.portal.compose.ComposePortalTransition
+import com.eygraber.portal.compose.PortalManager
 import com.eygraber.portal.kodein.di.KodeinDIPortal
 import com.eygraber.portal.kodein.di.portalSingleton
 import com.eygraber.portal.samples.portal.home.HomePortal
@@ -20,7 +21,7 @@ import org.kodein.di.provider
 
 class MainPortal(
   override val parent: ParentPortal
-) : KodeinDIPortal(), ParentPortal, ChildPortal {
+) : ComposePortal, KodeinDIPortal(), ParentPortal, ChildPortal {
   private val appPortalManager by on(context = this).instance<PortalManager<AppPortalKey>>()
   private val mainPortalManager by on(context = this).instance<PortalManager<MainPortalKey>>()
   private val mainView by on(context = this).instance<MainView>()
@@ -54,7 +55,7 @@ class MainPortal(
     bind<PortalManager<AppPortalKey>>() with portalSingleton {
       PortalManager(
         defaultTransitionsProvider = { _, _ ->
-          PortalTransition(
+          ComposePortalTransition(
             enter = slideInVertically(animationSpec = tween(durationMillis = 400)) { it * 2 },
             exit = slideOutVertically(animationSpec = tween(durationMillis = 750)) { it * 2 }
           )

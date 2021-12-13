@@ -8,7 +8,7 @@ plugins {
 }
 
 dependencies {
-  implementation(projects.portal)
+  implementation(projects.portalCompose)
   implementation(projects.portalKodeinDi)
 
   implementation(compose.material)

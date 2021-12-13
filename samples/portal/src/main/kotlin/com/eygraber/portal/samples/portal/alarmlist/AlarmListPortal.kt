@@ -3,6 +3,7 @@ package com.eygraber.portal.samples.portal.alarmlist
 import androidx.compose.runtime.Composable
 import com.eygraber.portal.ChildPortal
 import com.eygraber.portal.Portal
+import com.eygraber.portal.compose.ComposePortal
 import com.eygraber.portal.kodein.di.KodeinDIPortal
 import com.eygraber.portal.kodein.di.portalSingleton
 import com.eygraber.portal.samples.portal.main.MainPortal
@@ -13,7 +14,7 @@ import org.kodein.di.on
 
 class AlarmListPortal(
   override val parent: Portal
-) : KodeinDIPortal(), ChildPortal {
+) : ComposePortal, KodeinDIPortal(), ChildPortal {
   private val alarmListView by on(context = this).instance<AlarmListView>()
 
   override fun provideModule() = DI.Module("AlarmList") {
