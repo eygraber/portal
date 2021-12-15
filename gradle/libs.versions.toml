@@ -5,7 +5,7 @@ android-sdk-compile = "31"
 android-sdk-target = "31"
 android-sdk-min = "24"
 
-compose = "1.0.0"
+compose = "1.0.1-rc2"
 
 detekt = "1.19.0"
 detektEygraber = "1.0.10"
@@ -15,11 +15,11 @@ dokka = "1.5.31"
 jdk = "11"
 
 kodein = "7.9.0"
-kotlin = "1.5.31"
+kotlin = "1.6.10"
 
 kotlinInject = "0.4.1-SNAPSHOT"
 
-ksp = "1.5.31-1.0.1"
+ksp = "1.6.10-1.0.2"
 
 kotlinx-coroutines = "1.5.2"
 kotlinx-atomicFu = "0.16.3"

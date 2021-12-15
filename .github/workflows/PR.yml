@@ -25,7 +25,7 @@ jobs:
           java-version: 11
 
       - name: Run checks
-        run: ./gradlew check detektJvmMain detektMetadata
+        run: ./gradlew check detektJvmMain detektMetadataMain
 
 env:
   GRADLE_OPTS: -Dorg.gradle.daemon=false -Dorg.gradle.configureondemand=true -Dkotlin.incremental=false -Dorg.gradle.jvmargs="-Xmx4g -Xms128m -XX:MaxPermSize=4096m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -XX:MaxMetaspaceSize=1024m"
