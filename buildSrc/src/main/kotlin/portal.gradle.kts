@@ -8,6 +8,7 @@ val libs = the<LibrariesForLibs>()
 repositories {
   google()
   mavenCentral()
+  maven { url = uri("https://maven.pkg.jetbrains.space/public/p/compose/dev") }
 }
 
 plugins.withType<KotlinBasePluginWrapper> {
