@@ -29,7 +29,7 @@ publish = "0.18.0"
 [plugins]
 agp = { id = "com.android.application", version.ref = "agp" }
 atomicFu = { id = "kotlinx-atomicfu", version.ref = "kotlinx-atomicFu" }
-compose = { id = "org.jetbrains.compose", version = "compose" }
+compose = { id = "org.jetbrains.compose", version.ref = "compose" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 kotlin = { id = "kotlin-multiplatform", version.ref = "kotlin" }
