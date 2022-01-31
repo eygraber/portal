@@ -2,4 +2,5 @@
 
 ./gradlew :portal:clean :portal:build :portal:publish $@ --no-daemon --no-parallel && \
 ./gradlew :portal-android-serialization:clean :portal-android-serialization:build :portal-android-serialization:publish $@ --no-daemon --no-parallel && \
+./gradlew :portal-compose:clean :portal-compose:build :portal-compose:publish $@ --no-daemon --no-parallel && \
 ./gradlew :portal-kodein-di:clean :portal-kodein-di:build :portal-kodein-di:publish $@ --no-daemon --no-parallel
