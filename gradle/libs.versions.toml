@@ -14,7 +14,7 @@ dokka = "1.6.10"
 
 jdk = "11"
 
-kodein = "7.9.0"
+kodein = "7.10.0"
 kotlin = "1.6.10"
 
 kotlinInject = "0.4.1"
