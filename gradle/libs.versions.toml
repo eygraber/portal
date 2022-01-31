@@ -57,4 +57,4 @@ kotlinx-serialization-json = "org.jetbrains.kotlinx:kotlinx-serialization-json:1
 kotlinInject-compiler = { module = "me.tatarka.inject:kotlin-inject-compiler-ksp", version.ref = "kotlinInject" }
 kotlinInject-runtime = { module = "me.tatarka.inject:kotlin-inject-runtime", version.ref = "kotlinInject" }
 
-kotlinDurationExtensions = "com.eygraber:kotlin-duration-extensions:1.1.0"
+kotlinDurationExtensions = "com.eygraber:kotlin-duration-extensions:1.1.1"
