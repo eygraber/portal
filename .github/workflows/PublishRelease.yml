@@ -50,7 +50,7 @@ jobs:
 
       - name: Create tag
         id: create_tag
-        uses: actions/github-script@v5.1.0
+        uses: actions/github-script@v6
         with:
           script: |
             github.rest.git.createRef({
