@@ -1,5 +1,6 @@
 package com.eygraber.portal.samples.kotlin.inject.alarmlist
 
+import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.runtime.Composable
 import com.eygraber.portal.ChildPortal
 import com.eygraber.portal.compose.ComposePortal
@@ -18,7 +19,7 @@ class AlarmListPortal(
   }
 
   @Composable
-  override fun render() {
+  override fun AnimatedVisibilityScope.render() {
     view.render()
   }
 }

@@ -1,5 +1,6 @@
 package com.eygraber.portal.samples.portal.main
 
+import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
@@ -76,7 +77,7 @@ class MainPortal(
   }
 
   @Composable
-  override fun render() {
+  override fun AnimatedVisibilityScope.render() {
     mainView.render()
   }
 }

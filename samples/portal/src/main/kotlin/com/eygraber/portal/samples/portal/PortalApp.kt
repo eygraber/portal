@@ -1,6 +1,7 @@
 package com.eygraber.portal.samples.portal
 
 import androidx.compose.ui.window.singleWindowApplication
+import com.eygraber.portal.renderWithAnimatedVisibility
 import com.eygraber.portal.samples.portal.main.MainPortal
 import com.eygraber.portal.samples.portal.root.AppRootPortal
 import org.kodein.di.DI
@@ -26,6 +27,6 @@ private val applicationDI by DI.lazy {
 fun main() {
   UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName())
   singleWindowApplication(title = "Portal") {
-    applicationDI.direct.instance<AppRootPortal>().render()
+    applicationDI.direct.instance<AppRootPortal>().renderWithAnimatedVisibility()
   }
 }
