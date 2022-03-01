@@ -1,5 +1,5 @@
 [versions]
-agp = "7.2.0-beta02"
+agp = "7.2.0-beta03"
 
 android-sdk-compile = "31"
 android-sdk-target = "31"
