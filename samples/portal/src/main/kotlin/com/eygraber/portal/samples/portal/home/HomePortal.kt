@@ -41,7 +41,7 @@ class HomePortal(
   }
 
   @Composable
-  override fun render() {
-    homeView.render()
+  override fun Render() {
+    homeView.Render()
   }
 }

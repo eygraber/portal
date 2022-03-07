@@ -206,7 +206,7 @@ fun main() {
       Surface(
         modifier = Modifier.fillMaxSize()
       ) {
-        portalManager.render()
+        portalManager.Render()
       }
     }
   }

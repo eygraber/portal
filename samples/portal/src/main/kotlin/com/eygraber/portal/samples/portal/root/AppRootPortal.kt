@@ -18,7 +18,7 @@ class AppRootPortal(di: DI) : ComposePortal, KodeinRootPortal(di) {
   private val mainPortal by instance<MainPortal>()
 
   @Composable
-  override fun render() {
+  override fun Render() {
     MaterialTheme(
       colors = darkColors(
         primary = Color(0xFFBB86FC),
@@ -27,7 +27,7 @@ class AppRootPortal(di: DI) : ComposePortal, KodeinRootPortal(di) {
       )
     ) {
       Surface {
-        mainPortal.render()
+        mainPortal.Render()
       }
     }
   }

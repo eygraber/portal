@@ -26,6 +26,6 @@ private val applicationDI by DI.lazy {
 fun main() {
   UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName())
   singleWindowApplication(title = "Portal") {
-    applicationDI.direct.instance<AppRootPortal>().render()
+    applicationDI.direct.instance<AppRootPortal>().Render()
   }
 }

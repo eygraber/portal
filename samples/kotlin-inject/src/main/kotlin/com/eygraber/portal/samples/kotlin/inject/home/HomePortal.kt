@@ -20,7 +20,7 @@ class HomePortal(
   }
 
   @Composable
-  override fun render() {
-    view.render()
+  override fun Render() {
+    view.Render()
   }
 }

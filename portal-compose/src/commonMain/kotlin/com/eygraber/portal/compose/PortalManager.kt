@@ -22,7 +22,7 @@ public class PortalManager<KeyT>(
   validation
 ) {
   @Composable
-  public fun render() {
+  public fun Render() {
     val portalEntries by portalEntriesUpdateFlow().collectAsState()
 
     for(entry in portalEntries) {
@@ -80,7 +80,7 @@ public class PortalManager<KeyT>(
       exit = exitTransition
     ) {
       with(entry.portal) {
-        render()
+        Render()
       }
 
       if(entry.isDisappearing) {

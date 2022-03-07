@@ -32,7 +32,7 @@ class AlarmListPortal(
   }
 
   @Composable
-  override fun render() {
-    alarmListView.render()
+  override fun Render() {
+    alarmListView.Render()
   }
 }

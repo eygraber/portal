@@ -15,7 +15,7 @@ class HomeView(
   override val vm: HomeViewModel
 ) : View<Unit> {
   @Composable
-  override fun render() {
+  override fun Render() {
     Box(
       contentAlignment = Alignment.Center,
       modifier = Modifier.fillMaxSize()
