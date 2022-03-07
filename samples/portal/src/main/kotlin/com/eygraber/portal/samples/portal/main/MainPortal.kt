@@ -76,7 +76,7 @@ class MainPortal(
   }
 
   @Composable
-  override fun render() {
-    mainView.render()
+  override fun Render() {
+    mainView.Render()
   }
 }

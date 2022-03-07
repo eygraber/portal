@@ -30,7 +30,7 @@ class MainPortal : ComposePortal, ParentPortal, InjectablePortal<MainComponent> 
   }
 
   @Composable
-  override fun render() {
-    mainView.render()
+  override fun Render() {
+    mainView.Render()
   }
 }

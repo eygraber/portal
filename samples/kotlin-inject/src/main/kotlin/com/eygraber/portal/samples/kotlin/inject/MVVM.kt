@@ -6,7 +6,7 @@ interface View<State> {
   val vm: VM<State>
 
   @Composable
-  fun render()
+  fun Render()
 }
 
 interface VM<State> {

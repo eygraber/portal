@@ -7,6 +7,6 @@ fun main() {
   val mainPortal = appComponent.mainPortal
   UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName())
   singleWindowApplication(title = "Portal") {
-    mainPortal.render()
+    mainPortal.Render()
   }
 }

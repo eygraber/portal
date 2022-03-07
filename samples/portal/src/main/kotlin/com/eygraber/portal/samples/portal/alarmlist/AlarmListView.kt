@@ -29,7 +29,7 @@ class AlarmListView(
   override val vm: AlarmListViewModel
 ) : View<AlarmListState> {
   @Composable
-  override fun render() {
+  override fun Render() {
     Surface {
       Column {
         Row {

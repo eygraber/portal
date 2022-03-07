@@ -5,5 +5,5 @@ import com.eygraber.portal.Portal
 
 public fun interface ComposePortal : Portal {
   @Composable
-  public fun render()
+  public fun Render()
 }

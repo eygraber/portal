@@ -33,7 +33,7 @@ class MainView(
   override val vm: MainViewModel
 ) : View<MainState> {
   @Composable
-  override fun render() {
+  override fun Render() {
     MaterialTheme(
       colors = darkColors(
         primary = Color(0xFFBB86FC),
@@ -48,7 +48,7 @@ class MainView(
         ) {
           BottomNav()
         }
-        appPortalManager.render()
+        appPortalManager.Render()
       }
     }
   }
@@ -71,7 +71,7 @@ class MainView(
         .fillMaxWidth()
         .weight(.90F)
     ) {
-      mainBottomNavPortalManager.render()
+      mainBottomNavPortalManager.Render()
     }
   }
 

@@ -43,7 +43,7 @@ fun main() {
     Surface(
       modifier = Modifier.fillMaxSize()
     ) {
-      portals.render()
+      portals.Render()
     }
   }
 }

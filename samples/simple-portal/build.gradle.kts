@@ -19,6 +19,6 @@ dependencies {
 
 compose.desktop {
   application {
-    mainClass = "com.eygraber.portal.samples.simpleportal.DesktopAppKt"
+    mainClass = "com.eygraber.portal.samples.simpleportal.SimplePortalAppKt"
   }
 }

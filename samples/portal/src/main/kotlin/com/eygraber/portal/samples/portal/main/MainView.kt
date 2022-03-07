@@ -26,14 +26,14 @@ class MainView(
   override val vm: MainViewModel
 ) : View<MainState> {
   @Composable
-  override fun render() {
+  override fun Render() {
     Box(
       modifier = Modifier
         .fillMaxSize()
     ) {
       BottomNav()
 
-      appPortalManager.render()
+      appPortalManager.Render()
     }
   }
 
@@ -55,7 +55,7 @@ class MainView(
         .fillMaxWidth()
         .weight(.90F)
     ) {
-      mainPortalManager.render()
+      mainPortalManager.Render()
     }
   }
 
