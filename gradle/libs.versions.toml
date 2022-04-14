@@ -7,7 +7,7 @@ android-sdk-min = "24"
 
 compose = "1.1.1"
 
-detekt = "1.19.0"
+detekt = "1.20.0"
 detektEygraber = "1.0.10"
 
 dokka = "1.6.10"
