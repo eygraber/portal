@@ -9,6 +9,7 @@ env:
   VERSION_FILE: gradle.properties
   VERSION_EXTRACT_PATTERN: '(?<=VERSION_NAME=).+'
   GH_USER_NAME: github.actor
+  GRADLE_OPTS: -Dorg.gradle.daemon=false -Dkotlin.incremental=false -Dorg.gradle.unsafe.configuration-cache=true -Dorg.gradle.jvmargs="-Xmx4g -Xms128m -XX:MaxPermSize=4096m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -XX:MaxMetaspaceSize=1024m"
 
 jobs:
   publish_release:
@@ -45,7 +46,6 @@ jobs:
           ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.SONATYPE_NEXUS_USERNAME }}
           ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.SONATYPE_NEXUS_PASSWORD }}
           ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.ARTIFACT_SIGNING_PRIVATE_KEY }}
-          GRADLE_OPTS: -Dorg.gradle.daemon=false -Dorg.gradle.configureondemand=true -Dkotlin.incremental=false -Dorg.gradle.jvmargs="-Xmx4g -Xms128m -XX:MaxPermSize=4096m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -XX:MaxMetaspaceSize=1024m"
         run: ./release -PVERSION_NAME=${{ env.RELEASE_VERSION }} && ./gradlew closeAndReleaseRepository -PVERSION_NAME=${{ env.RELEASE_VERSION }}
 
       - name: Create tag
@@ -86,12 +86,15 @@ jobs:
 
       - name: Prepare next dev version
         id: prepare_next_dev
-        run: sed -i -e 's/${{ env.CURRENT_VERSION }}/${{ env.NEXT_VERSION }}/g' gradle.properties
+        run: |
+          sed -i -e 's/${{ env.CURRENT_VERSION }}/${{ env.NEXT_VERSION }}/g' gradle.properties && \
+            sed -i -e 's/${{ env.CURRENT_VERSION }}/${{ env.NEXT_VERSION }}/g' gradle-plugins/gradle.properties && \
+            sed -i -E -e 's/portal(:|\/)${{ env.CURRENT_VERSION }}/portal\1${{ env.NEXT_VERSION }}/g' README.md
 
       - name: Commit next dev version
         id: commit_next_dev
         uses: EndBug/add-and-commit@v9
         with:
-          add: 'gradle.properties'
+          add: "['gradle.properties', 'gradle-plugins/gradle.properties', 'README.md']"
           default_author: github_actions
           message: "Prepare next dev version"
