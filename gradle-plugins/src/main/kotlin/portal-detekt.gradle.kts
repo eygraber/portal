@@ -8,8 +8,6 @@ plugins {
 }
 
 detekt {
-  toolVersion = libs.versions.detekt.get()
-
   source.from("build.gradle.kts")
 
   autoCorrect = true
@@ -23,10 +21,21 @@ detekt {
 tasks.withType<Detekt>().configureEach {
   // Target version of the generated JVM bytecode. It is used for type resolution.
   jvmTarget = libs.versions.jdk.get()
+
+  reports {
+    xml.outputLocation.set(rootProject.file("build/reports/detekt/${project.name}/detekt.xml"))
+
+    html.outputLocation.set(rootProject.file("build/reports/detekt/${project.name}.html"))
+  }
+
+  exclude {
+    "/build/generated/ksp" in it.file.absolutePath
+  }
 }
 
+@Suppress("UnstableApiUsage")
 dependencies {
-  detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:${libs.versions.detekt.get()}")
-  detektPlugins("com.eygraber.detekt.rules:formatting:${libs.versions.detektEygraber.get()}")
-  detektPlugins("com.eygraber.detekt.rules:style:${libs.versions.detektEygraber.get()}")
+  detektPlugins(libs.detekt.formatting)
+  detektPlugins(libs.detektEygraber.formatting)
+  detektPlugins(libs.detektEygraber.style)
 }

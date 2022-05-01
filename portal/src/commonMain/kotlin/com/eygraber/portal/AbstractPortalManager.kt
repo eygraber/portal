@@ -113,7 +113,7 @@ public abstract class AbstractPortalManager<KeyT, EntryT, ExtraT : Extra, Portal
       key: KeyT,
       isAttachedToComposition: Boolean = true,
       extra: ExtraT? = null,
-      portal: PortalT,
+      portal: PortalT
     )
 
     public fun attachToComposition(

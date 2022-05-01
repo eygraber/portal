@@ -1,15 +1,10 @@
 import org.gradle.accessors.dm.LibrariesForLibs
+import org.gradle.jvm.toolchain.JavaToolchainSpec
 import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinBasePluginWrapper
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val libs = the<LibrariesForLibs>()
-
-repositories {
-  google()
-  mavenCentral()
-  maven { url = uri("https://maven.pkg.jetbrains.space/public/p/compose/dev") }
-}
 
 plugins.withType<KotlinBasePluginWrapper> {
   with(extensions.getByType<KotlinProjectExtension>()) {
@@ -30,7 +25,6 @@ plugins.withType<KotlinBasePluginWrapper> {
       jvmTarget = libs.versions.jdk.get()
       sourceCompatibility = libs.versions.jdk.get()
       targetCompatibility = libs.versions.jdk.get()
-      freeCompilerArgs = freeCompilerArgs + "-Xopt-in=kotlin.RequiresOptIn"
     }
   }
 }

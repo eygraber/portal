@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.window.singleWindowApplication
+import com.eygraber.portal.compose.ComposePortal
 import com.eygraber.portal.compose.ComposePortalEntry
 import com.eygraber.portal.compose.ComposePortalTransition
 import com.eygraber.portal.compose.PortalManager
@@ -25,7 +26,6 @@ import com.eygraber.portal.push
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.swing.UIManager
 
@@ -217,9 +217,15 @@ suspend fun PortalManager<PortalKey>.addTen() {
 
   withTransaction {
     backstack.push(PortalKey.One) {
-      add(PortalKey.One) {
-        NumberBox("1")
-      }
+      add(
+        PortalKey.One,
+        portal = object : ComposePortal {
+          @Composable
+          override fun Render() {
+            NumberBox("1")
+          }
+        }
+      )
     }
   }
 
@@ -229,9 +235,15 @@ suspend fun PortalManager<PortalKey>.addTen() {
     backstack.push(PortalKey.Two) {
       detachFromComposition(PortalKey.One)
 
-      add(PortalKey.Two) {
-        NumberBox("2")
-      }
+      add(
+        PortalKey.Two,
+        portal = object : ComposePortal {
+          @Composable
+          override fun Render() {
+            NumberBox("2")
+          }
+        }
+      )
     }
   }
 
@@ -241,9 +253,15 @@ suspend fun PortalManager<PortalKey>.addTen() {
     backstack.push(PortalKey.Three) {
       detachFromComposition(PortalKey.Two)
 
-      add(PortalKey.Three) {
-        NumberBox("3")
-      }
+      add(
+        PortalKey.Three,
+        portal = object : ComposePortal {
+          @Composable
+          override fun Render() {
+            NumberBox("3")
+          }
+        }
+      )
     }
   }
 
@@ -253,9 +271,15 @@ suspend fun PortalManager<PortalKey>.addTen() {
     backstack.push(PortalKey.Four) {
       detachFromComposition(PortalKey.Three)
 
-      add(PortalKey.Four) {
-        NumberBox("4")
-      }
+      add(
+        PortalKey.Four,
+        portal = object : ComposePortal {
+          @Composable
+          override fun Render() {
+            NumberBox("4")
+          }
+        }
+      )
     }
   }
 
@@ -265,9 +289,15 @@ suspend fun PortalManager<PortalKey>.addTen() {
     backstack.push(PortalKey.Five) {
       detachFromComposition(PortalKey.Four)
 
-      add(PortalKey.Five) {
-        NumberBox("5")
-      }
+      add(
+        PortalKey.Five,
+        portal = object : ComposePortal {
+          @Composable
+          override fun Render() {
+            NumberBox("5")
+          }
+        }
+      )
     }
   }
 
@@ -277,9 +307,15 @@ suspend fun PortalManager<PortalKey>.addTen() {
     backstack.push(PortalKey.Six) {
       detachFromComposition(PortalKey.Five)
 
-      add(PortalKey.Six) {
-        NumberBox("6")
-      }
+      add(
+        PortalKey.Six,
+        portal = object : ComposePortal {
+          @Composable
+          override fun Render() {
+            NumberBox("6")
+          }
+        }
+      )
     }
   }
 
@@ -289,9 +325,15 @@ suspend fun PortalManager<PortalKey>.addTen() {
     backstack.push(PortalKey.Seven) {
       detachFromComposition(PortalKey.Six)
 
-      add(PortalKey.Seven) {
-        NumberBox("7")
-      }
+      add(
+        PortalKey.Seven,
+        portal = object : ComposePortal {
+          @Composable
+          override fun Render() {
+            NumberBox("7")
+          }
+        }
+      )
     }
   }
 
@@ -301,9 +343,15 @@ suspend fun PortalManager<PortalKey>.addTen() {
     backstack.push(PortalKey.Eight) {
       detachFromComposition(PortalKey.Seven)
 
-      add(PortalKey.Eight) {
-        NumberBox("8")
-      }
+      add(
+        PortalKey.Eight,
+        portal = object : ComposePortal {
+          @Composable
+          override fun Render() {
+            NumberBox("8")
+          }
+        }
+      )
     }
   }
 
@@ -313,9 +361,15 @@ suspend fun PortalManager<PortalKey>.addTen() {
     backstack.push(PortalKey.Nine) {
       detachFromComposition(PortalKey.Eight)
 
-      add(PortalKey.Nine) {
-        NumberBox("9")
-      }
+      add(
+        PortalKey.Nine,
+        portal = object : ComposePortal {
+          @Composable
+          override fun Render() {
+            NumberBox("9")
+          }
+        }
+      )
     }
   }
 
@@ -325,9 +379,15 @@ suspend fun PortalManager<PortalKey>.addTen() {
     backstack.push(PortalKey.Ten) {
       detachFromComposition(PortalKey.Nine)
 
-      add(PortalKey.Ten) {
-        NumberBox("10")
-      }
+      add(
+        PortalKey.Ten,
+        portal = object : ComposePortal {
+          @Composable
+          override fun Render() {
+            NumberBox("10")
+          }
+        }
+      )
     }
   }
 }
