@@ -109,7 +109,7 @@ private fun <PortalKey> createEntryCallbacks() =
       rendererState: PortalRendererState,
       extra: ComposePortalEntry.Extra?,
       portal: ComposePortal
-    ) = ComposePortalEntry<PortalKey>(
+    ) = ComposePortalEntry(
       key = key,
       wasContentPreviouslyVisible = wasContentPreviouslyVisible,
       isDisappearing = isDisappearing,

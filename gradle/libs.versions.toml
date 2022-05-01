@@ -1,28 +1,28 @@
 [versions]
-agp = "7.2.0-beta04"
+agp = "7.3.0-alpha09"
 
 android-sdk-compile = "31"
 android-sdk-target = "31"
 android-sdk-min = "24"
 
-compose = "1.1.1"
+compose = "1.2.0-alpha01-dev675"
 
-detekt = "1.19.0"
+detekt = "1.20.0"
 detektEygraber = "1.0.10"
 
-dokka = "1.6.10"
+dokka = "1.6.21"
 
 jdk = "11"
 
 kodein = "7.11.0"
-kotlin = "1.6.10"
+kotlin = "1.6.21"
 
 kotlinInject = "0.4.1"
 
-ksp = "1.6.10-1.0.2"
+ksp = "1.6.21-1.0.5"
 
-kotlinx-coroutines = "1.6.0"
-kotlinx-atomicFu = "0.17.1"
+kotlinx-coroutines = "1.6.1"
+kotlinx-atomicFu = "0.17.2"
 
 publish = "0.19.0"
 
@@ -36,17 +36,19 @@ kotlin = { id = "kotlin-multiplatform", version.ref = "kotlin" }
 publish = { id = "com.vanniktech.maven.publish", version.ref = "publish" }
 
 [libraries]
-buildscript-agp = { module = "com.android.tools.build:gradle", version.ref = "agp" }
+buildscript-android = { module = "com.android.tools.build:gradle", version.ref = "agp" }
+buildscript-androidCacheFix = { module = "gradle.plugin.org.gradle.android:android-cache-fix-gradle-plugin", version = "2.5.2" }
 buildscript-atomicFu = { module = "org.jetbrains.kotlinx:atomicfu-gradle-plugin", version.ref = "kotlinx-atomicFu" }
 buildscript-compose = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "compose" }
 buildscript-detekt = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
 buildscript-dokka = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "dokka" }
 buildscript-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 buildscript-publish = { module = "com.vanniktech:gradle-maven-publish-plugin", version.ref = "publish" }
+buildscript-ksp = { module = "com.google.devtools.ksp:symbol-processing-gradle-plugin", version.ref = "ksp" }
 
 detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
-detekt-eygraberFormatting = { module = "com.eygraber.detekt.rules:formatting", version.ref = "detektEygraber" }
-detekt-eygraberStyle = { module = "com.eygraber.detekt.rules:style", version.ref = "detektEygraber" }
+detektEygraber-formatting = { module = "com.eygraber.detekt.rules:formatting", version.ref = "detektEygraber" }
+detektEygraber-style = { module = "com.eygraber.detekt.rules:style", version.ref = "detektEygraber" }
 
 kodein-core = { module = "org.kodein.di:kodein-di", version.ref = "kodein" }
 

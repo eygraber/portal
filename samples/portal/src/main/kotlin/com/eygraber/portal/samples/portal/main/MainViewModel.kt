@@ -4,11 +4,13 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import com.eygraber.portal.compose.ComposePortal
 import com.eygraber.portal.compose.ComposePortalEntry
 import com.eygraber.portal.compose.ComposePortalTransition
 import com.eygraber.portal.compose.PortalManager
@@ -28,29 +30,50 @@ class MainViewModel(
     mainPortalManager.withTransaction {
       add(MainPortalKey.One, portal = homePortalProvider())
 
-      add(MainPortalKey.Two, isAttachedToComposition = false) {
-        Text(
-          text = "2",
-          modifier = Modifier.fillMaxSize(),
-          textAlign = TextAlign.Center
-        )
-      }
+      add(
+        MainPortalKey.Two,
+        isAttachedToComposition = false,
+        portal = object : ComposePortal {
+          @Composable
+          override fun Render() {
+            Text(
+              text = "2",
+              modifier = Modifier.fillMaxSize(),
+              textAlign = TextAlign.Center
+            )
+          }
+        }
+      )
 
-      add(MainPortalKey.Three, isAttachedToComposition = false) {
-        Text(
-          text = "3",
-          modifier = Modifier.fillMaxSize(),
-          textAlign = TextAlign.Center
-        )
-      }
+      add(
+        MainPortalKey.Three,
+        isAttachedToComposition = false,
+        portal = object : ComposePortal {
+          @Composable
+          override fun Render() {
+            Text(
+              text = "3",
+              modifier = Modifier.fillMaxSize(),
+              textAlign = TextAlign.Center
+            )
+          }
+        }
+      )
 
-      add(MainPortalKey.Four, isAttachedToComposition = false) {
-        Text(
-          text = "4",
-          modifier = Modifier.fillMaxSize(),
-          textAlign = TextAlign.Center
-        )
-      }
+      add(
+        MainPortalKey.Four,
+        isAttachedToComposition = false,
+        portal = object : ComposePortal {
+          @Composable
+          override fun Render() {
+            Text(
+              text = "4",
+              modifier = Modifier.fillMaxSize(),
+              textAlign = TextAlign.Center
+            )
+          }
+        }
+      )
     }
   }
 

@@ -1,18 +1,19 @@
+import com.eygraber.portal.gradle.portalTargets
+
 plugins {
-  kotlin("multiplatform")
+  id("portal-kotlin-multiplatform")
+  id("portal-detekt")
+  id("portal-publish")
   id("kotlinx-atomicfu")
-  detekt
-  publish
-  portal
 }
 
 kotlin {
   explicitApi()
 
-  jvm()
+  portalTargets()
 
   sourceSets {
-    val commonMain by getting {
+    commonMain {
       dependencies {
         api(libs.kotlinx.atomicFu)
 
@@ -21,7 +22,7 @@ kotlin {
       }
     }
 
-    val commonTest by getting {
+    commonTest {
       dependencies {
         implementation(kotlin("test-common"))
         implementation(kotlin("test-annotations-common"))

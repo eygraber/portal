@@ -3,8 +3,7 @@ import org.jetbrains.compose.compose
 plugins {
   kotlin("jvm")
   id("org.jetbrains.compose")
-  detekt
-  portal
+  id("portal-detekt")
 }
 
 dependencies {

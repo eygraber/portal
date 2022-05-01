@@ -22,7 +22,8 @@ public data class ComposePortalEntry<KeyT>(
       |  isBackstackMutation=$isBackstackMutation,
       |  rendererState=$rendererState,
       |  extra=$extra
-      |)""".trimMargin()
+      |)
+    """.trimMargin()
 
   private inline val name get() = this::class.simpleName
 
