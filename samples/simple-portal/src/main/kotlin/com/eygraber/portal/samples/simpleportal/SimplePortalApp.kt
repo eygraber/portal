@@ -219,12 +219,7 @@ suspend fun PortalManager<PortalKey>.addTen() {
     backstack.push(PortalKey.One) {
       add(
         PortalKey.One,
-        portal = object : ComposePortal {
-          @Composable
-          override fun Render() {
-            NumberBox("1")
-          }
-        }
+        portal = ComposePortal { NumberBox("1") }
       )
     }
   }
@@ -237,12 +232,7 @@ suspend fun PortalManager<PortalKey>.addTen() {
 
       add(
         PortalKey.Two,
-        portal = object : ComposePortal {
-          @Composable
-          override fun Render() {
-            NumberBox("2")
-          }
-        }
+        portal = ComposePortal { NumberBox("2") }
       )
     }
   }
@@ -255,12 +245,7 @@ suspend fun PortalManager<PortalKey>.addTen() {
 
       add(
         PortalKey.Three,
-        portal = object : ComposePortal {
-          @Composable
-          override fun Render() {
-            NumberBox("3")
-          }
-        }
+        portal = ComposePortal { NumberBox("3") }
       )
     }
   }
@@ -273,12 +258,7 @@ suspend fun PortalManager<PortalKey>.addTen() {
 
       add(
         PortalKey.Four,
-        portal = object : ComposePortal {
-          @Composable
-          override fun Render() {
-            NumberBox("4")
-          }
-        }
+        portal = ComposePortal { NumberBox("4") }
       )
     }
   }
@@ -291,12 +271,7 @@ suspend fun PortalManager<PortalKey>.addTen() {
 
       add(
         PortalKey.Five,
-        portal = object : ComposePortal {
-          @Composable
-          override fun Render() {
-            NumberBox("5")
-          }
-        }
+        portal = ComposePortal { NumberBox("5") }
       )
     }
   }
@@ -309,12 +284,7 @@ suspend fun PortalManager<PortalKey>.addTen() {
 
       add(
         PortalKey.Six,
-        portal = object : ComposePortal {
-          @Composable
-          override fun Render() {
-            NumberBox("6")
-          }
-        }
+        portal = ComposePortal { NumberBox("6") }
       )
     }
   }
@@ -327,12 +297,7 @@ suspend fun PortalManager<PortalKey>.addTen() {
 
       add(
         PortalKey.Seven,
-        portal = object : ComposePortal {
-          @Composable
-          override fun Render() {
-            NumberBox("7")
-          }
-        }
+        portal = ComposePortal { NumberBox("7") }
       )
     }
   }
@@ -345,12 +310,7 @@ suspend fun PortalManager<PortalKey>.addTen() {
 
       add(
         PortalKey.Eight,
-        portal = object : ComposePortal {
-          @Composable
-          override fun Render() {
-            NumberBox("8")
-          }
-        }
+        portal = ComposePortal { NumberBox("8") }
       )
     }
   }
@@ -363,12 +323,7 @@ suspend fun PortalManager<PortalKey>.addTen() {
 
       add(
         PortalKey.Nine,
-        portal = object : ComposePortal {
-          @Composable
-          override fun Render() {
-            NumberBox("9")
-          }
-        }
+        portal = ComposePortal { NumberBox("9") }
       )
     }
   }
@@ -381,12 +336,7 @@ suspend fun PortalManager<PortalKey>.addTen() {
 
       add(
         PortalKey.Ten,
-        portal = object : ComposePortal {
-          @Composable
-          override fun Render() {
-            NumberBox("10")
-          }
-        }
+        portal = ComposePortal { NumberBox("10") }
       )
     }
   }
