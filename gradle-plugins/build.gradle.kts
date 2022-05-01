@@ -1,5 +1,3 @@
-@file:Suppress("UnstableApiUsage")
-
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -39,7 +37,6 @@ repositories {
   }
   mavenCentral()
   gradlePluginPortal()
-  maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
 }
 
 dependencies {
