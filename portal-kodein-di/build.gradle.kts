@@ -4,6 +4,7 @@ plugins {
   id("portal-kotlin-multiplatform")
   id("portal-detekt")
   id("portal-publish")
+  id("kotlinx-atomicfu")
 }
 
 kotlin {
@@ -16,7 +17,7 @@ kotlin {
       dependencies {
         implementation(projects.portal)
 
-        api(libs.kodein.core)
+        implementation(libs.kodein.core)
       }
     }
 

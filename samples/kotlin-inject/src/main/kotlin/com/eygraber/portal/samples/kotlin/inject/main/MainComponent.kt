@@ -3,8 +3,8 @@ package com.eygraber.portal.samples.kotlin.inject.main
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
-import com.eygraber.portal.compose.ComposePortalTransition
 import com.eygraber.portal.compose.PortalManager
+import com.eygraber.portal.compose.PortalTransition
 import com.eygraber.portal.samples.kotlin.inject.AppComponent
 import com.eygraber.portal.samples.kotlin.inject.PortalComponent
 import me.tatarka.inject.annotations.Component
@@ -28,8 +28,8 @@ abstract class MainComponent(
   @Provides
   fun appPortalManager() =
     PortalManager<AppPortalKey>(
-      defaultTransitionsProvider = { _, _ ->
-        ComposePortalTransition(
+      defaultTransitionProvider = { _, _ ->
+        PortalTransition(
           enter = slideInVertically(animationSpec = tween(durationMillis = 400)) { it * 2 },
           exit = slideOutVertically(animationSpec = tween(durationMillis = 750)) { it * 2 }
         )

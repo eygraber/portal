@@ -24,29 +24,30 @@ public data class ComposePortalEntry<KeyT>(
       |  isDisappearing=$isDisappearing
       |  isBackstackMutation=$isBackstackMutation,
       |  rendererState=$rendererState,
-      |  extra=$enterExtra
+      |  enterExtra=$enterExtra,
+      |  exitExtra=$exitExtra
       |)
     """.trimMargin()
 
   private inline val name get() = this::class.simpleName
 
   public data class EnterExtra(
-    val transitionOverride: ComposePortalTransition?
+    val transitionOverride: PortalTransition?
   ) : PortalEntry.Extra.Enter {
     public companion object {
       public fun enterTransitionOverride(
         enterTransition: EnterTransition
-      ): EnterExtra = EnterExtra(ComposePortalTransition.enter(enterTransition))
+      ): EnterExtra = EnterExtra(PortalTransition.enter(enterTransition))
     }
   }
 
   public data class ExitExtra(
-    val transitionOverride: ComposePortalTransition?
+    val transitionOverride: PortalTransition?
   ) : PortalEntry.Extra.Exit {
     public companion object {
       public fun exitTransitionOverride(
         exitTransition: ExitTransition
-      ): ExitExtra = ExitExtra(ComposePortalTransition.exit(exitTransition))
+      ): ExitExtra = ExitExtra(PortalTransition.exit(exitTransition))
     }
   }
 }

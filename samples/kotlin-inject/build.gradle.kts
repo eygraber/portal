@@ -4,7 +4,7 @@ plugins {
   kotlin("jvm")
   id("org.jetbrains.compose")
   id("portal-detekt")
-  id("portal-ksp-multiplatform")
+  id("portal-ksp")
 }
 
 dependencies {

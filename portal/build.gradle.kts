@@ -15,7 +15,7 @@ kotlin {
   sourceSets {
     commonMain {
       dependencies {
-        api(libs.kotlinx.atomicFu)
+        implementation(libs.kotlinx.atomicFu)
 
         implementation(libs.kotlinx.coroutines.core)
         implementation(libs.kotlinx.serialization.json)

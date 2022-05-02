@@ -11,21 +11,21 @@ import androidx.compose.animation.slideOutVertically
 import androidx.compose.runtime.Immutable
 
 @Immutable
-public data class ComposePortalTransition(
+public data class PortalTransition(
   val enter: EnterTransition,
   val exit: ExitTransition
 ) {
   public companion object {
     public fun enter(
       enter: EnterTransition
-    ): ComposePortalTransition = ComposePortalTransition(
+    ): PortalTransition = PortalTransition(
       enter = enter,
       exit = ExitTransition.None
     )
 
     public fun exit(
       exit: ExitTransition
-    ): ComposePortalTransition = ComposePortalTransition(
+    ): PortalTransition = PortalTransition(
       enter = EnterTransition.None,
       exit = exit
     )
@@ -54,7 +54,7 @@ public data class ComposePortalTransition(
 
     public val defaultDetachForBackstack: ExitTransition = fadeOut()
 
-    public val None: ComposePortalTransition = ComposePortalTransition(
+    public val None: PortalTransition = PortalTransition(
       enter = EnterTransition.None,
       exit = ExitTransition.None,
     )

@@ -20,8 +20,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.window.singleWindowApplication
 import com.eygraber.portal.compose.ComposePortal
 import com.eygraber.portal.compose.ComposePortalEntry.ExitExtra.Companion.exitTransitionOverride
-import com.eygraber.portal.compose.ComposePortalTransition
 import com.eygraber.portal.compose.PortalManager
+import com.eygraber.portal.compose.PortalTransition
+import com.eygraber.portal.compose.SimplePortalTransitionProvider
 import com.eygraber.portal.push
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
@@ -51,29 +52,26 @@ fun NumberBox(text: String) {
 
 fun main() {
   val portalManager = PortalManager<PortalKey>(
-    defaultTransitionsProvider = { _, isForBackstack ->
-      if(isForBackstack) {
-        ComposePortalTransition(
-          enter = fadeIn(
-            animationSpec = tween(1000)
-          ),
-          exit = fadeOut(
-            animationSpec = tween(1000)
-          )
+    defaultTransitionProvider = object : SimplePortalTransitionProvider {
+      override fun enterExitTransition() = PortalTransition(
+        enter = slideInHorizontally(
+          animationSpec = tween(1000),
+          initialOffsetX = { it * 2 }
+        ),
+        exit = slideOutHorizontally(
+          animationSpec = tween(1000),
+          targetOffsetX = { it * 2 }
         )
-      }
-      else {
-        ComposePortalTransition(
-          enter = slideInHorizontally(
-            animationSpec = tween(1000),
-            initialOffsetX = { it * 2 }
-          ),
-          exit = slideOutHorizontally(
-            animationSpec = tween(1000),
-            targetOffsetX = { it * 2 }
-          )
+      )
+
+      override fun popEnterExitTransition() = PortalTransition(
+        enter = fadeIn(
+          animationSpec = tween(1000)
+        ),
+        exit = fadeOut(
+          animationSpec = tween(1000)
         )
-      }
+      )
     }
   )
 
@@ -192,6 +190,15 @@ fun main() {
   }
 }
 
+class NumberBoxPortal(
+  private val number: String
+) : ComposePortal {
+  @Composable
+  override fun Render() {
+    NumberBox(number)
+  }
+}
+
 suspend fun PortalManager<PortalKey>.addTen() {
   val addDelay = 1000L
 
@@ -199,12 +206,7 @@ suspend fun PortalManager<PortalKey>.addTen() {
     backstack.push(PortalKey.One) {
       add(
         PortalKey.One,
-        portal = object : ComposePortal {
-          @Composable
-          override fun Render() {
-            NumberBox("1")
-          }
-        }
+        portal = NumberBoxPortal("1")
       )
     }
   }
@@ -217,12 +219,7 @@ suspend fun PortalManager<PortalKey>.addTen() {
 
       add(
         PortalKey.Two,
-        portal = object : ComposePortal {
-          @Composable
-          override fun Render() {
-            NumberBox("2")
-          }
-        }
+        portal = NumberBoxPortal("2")
       )
     }
   }
@@ -235,12 +232,7 @@ suspend fun PortalManager<PortalKey>.addTen() {
 
       add(
         PortalKey.Three,
-        portal = object : ComposePortal {
-          @Composable
-          override fun Render() {
-            NumberBox("3")
-          }
-        }
+        portal = NumberBoxPortal("3")
       )
     }
   }
@@ -253,12 +245,7 @@ suspend fun PortalManager<PortalKey>.addTen() {
 
       add(
         PortalKey.Four,
-        portal = object : ComposePortal {
-          @Composable
-          override fun Render() {
-            NumberBox("4")
-          }
-        }
+        portal = NumberBoxPortal("4")
       )
     }
   }
@@ -271,12 +258,7 @@ suspend fun PortalManager<PortalKey>.addTen() {
 
       add(
         PortalKey.Five,
-        portal = object : ComposePortal {
-          @Composable
-          override fun Render() {
-            NumberBox("5")
-          }
-        }
+        portal = NumberBoxPortal("5")
       )
     }
   }
@@ -289,12 +271,7 @@ suspend fun PortalManager<PortalKey>.addTen() {
 
       add(
         PortalKey.Six,
-        portal = object : ComposePortal {
-          @Composable
-          override fun Render() {
-            NumberBox("6")
-          }
-        }
+        portal = NumberBoxPortal("6")
       )
     }
   }
@@ -307,12 +284,7 @@ suspend fun PortalManager<PortalKey>.addTen() {
 
       add(
         PortalKey.Seven,
-        portal = object : ComposePortal {
-          @Composable
-          override fun Render() {
-            NumberBox("7")
-          }
-        }
+        portal = NumberBoxPortal("7")
       )
     }
   }
@@ -325,12 +297,7 @@ suspend fun PortalManager<PortalKey>.addTen() {
 
       add(
         PortalKey.Eight,
-        portal = object : ComposePortal {
-          @Composable
-          override fun Render() {
-            NumberBox("8")
-          }
-        }
+        portal = NumberBoxPortal("8")
       )
     }
   }
@@ -343,12 +310,7 @@ suspend fun PortalManager<PortalKey>.addTen() {
 
       add(
         PortalKey.Nine,
-        portal = object : ComposePortal {
-          @Composable
-          override fun Render() {
-            NumberBox("9")
-          }
-        }
+        portal = NumberBoxPortal("9")
       )
     }
   }
@@ -361,12 +323,7 @@ suspend fun PortalManager<PortalKey>.addTen() {
 
       add(
         PortalKey.Ten,
-        portal = object : ComposePortal {
-          @Composable
-          override fun Render() {
-            NumberBox("10")
-          }
-        }
+        portal = NumberBoxPortal("10")
       )
     }
   }

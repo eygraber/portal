@@ -14,7 +14,7 @@ import com.eygraber.portal.internal.PortalEntry
 
 @Suppress("MaxLineLength")
 public class PortalManager<KeyT>(
-  private val defaultTransitionsProvider: ComposePortalTransitionsProvider = ComposePortalTransitionsProvider.Default,
+  private val defaultTransitionProvider: PortalTransitionProvider = PortalTransitionProvider.Default,
   defaultErrorHandler: ((Throwable) -> Unit)? = null,
   validation: PortalManagerValidation = PortalManagerValidation()
 ) : AbstractPortalManager<KeyT, ComposePortalEntry<KeyT>, ComposePortalEntry.EnterExtra, ComposePortalEntry.ExitExtra, ComposePortal>(
@@ -45,12 +45,12 @@ public class PortalManager<KeyT>(
 
     val (enterTransition, exitTransition) = when(transitionOverride) {
       null -> when(val transitionProvider = entry.portal) {
-        is ComposePortalTransitionsProvider -> transitionProvider.provideTransitions(
+        is PortalTransitionProvider -> transitionProvider.provideTransitions(
           compositionState = entry.rendererState,
           isForBackstack = entry.isBackstackMutation
         )
 
-        else -> defaultTransitionsProvider.provideTransitions(
+        else -> defaultTransitionProvider.provideTransitions(
           compositionState = entry.rendererState,
           isForBackstack = entry.isBackstackMutation
         )

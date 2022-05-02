@@ -11,9 +11,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import com.eygraber.portal.compose.ComposePortal
-import com.eygraber.portal.compose.ComposePortalEntry
-import com.eygraber.portal.compose.ComposePortalTransition
+import com.eygraber.portal.compose.ComposePortalEntry.EnterExtra.Companion.enterTransitionOverride
+import com.eygraber.portal.compose.ComposePortalEntry.ExitExtra.Companion.exitTransitionOverride
 import com.eygraber.portal.compose.PortalManager
+import com.eygraber.portal.compose.PortalTransition
 import com.eygraber.portal.samples.portal.VM
 import com.eygraber.portal.samples.portal.home.HomePortal
 
@@ -101,16 +102,12 @@ class MainViewModel(
       val transition = tab.getTransitionOverride(tabMovingFrom)
       detachFromComposition(
         tabMovingFrom,
-        ComposePortalEntry.ExitExtra(
-          transitionOverride = transition
-        )
+        exitTransitionOverride(transition.exit)
       )
 
       attachToComposition(
         tab,
-        ComposePortalEntry.EnterExtra(
-          transitionOverride = transition
-        )
+        enterTransitionOverride(transition.enter)
       )
     }
   }
@@ -120,19 +117,19 @@ private fun MainPortalKey.getTransitionOverride(
   currentTab: MainPortalKey
 ) = currentTab.selectedIndex.let { currentSelectedIndex ->
   if(currentSelectedIndex > selectedIndex) {
-    ComposePortalTransition(
+    PortalTransition(
       enter = slideInHorizontally { -it },
       exit = slideOutHorizontally { it * 2 }
     )
   }
   else if(currentSelectedIndex < selectedIndex) {
-    ComposePortalTransition(
+    PortalTransition(
       enter = slideInHorizontally { it * 2 },
       exit = slideOutHorizontally { -it }
     )
   }
   else {
-    ComposePortalTransition.None
+    PortalTransition.None
   }
 }
 
