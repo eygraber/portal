@@ -8,8 +8,8 @@ import com.eygraber.portal.ChildPortal
 import com.eygraber.portal.ParentPortal
 import com.eygraber.portal.Portal
 import com.eygraber.portal.compose.ComposePortal
-import com.eygraber.portal.compose.ComposePortalTransition
 import com.eygraber.portal.compose.PortalManager
+import com.eygraber.portal.compose.PortalTransition
 import com.eygraber.portal.kodein.di.KodeinDIPortal
 import com.eygraber.portal.kodein.di.portalSingleton
 import com.eygraber.portal.samples.portal.home.HomePortal
@@ -54,8 +54,8 @@ class MainPortal(
 
     bind<PortalManager<AppPortalKey>>() with portalSingleton {
       PortalManager(
-        defaultTransitionsProvider = { _, _ ->
-          ComposePortalTransition(
+        defaultTransitionProvider = { _, _ ->
+          PortalTransition(
             enter = slideInVertically(animationSpec = tween(durationMillis = 400)) { it * 2 },
             exit = slideOutVertically(animationSpec = tween(durationMillis = 750)) { it * 2 }
           )

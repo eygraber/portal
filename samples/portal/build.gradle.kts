@@ -15,6 +15,8 @@ dependencies {
   implementation(compose.materialIconsExtended)
   implementation(compose.desktop.currentOs)
 
+  implementation(libs.kodein.core)
+
   implementation(libs.kotlinx.coroutines.core)
 }
 
