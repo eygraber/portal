@@ -12,11 +12,12 @@ import com.eygraber.portal.PortalManagerValidation
 import com.eygraber.portal.PortalRendererState
 import com.eygraber.portal.internal.PortalEntry
 
+@Suppress("MaxLineLength")
 public class PortalManager<KeyT>(
   private val defaultTransitionsProvider: ComposePortalTransitionsProvider = ComposePortalTransitionsProvider.Default,
   defaultErrorHandler: ((Throwable) -> Unit)? = null,
   validation: PortalManagerValidation = PortalManagerValidation()
-) : AbstractPortalManager<KeyT, ComposePortalEntry<KeyT>, ComposePortalEntry.Extra, ComposePortal>(
+) : AbstractPortalManager<KeyT, ComposePortalEntry<KeyT>, ComposePortalEntry.EnterExtra, ComposePortalEntry.ExitExtra, ComposePortal>(
   defaultErrorHandler,
   createEntryCallbacks(),
   validation
@@ -34,7 +35,15 @@ public class PortalManager<KeyT>(
   private fun PortalRenderer(
     entry: ComposePortalEntry<KeyT>
   ) {
-    val (enterTransition, exitTransition) = when(val override = entry.extra?.transitionOverride) {
+    val transitionOverride = when(entry.rendererState) {
+      PortalRendererState.Added,
+      PortalRendererState.Attached -> entry.enterExtra?.transitionOverride
+
+      PortalRendererState.Detached,
+      PortalRendererState.Removed -> entry.exitExtra?.transitionOverride
+    }
+
+    val (enterTransition, exitTransition) = when(transitionOverride) {
       null -> when(val transitionProvider = entry.portal) {
         is ComposePortalTransitionsProvider -> transitionProvider.provideTransitions(
           compositionState = entry.rendererState,
@@ -47,7 +56,7 @@ public class PortalManager<KeyT>(
         )
       }
 
-      else -> override
+      else -> transitionOverride
     }
 
     val wasContentPreviouslyVisible =
@@ -99,15 +108,16 @@ public class PortalManager<KeyT>(
 private inline val <PortalKey> ComposePortalEntry<PortalKey>.isAttachedToComposition: Boolean
   get() = rendererState.isAddedOrAttached
 
+@Suppress("MaxLineLength")
 private fun <PortalKey> createEntryCallbacks() =
-  object : PortalEntry.Callbacks<PortalKey, ComposePortalEntry<PortalKey>, ComposePortalEntry.Extra, ComposePortal> {
+  object : PortalEntry.Callbacks<PortalKey, ComposePortalEntry<PortalKey>, ComposePortalEntry.EnterExtra, ComposePortalEntry.ExitExtra, ComposePortal> {
     override fun create(
       key: PortalKey,
       wasContentPreviouslyVisible: Boolean,
       isDisappearing: Boolean,
       isBackstackMutation: Boolean,
       rendererState: PortalRendererState,
-      extra: ComposePortalEntry.Extra?,
+      extra: ComposePortalEntry.EnterExtra?,
       portal: ComposePortal
     ) = ComposePortalEntry(
       key = key,
@@ -115,7 +125,8 @@ private fun <PortalKey> createEntryCallbacks() =
       isDisappearing = isDisappearing,
       isBackstackMutation = isBackstackMutation,
       rendererState = rendererState,
-      extra = extra,
+      enterExtra = extra,
+      exitExtra = null,
       portal = portal
     )
 
@@ -124,12 +135,13 @@ private fun <PortalKey> createEntryCallbacks() =
       isBackstackMutation: Boolean,
       wasContentPreviouslyVisible: Boolean,
       rendererState: PortalRendererState,
-      extra: ComposePortalEntry.Extra?
+      extra: ComposePortalEntry.EnterExtra?
     ) = entry.copy(
       isBackstackMutation = isBackstackMutation,
       wasContentPreviouslyVisible = wasContentPreviouslyVisible,
       rendererState = rendererState,
-      extra = extra
+      enterExtra = extra,
+      exitExtra = null
     )
 
     override fun detach(
@@ -137,12 +149,13 @@ private fun <PortalKey> createEntryCallbacks() =
       isBackstackMutation: Boolean,
       wasContentPreviouslyVisible: Boolean,
       rendererState: PortalRendererState,
-      extra: ComposePortalEntry.Extra?
+      extra: ComposePortalEntry.ExitExtra?
     ) = entry.copy(
       isBackstackMutation = isBackstackMutation,
       wasContentPreviouslyVisible = wasContentPreviouslyVisible,
       rendererState = rendererState,
-      extra = extra
+      enterExtra = null,
+      exitExtra = extra
     )
 
     override fun remove(
@@ -151,12 +164,13 @@ private fun <PortalKey> createEntryCallbacks() =
       wasContentPreviouslyVisible: Boolean,
       isDisappearing: Boolean,
       rendererState: PortalRendererState,
-      extra: ComposePortalEntry.Extra?
+      extra: ComposePortalEntry.ExitExtra?
     ) = entry.copy(
       isBackstackMutation = isBackstackMutation,
       wasContentPreviouslyVisible = wasContentPreviouslyVisible,
       isDisappearing = isDisappearing,
       rendererState = rendererState,
-      extra = extra
+      enterExtra = null,
+      exitExtra = extra
     )
   }

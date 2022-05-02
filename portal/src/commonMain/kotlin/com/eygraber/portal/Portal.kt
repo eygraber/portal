@@ -3,7 +3,7 @@ package com.eygraber.portal
 public interface Portal
 
 public interface ParentPortal : Portal {
-  public val portalManagers: List<AbstractPortalManager<*, *, *, *>>
+  public val portalManagers: List<AbstractPortalManager<*, *, *, *, *>>
 }
 
 public interface ChildPortal : Portal {

@@ -3,28 +3,40 @@ package com.eygraber.portal.internal
 import com.eygraber.portal.Portal
 import com.eygraber.portal.PortalRendererState
 
-internal typealias Extra = PortalEntry.Extra
-internal typealias Entry<KeyT, ExtraT, PortalT> = PortalEntry<KeyT, ExtraT, PortalT>
+internal typealias EnterExtra = PortalEntry.Extra.Enter
+internal typealias ExitExtra = PortalEntry.Extra.Exit
+internal typealias Entry<KeyT, EnterExtraT, ExitExtraT, PortalT> = PortalEntry<KeyT, EnterExtraT, ExitExtraT, PortalT>
 
-public interface PortalEntry<KeyT, ExtraT : Extra, PortalT : Portal> {
+public interface PortalEntry<KeyT, EnterExtraT, ExitExtraT, PortalT>
+  where EnterExtraT : EnterExtra,
+        ExitExtraT : ExitExtra,
+        PortalT : Portal {
   public val key: KeyT
   public val wasContentPreviouslyVisible: Boolean
   public val isDisappearing: Boolean
   public val isBackstackMutation: Boolean
   public val rendererState: PortalRendererState
-  public val extra: ExtraT?
+  public val enterExtra: EnterExtraT?
+  public val exitExtra: ExitExtraT?
   public val portal: PortalT
 
-  public interface Extra
+  public interface Extra {
+    public interface Enter : Extra
+    public interface Exit : Extra
+  }
 
-  public interface Callbacks<KeyT, EntryT : Entry<KeyT, ExtraT, PortalT>, ExtraT : Extra, PortalT : Portal> {
+  public interface Callbacks<KeyT, EntryT, EnterExtraT, ExitExtraT, PortalT>
+    where EntryT : Entry<KeyT, EnterExtraT, ExitExtraT, PortalT>,
+          EnterExtraT : EnterExtra,
+          ExitExtraT : ExitExtra,
+          PortalT : Portal {
     public fun create(
       key: KeyT,
       wasContentPreviouslyVisible: Boolean,
       isDisappearing: Boolean,
       isBackstackMutation: Boolean,
       rendererState: PortalRendererState,
-      extra: ExtraT?,
+      extra: EnterExtraT?,
       portal: PortalT
     ): EntryT
 
@@ -33,7 +45,7 @@ public interface PortalEntry<KeyT, ExtraT : Extra, PortalT : Portal> {
       isBackstackMutation: Boolean,
       wasContentPreviouslyVisible: Boolean,
       rendererState: PortalRendererState,
-      extra: ExtraT?
+      extra: EnterExtraT?
     ): EntryT
 
     public fun detach(
@@ -41,7 +53,7 @@ public interface PortalEntry<KeyT, ExtraT : Extra, PortalT : Portal> {
       isBackstackMutation: Boolean,
       wasContentPreviouslyVisible: Boolean,
       rendererState: PortalRendererState,
-      extra: ExtraT?
+      extra: ExitExtraT?
     ): EntryT
 
     public fun remove(
@@ -50,7 +62,7 @@ public interface PortalEntry<KeyT, ExtraT : Extra, PortalT : Portal> {
       wasContentPreviouslyVisible: Boolean,
       isDisappearing: Boolean,
       rendererState: PortalRendererState,
-      extra: ExtraT?
+      extra: ExitExtraT?
     ): EntryT
   }
 }

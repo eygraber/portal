@@ -3,15 +3,19 @@ package com.eygraber.portal.internal
 import com.eygraber.portal.Portal
 import com.eygraber.portal.PortalBackstack
 
-internal class PortalBackstackEntryBuilder<KeyT, EntryT, ExtraT : Extra, PortalT : Portal>(
-  private val builder: PortalEntryBuilder<KeyT, EntryT, ExtraT, PortalT>
-) : PortalBackstack.PushBuilder<KeyT, ExtraT, PortalT> where EntryT : Entry<KeyT, ExtraT, PortalT> {
+internal class PortalBackstackEntryBuilder<KeyT, EntryT, EnterExtraT, ExitExtraT, PortalT>(
+  private val builder: PortalEntryBuilder<KeyT, EntryT, EnterExtraT, ExitExtraT, PortalT>
+) : PortalBackstack.PushBuilder<KeyT, EnterExtraT, ExitExtraT, PortalT>
+  where EntryT : Entry<KeyT, EnterExtraT, ExitExtraT, PortalT>,
+        EnterExtraT : EnterExtra,
+        ExitExtraT : ExitExtra,
+        PortalT : Portal {
   private val backstackMutations = mutableListOf<PortalBackstackMutation<KeyT>>()
 
   override fun add(
     key: KeyT,
     isAttachedToComposition: Boolean,
-    extra: ExtraT?,
+    extra: EnterExtraT?,
     portal: PortalT
   ) {
     builder.add(key, isAttachedToComposition, extra, portal)
@@ -23,14 +27,14 @@ internal class PortalBackstackEntryBuilder<KeyT, EntryT, ExtraT : Extra, PortalT
 
   override fun attachToComposition(
     key: KeyT,
-    extra: ExtraT?
+    extra: EnterExtraT?
   ) {
     builder.attachToComposition(key, extra)
   }
 
   override fun detachFromComposition(
     key: KeyT,
-    extra: ExtraT?
+    extra: ExitExtraT?
   ) {
     builder.detachFromComposition(key, extra)
 

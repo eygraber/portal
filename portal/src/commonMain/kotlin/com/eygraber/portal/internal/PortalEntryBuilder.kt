@@ -10,14 +10,15 @@ import com.eygraber.portal.PortalRendererState
 import com.eygraber.portal.PortalTransactionBuilderDsl
 import kotlinx.atomicfu.atomic
 
-internal class PortalEntryBuilder<KeyT, EntryT, ExtraT : Extra, PortalT : Portal>(
-  override val backstack: PortalBackstack<KeyT, ExtraT, PortalT>,
+internal class PortalEntryBuilder<KeyT, EntryT, EnterExtraT : EnterExtra, ExitExtraT : ExitExtra, PortalT : Portal>(
+  override val backstack: PortalBackstack<KeyT, EnterExtraT, ExitExtraT, PortalT>,
   private val transactionPortalEntries: MutableList<EntryT>,
   private val transactionBackstackEntries: MutableList<PortalBackstackEntry<KeyT>>,
   private val isForBackstack: Boolean,
   private val validation: PortalManagerValidation,
-  private val entryCallbacks: PortalEntry.Callbacks<KeyT, EntryT, ExtraT, PortalT>
-) : AbstractPortalManager.EntryBuilder<KeyT, ExtraT, PortalT> where EntryT : Entry<KeyT, ExtraT, PortalT> {
+  private val entryCallbacks: PortalEntry.Callbacks<KeyT, EntryT, EnterExtraT, ExitExtraT, PortalT>
+) : AbstractPortalManager.EntryBuilder<KeyT, EnterExtraT, ExitExtraT, PortalT>
+  where EntryT : Entry<KeyT, EnterExtraT, ExitExtraT, PortalT> {
   private val _postTransactionOps = atomic(emptyList<() -> Unit>())
   internal val postTransactionOps get() = _postTransactionOps.value
 
@@ -33,7 +34,7 @@ internal class PortalEntryBuilder<KeyT, EntryT, ExtraT : Extra, PortalT : Portal
   override fun add(
     key: KeyT,
     isAttachedToComposition: Boolean,
-    extra: ExtraT?,
+    extra: EnterExtraT?,
     portal: PortalT
   ) {
     transactionPortalEntries += entryCallbacks.create(
@@ -52,7 +53,7 @@ internal class PortalEntryBuilder<KeyT, EntryT, ExtraT : Extra, PortalT : Portal
 
   override fun attachToComposition(
     key: KeyT,
-    extra: ExtraT?
+    extra: EnterExtraT?
   ) {
     key.applyMutationToPortalEntries { entry ->
       when {
@@ -74,7 +75,7 @@ internal class PortalEntryBuilder<KeyT, EntryT, ExtraT : Extra, PortalT : Portal
 
   override fun detachFromComposition(
     key: KeyT,
-    extra: ExtraT?
+    extra: ExitExtraT?
   ) {
     key.applyMutationToPortalEntries { entry ->
       when {
@@ -95,7 +96,7 @@ internal class PortalEntryBuilder<KeyT, EntryT, ExtraT : Extra, PortalT : Portal
 
   override fun remove(
     key: KeyT,
-    extra: ExtraT?
+    extra: ExitExtraT?
   ) {
     key.applyMutationToPortalEntries { entry ->
       when {
@@ -125,7 +126,7 @@ internal class PortalEntryBuilder<KeyT, EntryT, ExtraT : Extra, PortalT : Portal
   }
 
   override fun clear(
-    extraProvider: ((KeyT) -> ExtraT?)?
+    extraProvider: ((KeyT) -> ExitExtraT?)?
   ) {
     transactionPortalEntries.reversed().forEach { entry ->
       remove(
@@ -161,9 +162,11 @@ internal class PortalEntryBuilder<KeyT, EntryT, ExtraT : Extra, PortalT : Portal
     transactionPortalEntries to transactionBackstackEntries
 
   @Suppress("unused")
-  internal inline fun <R> PortalBackstack<KeyT, ExtraT, PortalT>.usingBackstack(
+  internal inline fun <R> PortalBackstack<KeyT, EnterExtraT, ExitExtraT, PortalT>.usingBackstack(
     @PortalTransactionBuilderDsl
-    builder: PortalEntryBuilder<KeyT, EntryT, ExtraT, PortalT>.(MutableList<PortalBackstackEntry<KeyT>>) -> R
+    builder: PortalEntryBuilder<KeyT, EntryT, EnterExtraT, ExitExtraT, PortalT>.(
+      MutableList<PortalBackstackEntry<KeyT>>
+    ) -> R
   ) = PortalEntryBuilder(
     transactionPortalEntries = transactionPortalEntries,
     transactionBackstackEntries = transactionBackstackEntries,
