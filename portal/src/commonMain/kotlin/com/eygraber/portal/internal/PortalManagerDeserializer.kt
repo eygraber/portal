@@ -9,12 +9,17 @@ import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 
-internal fun <KeyT, EntryT, ExtraT : Extra, PortalT : Portal> deserializePortalManagerState(
+internal fun <KeyT, EntryT, EnterExtraT, ExitExtraT, PortalT>
+deserializePortalManagerState(
   serializedState: String,
   keyDeserializer: (String) -> KeyT,
   portalFactory: (KeyT) -> PortalT,
-  entryCallbacks: PortalEntry.Callbacks<KeyT, EntryT, ExtraT, PortalT>
-): Pair<List<EntryT>, List<PortalBackstackEntry<KeyT>>> where EntryT : Entry<KeyT, ExtraT, PortalT> {
+  entryCallbacks: PortalEntry.Callbacks<KeyT, EntryT, EnterExtraT, ExitExtraT, PortalT>
+): Pair<List<EntryT>, List<PortalBackstackEntry<KeyT>>>
+  where EntryT : Entry<KeyT, EnterExtraT, ExitExtraT, PortalT>,
+        EnterExtraT : EnterExtra,
+        ExitExtraT : ExitExtra,
+        PortalT : Portal {
   val json = Json.parseToJsonElement(serializedState).jsonObject
 
   val entries = requireNotNull(json["entries"]) {
@@ -32,45 +37,49 @@ internal fun <KeyT, EntryT, ExtraT : Extra, PortalT : Portal> deserializePortalM
   return entries to backstack
 }
 
-private fun <KeyT, EntryT, ExtraT, PortalT> JsonArray.deserializeToPortalEntries(
+private fun <KeyT, EntryT, EnterExtraT, ExitExtraT, PortalT> JsonArray.deserializeToPortalEntries(
   keyDeserializer: (String) -> KeyT,
   portalFactory: (KeyT) -> PortalT,
-  entryCallbacks: PortalEntry.Callbacks<KeyT, EntryT, ExtraT, PortalT>
-) where EntryT : Entry<KeyT, ExtraT, PortalT>, ExtraT : Extra, PortalT : Portal = map { entry ->
-  val jsonEntry = entry.jsonObject
+  entryCallbacks: PortalEntry.Callbacks<KeyT, EntryT, EnterExtraT, ExitExtraT, PortalT>
+) where EntryT : Entry<KeyT, EnterExtraT, ExitExtraT, PortalT>,
+        EnterExtraT : EnterExtra,
+        ExitExtraT : ExitExtra,
+        PortalT : Portal =
+  map { entry ->
+    val jsonEntry = entry.jsonObject
 
-  val key = requireNotNull(
-    jsonEntry["key"]?.jsonPrimitive?.contentOrNull
-  ) {
-    "A serialized PortalEntry needs a \"key\" field"
-  }.let(keyDeserializer)
+    val key = requireNotNull(
+      jsonEntry["key"]?.jsonPrimitive?.contentOrNull
+    ) {
+      "A serialized PortalEntry needs a \"key\" field"
+    }.let(keyDeserializer)
 
-  entryCallbacks.create(
-    key = key,
-    wasContentPreviouslyVisible = requireNotNull(
-      jsonEntry["wasContentPreviouslyVisible"]?.jsonPrimitive?.contentOrNull
-    ) {
-      "A serialized PortalEntry needs a \"wasContentPreviouslyVisible\" field"
-    }.toBoolean(),
-    isDisappearing = requireNotNull(
-      jsonEntry["isDisappearing"]?.jsonPrimitive?.contentOrNull
-    ) {
-      "A serialized PortalEntry needs a \"isDisappearing\" field"
-    }.toBoolean(),
-    isBackstackMutation = requireNotNull(
-      jsonEntry["isBackstackMutation"]?.jsonPrimitive?.contentOrNull
-    ) {
-      "A serialized PortalEntry needs a \"isBackstackMutation\" field"
-    }.toBoolean(),
-    rendererState = requireNotNull(
-      jsonEntry["isBackstackMutation"]?.jsonPrimitive?.contentOrNull
-    ) {
-      "A serialized PortalEntry needs a \"rendererState\" field"
-    }.let(PortalRendererState::valueOf),
-    extra = null,
-    portal = portalFactory(key)
-  )
-}
+    entryCallbacks.create(
+      key = key,
+      wasContentPreviouslyVisible = requireNotNull(
+        jsonEntry["wasContentPreviouslyVisible"]?.jsonPrimitive?.contentOrNull
+      ) {
+        "A serialized PortalEntry needs a \"wasContentPreviouslyVisible\" field"
+      }.toBoolean(),
+      isDisappearing = requireNotNull(
+        jsonEntry["isDisappearing"]?.jsonPrimitive?.contentOrNull
+      ) {
+        "A serialized PortalEntry needs a \"isDisappearing\" field"
+      }.toBoolean(),
+      isBackstackMutation = requireNotNull(
+        jsonEntry["isBackstackMutation"]?.jsonPrimitive?.contentOrNull
+      ) {
+        "A serialized PortalEntry needs a \"isBackstackMutation\" field"
+      }.toBoolean(),
+      rendererState = requireNotNull(
+        jsonEntry["isBackstackMutation"]?.jsonPrimitive?.contentOrNull
+      ) {
+        "A serialized PortalEntry needs a \"rendererState\" field"
+      }.let(PortalRendererState::valueOf),
+      extra = null,
+      portal = portalFactory(key)
+    )
+  }
 
 private fun <KeyT> JsonArray.deserializeToBackstackEntries(
   keyDeserializer: (String) -> KeyT

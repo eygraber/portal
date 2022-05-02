@@ -105,13 +105,13 @@ class MainViewModel(
       val transition = tab.getTransitionOverride(tabMovingFrom)
       detachFromComposition(
         tabMovingFrom,
-        ComposePortalEntry.Extra(
+        ComposePortalEntry.ExitExtra(
           transitionOverride = transition
         )
       )
       attachToComposition(
         tab,
-        ComposePortalEntry.Extra(
+        ComposePortalEntry.EnterExtra(
           transitionOverride = transition
         )
       )

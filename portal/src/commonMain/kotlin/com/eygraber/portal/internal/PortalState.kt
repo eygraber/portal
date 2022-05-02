@@ -6,14 +6,18 @@ import com.eygraber.portal.PortalManagerValidation
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-internal class PortalState<KeyT, EntryT : Entry<KeyT, ExtraT, PortalT>, ExtraT : Extra, PortalT : Portal>(
+internal class PortalState<KeyT, EntryT, EnterExtraT, ExitExtraT, PortalT>(
   private val validation: PortalManagerValidation,
-  private val entryCallbacks: PortalEntry.Callbacks<KeyT, EntryT, ExtraT, PortalT>
-) {
+  private val entryCallbacks: PortalEntry.Callbacks<KeyT, EntryT, EnterExtraT, ExitExtraT, PortalT>
+) where EntryT : Entry<KeyT, EnterExtraT, ExitExtraT, PortalT>,
+        EnterExtraT : EnterExtra,
+        ExitExtraT : ExitExtra,
+        PortalT : Portal {
   private val mutablePortalEntries = MutableStateFlow(emptyList<EntryT>())
   private val mutableBackstackEntries = MutableStateFlow(emptyList<PortalBackstackEntry<KeyT>>())
 
-  private var transactionBuilder: PortalEntryBuilder<KeyT, EntryT, ExtraT, PortalT>? = null
+  private var transactionBuilder: PortalEntryBuilder<KeyT, EntryT, EnterExtraT, ExitExtraT, PortalT>? =
+    null
 
   inline val portalEntries: List<EntryT> get() = mutablePortalEntries.value
   inline val backstackEntries: List<PortalBackstackEntry<KeyT>> get() = mutableBackstackEntries.value
@@ -29,7 +33,7 @@ internal class PortalState<KeyT, EntryT : Entry<KeyT, ExtraT, PortalT>, ExtraT :
     mutableBackstackEntries.value = backstack
   }
 
-  fun startTransaction(backstack: PortalBackstack<KeyT, ExtraT, PortalT>) {
+  fun startTransaction(backstack: PortalBackstack<KeyT, EnterExtraT, ExitExtraT, PortalT>) {
     // reentrant
     if(transactionBuilder != null) return
 
@@ -44,7 +48,7 @@ internal class PortalState<KeyT, EntryT : Entry<KeyT, ExtraT, PortalT>, ExtraT :
   }
 
   fun <R> transact(
-    builder: PortalEntryBuilder<KeyT, EntryT, ExtraT, PortalT>.() -> R
+    builder: PortalEntryBuilder<KeyT, EntryT, EnterExtraT, ExitExtraT, PortalT>.() -> R
   ) = requireNotNull(transactionBuilder) {
     "Cannot transact if not in a transaction"
   }.builder()

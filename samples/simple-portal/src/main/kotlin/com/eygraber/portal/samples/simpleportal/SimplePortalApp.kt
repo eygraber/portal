@@ -19,7 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.window.singleWindowApplication
 import com.eygraber.portal.compose.ComposePortal
-import com.eygraber.portal.compose.ComposePortalEntry
+import com.eygraber.portal.compose.ComposePortalEntry.ExitExtra.Companion.exitTransitionOverride
 import com.eygraber.portal.compose.ComposePortalTransition
 import com.eygraber.portal.compose.PortalManager
 import com.eygraber.portal.push
@@ -101,91 +101,71 @@ fun main() {
         suppressTransitions = false,
         exitExtra = { key ->
           when(key) {
-            PortalKey.One -> ComposePortalEntry.Extra(
-              transitionOverride = ComposePortalTransition.exit(
-                fadeOut(
-                  animationSpec = tween(durationMillis = lastWaveDuration)
-                )
+            PortalKey.One -> exitTransitionOverride(
+              fadeOut(
+                animationSpec = tween(durationMillis = lastWaveDuration)
               )
             )
 
-            PortalKey.Two -> ComposePortalEntry.Extra(
-              transitionOverride = ComposePortalTransition.exit(
-                shrinkOut(
-                  animationSpec = tween(durationMillis = lastWaveDuration)
-                )
+            PortalKey.Two -> exitTransitionOverride(
+              shrinkOut(
+                animationSpec = tween(durationMillis = lastWaveDuration)
               )
             )
 
-            PortalKey.Three -> ComposePortalEntry.Extra(
-              transitionOverride = ComposePortalTransition.exit(
-                slideOutVertically(
-                  animationSpec = tween(durationMillis = secondWaveDuration),
-                  targetOffsetY = { -it }
-                )
+            PortalKey.Three -> exitTransitionOverride(
+              slideOutVertically(
+                animationSpec = tween(durationMillis = secondWaveDuration),
+                targetOffsetY = { -it }
               )
             )
 
-            PortalKey.Four -> ComposePortalEntry.Extra(
-              transitionOverride = ComposePortalTransition.exit(
-                slideOutVertically(
-                  animationSpec = tween(durationMillis = secondWaveDuration),
-                  targetOffsetY = { it * 2 }
-                )
+            PortalKey.Four -> exitTransitionOverride(
+              slideOutVertically(
+                animationSpec = tween(durationMillis = secondWaveDuration),
+                targetOffsetY = { it * 2 }
               )
             )
 
-            PortalKey.Five -> ComposePortalEntry.Extra(
-              transitionOverride = ComposePortalTransition.exit(
-                slideOutHorizontally(
-                  animationSpec = tween(durationMillis = secondWaveDuration),
-                  targetOffsetX = { -it }
-                )
+            PortalKey.Five -> exitTransitionOverride(
+              slideOutHorizontally(
+                animationSpec = tween(durationMillis = secondWaveDuration),
+                targetOffsetX = { -it }
               )
             )
 
-            PortalKey.Six -> ComposePortalEntry.Extra(
-              transitionOverride = ComposePortalTransition.exit(
-                slideOutHorizontally(
-                  animationSpec = tween(durationMillis = secondWaveDuration),
-                  targetOffsetX = { it * 2 }
-                )
+            PortalKey.Six -> exitTransitionOverride(
+              slideOutHorizontally(
+                animationSpec = tween(durationMillis = secondWaveDuration),
+                targetOffsetX = { it * 2 }
               )
             )
 
-            PortalKey.Seven -> ComposePortalEntry.Extra(
-              transitionOverride = ComposePortalTransition.exit(
-                slideOutVertically(
-                  animationSpec = tween(durationMillis = initialWaveDuration),
-                  targetOffsetY = { -it }
-                )
+            PortalKey.Seven -> exitTransitionOverride(
+              slideOutVertically(
+                animationSpec = tween(durationMillis = initialWaveDuration),
+                targetOffsetY = { -it }
               )
             )
 
-            PortalKey.Eight -> ComposePortalEntry.Extra(
-              transitionOverride = ComposePortalTransition.exit(
-                slideOutVertically(
-                  animationSpec = tween(durationMillis = initialWaveDuration),
-                  targetOffsetY = { it * 2 }
-                )
+            PortalKey.Eight -> exitTransitionOverride(
+              slideOutVertically(
+                animationSpec = tween(durationMillis = initialWaveDuration),
+                targetOffsetY = { it * 2 }
               )
             )
 
-            PortalKey.Nine -> ComposePortalEntry.Extra(
-              transitionOverride = ComposePortalTransition.exit(
-                slideOutHorizontally(
-                  animationSpec = tween(durationMillis = initialWaveDuration),
-                  targetOffsetX = { -it }
-                )
+            PortalKey.Nine -> exitTransitionOverride(
+              slideOutHorizontally(
+                animationSpec = tween(durationMillis = initialWaveDuration),
+                targetOffsetX = { -it }
               )
             )
 
-            PortalKey.Ten -> ComposePortalEntry.Extra(
-              transitionOverride = ComposePortalTransition.exit(
-                slideOutHorizontally(
-                  animationSpec = tween(durationMillis = initialWaveDuration),
-                  targetOffsetX = { it * 2 }
-                )
+            PortalKey.Ten -> exitTransitionOverride(
+              slideOutHorizontally(
+                animationSpec = tween(durationMillis = initialWaveDuration),
+                targetOffsetX = { it * 2 }
               )
             )
           }

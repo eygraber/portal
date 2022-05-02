@@ -1,5 +1,7 @@
 package com.eygraber.portal.compose
 
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.runtime.Immutable
 import com.eygraber.portal.PortalRendererState
 import com.eygraber.portal.internal.PortalEntry
@@ -11,9 +13,10 @@ public data class ComposePortalEntry<KeyT>(
   override val isDisappearing: Boolean,
   override val isBackstackMutation: Boolean,
   override val rendererState: PortalRendererState,
-  override val extra: Extra?,
+  override val enterExtra: EnterExtra?,
+  override val exitExtra: ExitExtra?,
   override val portal: ComposePortal
-) : PortalEntry<KeyT, ComposePortalEntry.Extra, ComposePortal> {
+) : PortalEntry<KeyT, ComposePortalEntry.EnterExtra, ComposePortalEntry.ExitExtra, ComposePortal> {
   override fun toString(): String =
     """$name(
       |  key=$key,
@@ -21,13 +24,29 @@ public data class ComposePortalEntry<KeyT>(
       |  isDisappearing=$isDisappearing
       |  isBackstackMutation=$isBackstackMutation,
       |  rendererState=$rendererState,
-      |  extra=$extra
+      |  extra=$enterExtra
       |)
     """.trimMargin()
 
   private inline val name get() = this::class.simpleName
 
-  public data class Extra(
+  public data class EnterExtra(
     val transitionOverride: ComposePortalTransition?
-  ) : PortalEntry.Extra
+  ) : PortalEntry.Extra.Enter {
+    public companion object {
+      public fun enterTransitionOverride(
+        enterTransition: EnterTransition
+      ): EnterExtra = EnterExtra(ComposePortalTransition.enter(enterTransition))
+    }
+  }
+
+  public data class ExitExtra(
+    val transitionOverride: ComposePortalTransition?
+  ) : PortalEntry.Extra.Exit {
+    public companion object {
+      public fun exitTransitionOverride(
+        exitTransition: ExitTransition
+      ): ExitExtra = ExitExtra(ComposePortalTransition.exit(exitTransition))
+    }
+  }
 }
