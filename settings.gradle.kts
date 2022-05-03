@@ -1,5 +1,3 @@
-@file:Suppress("UnstableApiUsage")
-
 pluginManagement {
   repositories {
     google {
@@ -14,6 +12,7 @@ pluginManagement {
     maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
   }
 
+  @Suppress("UnstableApiUsage")
   includeBuild("gradle-plugins")
 }
 
@@ -47,5 +46,7 @@ include(":portal-kodein-di")
 include(":samples:kotlin-inject")
 include(":samples:portal")
 include(":samples:simple-portal")
+include(":samples:simple-portal:android-app")
+include(":samples:simple-portal:desktop-app")
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
