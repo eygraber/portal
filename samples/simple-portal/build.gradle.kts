@@ -1,24 +1,27 @@
+import com.eygraber.portal.gradle.portalTargets
 import org.jetbrains.compose.compose
 
 plugins {
-  kotlin("jvm")
-  id("portal-kotlin-library")
+  id("portal-kotlin-multiplatform")
+  id("portal-android-library")
   id("org.jetbrains.compose")
   id("portal-detekt")
 }
 
-dependencies {
-  implementation(projects.portalCompose)
-
-  implementation(compose.material)
-  implementation(compose.materialIconsExtended)
-  implementation(compose.desktop.currentOs)
-
-  implementation(libs.kotlinx.coroutines.core)
+android {
+  namespace = "com.eygraber.portal.samples.simpleportal"
 }
 
-compose.desktop {
-  application {
-    mainClass = "com.eygraber.portal.samples.simpleportal.SimplePortalAppKt"
+kotlin {
+  portalTargets()
+
+  sourceSets.commonMain {
+    dependencies {
+      implementation(projects.portalCompose)
+
+      implementation(compose.material)
+
+      implementation(libs.kotlinx.coroutines.core)
+    }
   }
 }

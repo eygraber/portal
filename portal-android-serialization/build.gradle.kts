@@ -6,6 +6,10 @@ plugins {
   id("portal-publish")
 }
 
+android {
+  namespace = "com.eygraber.portal.android.serialization"
+}
+
 dependencies {
   implementation(projects.portal)
 }

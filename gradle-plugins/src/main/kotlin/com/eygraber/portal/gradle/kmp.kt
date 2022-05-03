@@ -8,7 +8,7 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 
 fun KotlinMultiplatformExtension.portalTargets(
   jvm: Boolean = true,
-  android: Boolean = false,
+  android: Boolean = true,
   ios: Boolean = false
 ) {
   if(jvm) {
@@ -30,4 +30,4 @@ fun KotlinMultiplatformExtension.portalTargets(
  * Provides the existing [androidMain][KotlinSourceSet] element.
  */
 val NamedDomainObjectContainer<KotlinSourceSet>.androidMain
-  get() = named<KotlinSourceSet>("commonMain")
+  get() = named<KotlinSourceSet>("androidMain")
