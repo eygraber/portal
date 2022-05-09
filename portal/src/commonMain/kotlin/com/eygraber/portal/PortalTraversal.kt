@@ -1,7 +1,5 @@
 package com.eygraber.portal
 
-private typealias TypedPortalManager = AbstractPortalManager<*, *, *, *, *>
-
 public sealed interface PortalTraversal {
   public object Depth {
     public object Pre : PortalTraversal
@@ -13,11 +11,11 @@ public sealed interface PortalTraversal {
 
 public fun ParentPortal.traverseChildren(
   onPortal: (Portal) -> Unit = {},
-  onPortalManager: (TypedPortalManager) -> Unit = {},
+  onPortalManager: (PortalManager<*>) -> Unit = {},
   traversal: PortalTraversal = PortalTraversal.Depth.Pre
 ) {
   if(traversal == PortalTraversal.Breadth) {
-    val initial = ArrayDeque<TypedPortalManager>().also {
+    val initial = ArrayDeque<PortalManager<*>>().also {
       it.addAll(portalManagers)
     }
     traverseChildrenBFS(onPortal, onPortalManager, initial)
@@ -29,7 +27,7 @@ public fun ParentPortal.traverseChildren(
 
 private fun ParentPortal.traverseChildrenDFS(
   onPortal: (Portal) -> Unit,
-  onPortalManager: (TypedPortalManager) -> Unit,
+  onPortalManager: (PortalManager<*>) -> Unit,
   traversal: PortalTraversal = PortalTraversal.Depth.Pre
 ) {
   for(portalManager in portalManagers) {
@@ -62,8 +60,8 @@ private fun ParentPortal.traverseChildrenDFS(
 
 private fun traverseChildrenBFS(
   onPortal: (Portal) -> Unit,
-  onPortalManager: (TypedPortalManager) -> Unit,
-  portalManagers: ArrayDeque<TypedPortalManager>
+  onPortalManager: (PortalManager<*>) -> Unit,
+  portalManagers: ArrayDeque<PortalManager<*>>
 ) {
   while(portalManagers.isNotEmpty()) {
     val portalManager = portalManagers.removeLast()

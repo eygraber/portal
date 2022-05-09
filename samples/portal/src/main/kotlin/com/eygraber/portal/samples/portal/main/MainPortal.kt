@@ -8,7 +8,7 @@ import com.eygraber.portal.ChildPortal
 import com.eygraber.portal.ParentPortal
 import com.eygraber.portal.Portal
 import com.eygraber.portal.compose.ComposePortal
-import com.eygraber.portal.compose.PortalManager
+import com.eygraber.portal.compose.ComposePortalManager
 import com.eygraber.portal.compose.PortalTransition
 import com.eygraber.portal.kodein.di.KodeinDIPortal
 import com.eygraber.portal.kodein.di.portalSingleton
@@ -22,8 +22,8 @@ import org.kodein.di.provider
 class MainPortal(
   override val parent: ParentPortal
 ) : ComposePortal, KodeinDIPortal(), ParentPortal, ChildPortal {
-  private val appPortalManager by on(context = this).instance<PortalManager<AppPortalKey>>()
-  private val mainPortalManager by on(context = this).instance<PortalManager<MainPortalKey>>()
+  private val appPortalManager by on(context = this).instance<ComposePortalManager<AppPortalKey>>()
+  private val mainPortalManager by on(context = this).instance<ComposePortalManager<MainPortalKey>>()
   private val mainView by on(context = this).instance<MainView>()
 
   override val portalManagers by lazy {
@@ -52,8 +52,8 @@ class MainPortal(
       )
     }
 
-    bind<PortalManager<AppPortalKey>>() with portalSingleton {
-      PortalManager(
+    bind<ComposePortalManager<AppPortalKey>>() with portalSingleton {
+      ComposePortalManager(
         defaultTransitionProvider = { _, _ ->
           PortalTransition(
             enter = slideInVertically(animationSpec = tween(durationMillis = 400)) { it * 2 },
@@ -66,8 +66,8 @@ class MainPortal(
       )
     }
 
-    bind<PortalManager<MainPortalKey>>() with portalSingleton {
-      PortalManager(
+    bind<ComposePortalManager<MainPortalKey>>() with portalSingleton {
+      ComposePortalManager(
         defaultErrorHandler = {
           it.printStackTrace()
         }

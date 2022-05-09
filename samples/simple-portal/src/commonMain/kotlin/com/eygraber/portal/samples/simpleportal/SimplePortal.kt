@@ -15,14 +15,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import com.eygraber.portal.compose.ComposePortalEntry
-import com.eygraber.portal.compose.PortalManager
+import com.eygraber.portal.compose.ComposePortalManager
 import com.eygraber.portal.compose.PortalTransition
 import com.eygraber.portal.compose.SimplePortalTransitionProvider
+import com.eygraber.portal.compose.exitTransitionOverride
 import com.eygraber.portal.push
 import kotlinx.coroutines.delay
 
-private val portalManager = PortalManager<PortalKey>(
+private val portalManager = ComposePortalManager<PortalKey>(
   defaultTransitionProvider = object : SimplePortalTransitionProvider {
     override fun enterExitTransition() = PortalTransition(
       enter = slideInHorizontally(
@@ -62,75 +62,75 @@ fun SimplePortal() {
 
       backstack.clear(
         suppressTransitions = false,
-        exitExtra = { key ->
+        exitTransitionOverride = { key ->
           when(key) {
-            PortalKey.One -> ComposePortalEntry.ExitExtra.exitTransitionOverride(
+            PortalKey.One -> exitTransitionOverride {
               fadeOut(
                 animationSpec = tween(durationMillis = lastWaveDuration)
               )
-            )
+            }
 
-            PortalKey.Two -> ComposePortalEntry.ExitExtra.exitTransitionOverride(
+            PortalKey.Two -> exitTransitionOverride {
               shrinkOut(
                 animationSpec = tween(durationMillis = lastWaveDuration)
               )
-            )
+            }
 
-            PortalKey.Three -> ComposePortalEntry.ExitExtra.exitTransitionOverride(
+            PortalKey.Three -> exitTransitionOverride {
               slideOutVertically(
                 animationSpec = tween(durationMillis = secondWaveDuration),
                 targetOffsetY = { -it }
               )
-            )
+            }
 
-            PortalKey.Four -> ComposePortalEntry.ExitExtra.exitTransitionOverride(
+            PortalKey.Four -> exitTransitionOverride {
               slideOutVertically(
                 animationSpec = tween(durationMillis = secondWaveDuration),
                 targetOffsetY = { it * 2 }
               )
-            )
+            }
 
-            PortalKey.Five -> ComposePortalEntry.ExitExtra.exitTransitionOverride(
+            PortalKey.Five -> exitTransitionOverride {
               slideOutHorizontally(
                 animationSpec = tween(durationMillis = secondWaveDuration),
                 targetOffsetX = { -it }
               )
-            )
+            }
 
-            PortalKey.Six -> ComposePortalEntry.ExitExtra.exitTransitionOverride(
+            PortalKey.Six -> exitTransitionOverride {
               slideOutHorizontally(
                 animationSpec = tween(durationMillis = secondWaveDuration),
                 targetOffsetX = { it * 2 }
               )
-            )
+            }
 
-            PortalKey.Seven -> ComposePortalEntry.ExitExtra.exitTransitionOverride(
+            PortalKey.Seven -> exitTransitionOverride {
               slideOutVertically(
                 animationSpec = tween(durationMillis = initialWaveDuration),
                 targetOffsetY = { -it }
               )
-            )
+            }
 
-            PortalKey.Eight -> ComposePortalEntry.ExitExtra.exitTransitionOverride(
+            PortalKey.Eight -> exitTransitionOverride {
               slideOutVertically(
                 animationSpec = tween(durationMillis = initialWaveDuration),
                 targetOffsetY = { it * 2 }
               )
-            )
+            }
 
-            PortalKey.Nine -> ComposePortalEntry.ExitExtra.exitTransitionOverride(
+            PortalKey.Nine -> exitTransitionOverride {
               slideOutHorizontally(
                 animationSpec = tween(durationMillis = initialWaveDuration),
                 targetOffsetX = { -it }
               )
-            )
+            }
 
-            PortalKey.Ten -> ComposePortalEntry.ExitExtra.exitTransitionOverride(
+            PortalKey.Ten -> exitTransitionOverride {
               slideOutHorizontally(
                 animationSpec = tween(durationMillis = initialWaveDuration),
                 targetOffsetX = { it * 2 }
               )
-            )
+            }
           }
         }
       )
@@ -152,8 +152,8 @@ fun SimplePortal() {
   }
 }
 
-suspend fun PortalManager<PortalKey>.addTenNumberBoxPortals() {
-  suspend fun PortalManager<PortalKey>.addNumberBoxPortal(
+suspend fun ComposePortalManager<PortalKey>.addTenNumberBoxPortals() {
+  suspend fun ComposePortalManager<PortalKey>.addNumberBoxPortal(
     previousKey: PortalKey?,
     key: PortalKey
   ) {

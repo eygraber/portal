@@ -1,45 +1,38 @@
 package com.eygraber.portal.internal
 
-import com.eygraber.portal.Portal
+import com.eygraber.portal.PortalEntry
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.buildJsonArray
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 
-internal fun <KeyT, EntryT, EnterExtraT, ExitExtraT, PortalT> serializePortalManagerState(
+internal fun <KeyT> serializePortalManagerState(
   keySerializer: (KeyT) -> String,
-  state: PortalState<KeyT, EntryT, EnterExtraT, ExitExtraT, PortalT>
-) where EntryT : Entry<KeyT, EnterExtraT, ExitExtraT, PortalT>,
-        EnterExtraT : EnterExtra,
-        ExitExtraT : ExitExtra,
-        PortalT : Portal =
-  Json.encodeToString(
-    buildJsonObject {
-      put("entries", state.portalEntries.serializeEntries(keySerializer))
-      put("backstack", state.backstackEntries.serializeBackstackEntries(keySerializer))
-    }
-  )
-
-private fun <KeyT, EntryT, EnterExtraT, ExitExtraT, PortalT : Portal> List<EntryT>.serializeEntries(
-  keySerializer: (KeyT) -> String
-) where EntryT : Entry<KeyT, EnterExtraT, ExitExtraT, PortalT>,
-        EnterExtraT : EnterExtra,
-        ExitExtraT : ExitExtra =
-  buildJsonArray {
-    forEach { entry ->
-      add(
-        buildJsonObject {
-          put("key", keySerializer(entry.key))
-          put("wasContentPreviouslyVisible", entry.wasContentPreviouslyVisible)
-          put("isAttached", entry.rendererState.isAddedOrAttached)
-          put("isDisappearing", entry.isDisappearing)
-          put("isBackstackMutation", entry.isBackstackMutation)
-          put("rendererState", entry.rendererState.name)
-        }
-      )
-    }
+  state: PortalState<KeyT>
+) = Json.encodeToString(
+  buildJsonObject {
+    put("entries", state.portalEntries.serializeEntries(keySerializer))
+    put("backstack", state.backstackEntries.serializeBackstackEntries(keySerializer))
   }
+)
+
+private fun <KeyT> List<PortalEntry<KeyT>>.serializeEntries(
+  keySerializer: (KeyT) -> String
+) = buildJsonArray {
+  forEach { entry ->
+    add(
+      buildJsonObject {
+        put("key", keySerializer(entry.key))
+        put("wasContentPreviouslyVisible", entry.wasContentPreviouslyVisible)
+        put("isAttached", entry.rendererState.isAddedOrAttached)
+        put("isDisappearing", entry.isDisappearing)
+        put("isBackstackMutation", entry.isBackstackMutation)
+        put("rendererState", entry.rendererState.name)
+      }
+    )
+  }
+}
 
 private fun <KeyT> List<PortalBackstackEntry<KeyT>>.serializeBackstackEntries(
   keySerializer: (KeyT) -> String

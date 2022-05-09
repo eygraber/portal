@@ -3,51 +3,30 @@ package com.eygraber.portal.compose
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.runtime.Immutable
+import com.eygraber.portal.PortalEntry
 import com.eygraber.portal.PortalRendererState
-import com.eygraber.portal.internal.PortalEntry
 
 @Immutable
-public data class ComposePortalEntry<KeyT>(
-  override val key: KeyT,
-  override val wasContentPreviouslyVisible: Boolean,
-  override val isDisappearing: Boolean,
-  override val isBackstackMutation: Boolean,
-  override val rendererState: PortalRendererState,
-  override val enterExtra: EnterExtra?,
-  override val exitExtra: ExitExtra?,
-  override val portal: ComposePortal
-) : PortalEntry<KeyT, ComposePortalEntry.EnterExtra, ComposePortalEntry.ExitExtra, ComposePortal> {
-  override fun toString(): String =
-    """$name(
-      |  key=$key,
-      |  wasContentPreviouslyVisible=$wasContentPreviouslyVisible
-      |  isDisappearing=$isDisappearing
-      |  isBackstackMutation=$isBackstackMutation,
-      |  rendererState=$rendererState,
-      |  enterExtra=$enterExtra,
-      |  exitExtra=$exitExtra
-      |)
-    """.trimMargin()
-
-  private inline val name get() = this::class.simpleName
-
-  public data class EnterExtra(
-    val transitionOverride: PortalTransition?
-  ) : PortalEntry.Extra.Enter {
-    public companion object {
-      public fun enterTransitionOverride(
-        enterTransition: EnterTransition
-      ): EnterExtra = EnterExtra(PortalTransition.enter(enterTransition))
-    }
-  }
-
-  public data class ExitExtra(
-    val transitionOverride: PortalTransition?
-  ) : PortalEntry.Extra.Exit {
-    public companion object {
-      public fun exitTransitionOverride(
-        exitTransition: ExitTransition
-      ): ExitExtra = ExitExtra(PortalTransition.exit(exitTransition))
-    }
+internal data class ComposePortalEntry<KeyT>(
+  val key: KeyT,
+  val wasContentPreviouslyVisible: Boolean,
+  val isDisappearing: Boolean,
+  val isBackstackMutation: Boolean,
+  val rendererState: PortalRendererState,
+  val enterTransitionOverride: EnterTransition?,
+  val exitTransitionOverride: ExitTransition?,
+  val portal: ComposePortal
+) {
+  companion object {
+    fun <KeyT> fromPortalEntry(entry: PortalEntry<KeyT>) = ComposePortalEntry(
+      key = entry.key,
+      wasContentPreviouslyVisible = entry.wasContentPreviouslyVisible,
+      isDisappearing = entry.isDisappearing,
+      isBackstackMutation = entry.isBackstackMutation,
+      rendererState = entry.rendererState,
+      enterTransitionOverride = entry.enterTransitionOverride?.toComposeTransition(),
+      exitTransitionOverride = entry.exitTransitionOverride?.toComposeTransition(),
+      portal = entry.portal as? ComposePortal ?: error("portal must be a ComposePortal")
+    )
   }
 }

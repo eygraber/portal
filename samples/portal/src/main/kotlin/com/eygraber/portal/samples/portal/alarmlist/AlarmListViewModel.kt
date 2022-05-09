@@ -3,7 +3,7 @@ package com.eygraber.portal.samples.portal.alarmlist
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import com.eygraber.portal.compose.PortalManager
+import com.eygraber.portal.compose.ComposePortalManager
 import com.eygraber.portal.samples.portal.VM
 import com.eygraber.portal.samples.portal.main.AppPortalKey
 import java.time.LocalTime
@@ -12,7 +12,7 @@ import java.time.format.FormatStyle
 import java.util.UUID
 
 class AlarmListViewModel(
-  private val appPortalManager: PortalManager<AppPortalKey>
+  private val appPortalManager: ComposePortalManager<AppPortalKey>
 ) : VM<AlarmListState> {
   private class MutableAlarmListAlarm(
     id: String,

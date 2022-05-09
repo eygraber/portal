@@ -1,24 +1,25 @@
 package com.eygraber.portal.internal
 
-import com.eygraber.portal.AbstractPortalManager
+import com.eygraber.portal.EnterTransitionOverride
+import com.eygraber.portal.ExitTransitionOverride
 import com.eygraber.portal.ParentPortal
 import com.eygraber.portal.Portal
 import com.eygraber.portal.PortalBackstack
+import com.eygraber.portal.PortalEntry
+import com.eygraber.portal.PortalManager
 import com.eygraber.portal.PortalManagerValidation
 import com.eygraber.portal.PortalRemovedListener
 import com.eygraber.portal.PortalRendererState
 import com.eygraber.portal.PortalTransactionBuilderDsl
 import kotlinx.atomicfu.atomic
 
-internal class PortalEntryBuilder<KeyT, EntryT, EnterExtraT : EnterExtra, ExitExtraT : ExitExtra, PortalT : Portal>(
-  override val backstack: PortalBackstack<KeyT, EnterExtraT, ExitExtraT, PortalT>,
-  private val transactionPortalEntries: MutableList<EntryT>,
+internal class PortalEntryBuilder<KeyT>(
+  override val backstack: PortalBackstack<KeyT>,
+  private val transactionPortalEntries: MutableList<PortalEntry<KeyT>>,
   private val transactionBackstackEntries: MutableList<PortalBackstackEntry<KeyT>>,
   private val isForBackstack: Boolean,
-  private val validation: PortalManagerValidation,
-  private val entryCallbacks: PortalEntry.Callbacks<KeyT, EntryT, EnterExtraT, ExitExtraT, PortalT>
-) : AbstractPortalManager.EntryBuilder<KeyT, EnterExtraT, ExitExtraT, PortalT>
-  where EntryT : Entry<KeyT, EnterExtraT, ExitExtraT, PortalT> {
+  private val validation: PortalManagerValidation
+) : PortalManager.EntryBuilder<KeyT> {
   private val _postTransactionOps = atomic(emptyList<() -> Unit>())
   internal val postTransactionOps get() = _postTransactionOps.value
 
@@ -34,10 +35,10 @@ internal class PortalEntryBuilder<KeyT, EntryT, EnterExtraT : EnterExtra, ExitEx
   override fun add(
     key: KeyT,
     isAttachedToComposition: Boolean,
-    extra: EnterExtraT?,
-    portal: PortalT
+    transitionOverride: EnterTransitionOverride?,
+    portal: Portal
   ) {
-    transactionPortalEntries += entryCallbacks.create(
+    transactionPortalEntries += PortalEntry(
       key = key,
       wasContentPreviouslyVisible = false,
       isDisappearing = false,
@@ -46,14 +47,15 @@ internal class PortalEntryBuilder<KeyT, EntryT, EnterExtraT : EnterExtra, ExitEx
         isAttachedToComposition -> PortalRendererState.Added
         else -> PortalRendererState.Detached
       },
-      extra = extra,
+      enterTransitionOverride = transitionOverride,
+      exitTransitionOverride = null,
       portal = portal
     )
   }
 
   override fun attachToComposition(
     key: KeyT,
-    extra: EnterExtraT?
+    transitionOverride: EnterTransitionOverride?
   ) {
     key.applyMutationToPortalEntries { entry ->
       when {
@@ -62,12 +64,12 @@ internal class PortalEntryBuilder<KeyT, EntryT, EnterExtraT : EnterExtra, ExitEx
           else -> entry
         }
 
-        else -> entryCallbacks.attach(
-          entry = entry,
+        else -> entry.copy(
           wasContentPreviouslyVisible = entry.rendererState.isAddedOrAttached,
           isBackstackMutation = isForBackstack,
           rendererState = PortalRendererState.Attached,
-          extra = extra
+          enterTransitionOverride = transitionOverride,
+          exitTransitionOverride = null
         )
       }
     }
@@ -75,7 +77,7 @@ internal class PortalEntryBuilder<KeyT, EntryT, EnterExtraT : EnterExtra, ExitEx
 
   override fun detachFromComposition(
     key: KeyT,
-    extra: ExitExtraT?
+    transitionOverride: ExitTransitionOverride?
   ) {
     key.applyMutationToPortalEntries { entry ->
       when {
@@ -83,12 +85,12 @@ internal class PortalEntryBuilder<KeyT, EntryT, EnterExtraT : EnterExtra, ExitEx
           validation.validatePortalTransactions -> error("Cannot detach if the entry is disappearing")
           else -> entry
         }
-        else -> entryCallbacks.detach(
-          entry = entry,
+        else -> entry.copy(
           wasContentPreviouslyVisible = entry.rendererState.isAddedOrAttached,
           isBackstackMutation = isForBackstack,
           rendererState = PortalRendererState.Detached,
-          extra = extra
+          enterTransitionOverride = null,
+          exitTransitionOverride = transitionOverride
         )
       }
     }
@@ -96,7 +98,7 @@ internal class PortalEntryBuilder<KeyT, EntryT, EnterExtraT : EnterExtra, ExitEx
 
   override fun remove(
     key: KeyT,
-    extra: ExitExtraT?
+    transitionOverride: ExitTransitionOverride?
   ) {
     key.applyMutationToPortalEntries { entry ->
       when {
@@ -109,13 +111,13 @@ internal class PortalEntryBuilder<KeyT, EntryT, EnterExtraT : EnterExtra, ExitEx
           )
         }
 
-        else -> entryCallbacks.remove(
-          entry = entry,
+        else -> entry.copy(
           wasContentPreviouslyVisible = entry.rendererState.isAddedOrAttached,
           isBackstackMutation = false,
           rendererState = PortalRendererState.Removed,
           isDisappearing = true,
-          extra = extra
+          enterTransitionOverride = null,
+          exitTransitionOverride = transitionOverride
         ).also {
           entry.portal.notifyOfRemoval(
             isCompletelyRemoved = false
@@ -126,12 +128,12 @@ internal class PortalEntryBuilder<KeyT, EntryT, EnterExtraT : EnterExtra, ExitEx
   }
 
   override fun clear(
-    extraProvider: ((KeyT) -> ExitExtraT?)?
+    transitionOverrideProvider: ((KeyT) -> ExitTransitionOverride?)?
   ) {
     transactionPortalEntries.reversed().forEach { entry ->
       remove(
         key = entry.key,
-        extra = extraProvider?.invoke(entry.key)
+        transitionOverride = transitionOverrideProvider?.invoke(entry.key)
       )
     }
   }
@@ -158,13 +160,13 @@ internal class PortalEntryBuilder<KeyT, EntryT, EnterExtraT : EnterExtra, ExitEx
     }
   }
 
-  internal fun build(): Pair<List<EntryT>, List<PortalBackstackEntry<KeyT>>> =
+  internal fun build(): Pair<List<PortalEntry<KeyT>>, List<PortalBackstackEntry<KeyT>>> =
     transactionPortalEntries to transactionBackstackEntries
 
   @Suppress("unused")
-  internal inline fun <R> PortalBackstack<KeyT, EnterExtraT, ExitExtraT, PortalT>.usingBackstack(
+  internal inline fun <R> PortalBackstack<KeyT>.usingBackstack(
     @PortalTransactionBuilderDsl
-    builder: PortalEntryBuilder<KeyT, EntryT, EnterExtraT, ExitExtraT, PortalT>.(
+    builder: PortalEntryBuilder<KeyT>.(
       MutableList<PortalBackstackEntry<KeyT>>
     ) -> R
   ) = PortalEntryBuilder(
@@ -172,12 +174,11 @@ internal class PortalEntryBuilder<KeyT, EntryT, EnterExtraT : EnterExtra, ExitEx
     transactionBackstackEntries = transactionBackstackEntries,
     backstack = backstack,
     isForBackstack = true,
-    validation = validation,
-    entryCallbacks = entryCallbacks
+    validation = validation
   ).builder(transactionBackstackEntries)
 
   private fun KeyT.applyMutationToPortalEntries(
-    mutate: (EntryT) -> EntryT?
+    mutate: (PortalEntry<KeyT>) -> PortalEntry<KeyT>?
   ) {
     transactionPortalEntries
       .indexOfLast { entry -> entry.key == this }

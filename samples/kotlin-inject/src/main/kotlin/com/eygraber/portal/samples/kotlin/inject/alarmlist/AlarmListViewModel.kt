@@ -3,7 +3,7 @@ package com.eygraber.portal.samples.kotlin.inject.alarmlist
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import com.eygraber.portal.compose.PortalManager
+import com.eygraber.portal.compose.ComposePortalManager
 import com.eygraber.portal.samples.kotlin.inject.VM
 import com.eygraber.portal.samples.kotlin.inject.main.AppPortalKey
 import me.tatarka.inject.annotations.Inject
@@ -15,7 +15,7 @@ import java.util.UUID
 @AlarmListScope
 @Inject
 class AlarmListViewModel(
-  private val appPortalManager: PortalManager<AppPortalKey>
+  private val appPortalManager: ComposePortalManager<AppPortalKey>
 ) : VM<AlarmListState> {
   private class MutableAlarmListAlarm(
     id: String,

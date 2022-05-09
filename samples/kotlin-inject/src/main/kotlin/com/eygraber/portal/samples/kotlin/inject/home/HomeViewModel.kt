@@ -1,6 +1,6 @@
 package com.eygraber.portal.samples.kotlin.inject.home
 
-import com.eygraber.portal.compose.PortalManager
+import com.eygraber.portal.compose.ComposePortalManager
 import com.eygraber.portal.push
 import com.eygraber.portal.samples.kotlin.inject.VM
 import com.eygraber.portal.samples.kotlin.inject.alarmlist.AlarmListPortal
@@ -10,7 +10,7 @@ import me.tatarka.inject.annotations.Inject
 @HomeScope
 @Inject
 class HomeViewModel(
-  private val appPortalManager: PortalManager<AppPortalKey>,
+  private val appPortalManager: ComposePortalManager<AppPortalKey>,
   private val alarmListPortalProvider: () -> AlarmListPortal
 ) : VM<Unit> {
   override val state = Unit
