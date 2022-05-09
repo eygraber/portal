@@ -4,6 +4,18 @@ on:
   pull_request
 
 jobs:
+  danger:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Danger
+        uses: docker://ghcr.io/danger/danger-kotlin:1.0.0
+        with:
+            args: --failOnErrors --no-publish-check
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   check:
     runs-on: ubuntu-latest
     steps:
@@ -25,7 +37,51 @@ jobs:
           java-version: 11
 
       - name: Run checks
-        run: ./gradlew check detektJvmMain detektMetadataMain
+        run: ./gradlew check
+
+  detekt_type_resolution:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: gradle/wrapper-validation-action@v1.0.4
+
+      - name: Cache gradle
+        uses: actions/cache@v3
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 11
+
+      - name: Run detekt with type resolution
+        run: ./gradlew detektJvmMain detektDebug detektMetadataMain
+
+  validate_gradle_properties_match:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: gradle/wrapper-validation-action@v1.0.4
+
+      - name: Cache gradle
+        uses: actions/cache@v3
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+      - uses: actions/setup-java@v3
+        with:
+              java-version: 11
+              distribution: 'zulu'
+
+      - name: Validate that gradle property files are all equal
+        run: ./gradlew validateGradleProperties
 
 env:
   GRADLE_OPTS: -Dorg.gradle.daemon=false -Dorg.gradle.configureondemand=true -Dkotlin.incremental=false -Dorg.gradle.jvmargs="-Xmx4g -Xms128m -XX:MaxPermSize=4096m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -XX:MaxMetaspaceSize=1024m"

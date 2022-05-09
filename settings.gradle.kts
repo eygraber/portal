@@ -13,7 +13,7 @@ pluginManagement {
   }
 
   @Suppress("UnstableApiUsage")
-  includeBuild("gradle-plugins")
+  includeBuild("build-logic")
 }
 
 @Suppress("UnstableApiUsage")

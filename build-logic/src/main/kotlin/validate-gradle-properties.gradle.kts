@@ -4,12 +4,12 @@ import org.gradle.api.tasks.PathSensitivity
 tasks.register("validateGradleProperties") {
   val wrapperProperties = arrayOf(
     rootProject.file("gradle/wrapper/gradle-wrapper.properties"),
-    rootProject.file("gradle-plugins/gradle/wrapper/gradle-wrapper.properties")
+    rootProject.file("build-logic/gradle/wrapper/gradle-wrapper.properties")
   )
 
   val properties = arrayOf(
     rootProject.file("gradle.properties"),
-    rootProject.file("gradle-plugins/gradle.properties")
+    rootProject.file("build-logic/gradle.properties")
   )
 
   inputs.files(wrapperProperties).withPathSensitivity(PathSensitivity.RELATIVE)

@@ -11,10 +11,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import com.eygraber.portal.compose.ComposePortal
-import com.eygraber.portal.compose.ComposePortalEntry.EnterExtra.Companion.enterTransitionOverride
-import com.eygraber.portal.compose.ComposePortalEntry.ExitExtra.Companion.exitTransitionOverride
-import com.eygraber.portal.compose.PortalManager
+import com.eygraber.portal.compose.ComposePortalManager
 import com.eygraber.portal.compose.PortalTransition
+import com.eygraber.portal.compose.enterTransitionOverride
+import com.eygraber.portal.compose.exitTransitionOverride
 import com.eygraber.portal.samples.kotlin.inject.VM
 import com.eygraber.portal.samples.kotlin.inject.home.HomePortal
 import me.tatarka.inject.annotations.Inject
@@ -22,7 +22,7 @@ import me.tatarka.inject.annotations.Inject
 @MainScope
 @Inject
 class MainViewModel(
-  private val mainBottomNavPortalManager: PortalManager<MainBottomNavPortalKey>,
+  private val mainBottomNavPortalManager: ComposePortalManager<MainBottomNavPortalKey>,
   private val homePortalProvider: () -> HomePortal
 ) : VM<MainState> {
   private val mutableState = object : MainState {
@@ -106,11 +106,15 @@ class MainViewModel(
       val transition = tab.getTransitionOverride(tabMovingFrom)
       detachFromComposition(
         tabMovingFrom,
-        exitTransitionOverride(transition.exit)
+        exitTransitionOverride {
+          transition.exit
+        }
       )
       attachToComposition(
         tab,
-        enterTransitionOverride(transition.enter)
+        enterTransitionOverride {
+          transition.enter
+        }
       )
     }
   }

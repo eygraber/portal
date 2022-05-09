@@ -3,7 +3,7 @@ package com.eygraber.portal.samples.kotlin.inject.main
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
-import com.eygraber.portal.compose.PortalManager
+import com.eygraber.portal.compose.ComposePortalManager
 import com.eygraber.portal.compose.PortalTransition
 import com.eygraber.portal.samples.kotlin.inject.AppComponent
 import com.eygraber.portal.samples.kotlin.inject.PortalComponent
@@ -21,13 +21,13 @@ abstract class MainComponent(
   override val portal: MainPortal
 ) : PortalComponent<MainPortal> {
   abstract val view: MainView
-  abstract val appPortalManager: PortalManager<AppPortalKey>
-  abstract val mainBottomNavPortalManager: PortalManager<MainBottomNavPortalKey>
+  abstract val appPortalManager: ComposePortalManager<AppPortalKey>
+  abstract val mainBottomNavPortalManager: ComposePortalManager<MainBottomNavPortalKey>
 
   @MainScope
   @Provides
   fun appPortalManager() =
-    PortalManager<AppPortalKey>(
+    ComposePortalManager<AppPortalKey>(
       defaultTransitionProvider = { _, _ ->
         PortalTransition(
           enter = slideInVertically(animationSpec = tween(durationMillis = 400)) { it * 2 },
@@ -42,7 +42,7 @@ abstract class MainComponent(
   @MainScope
   @Provides
   fun mainPortalManager() =
-    PortalManager<MainBottomNavPortalKey>(
+    ComposePortalManager<MainBottomNavPortalKey>(
       defaultErrorHandler = {
         it.printStackTrace()
       }

@@ -1,10 +1,6 @@
 package com.eygraber.portal
 
-import com.eygraber.portal.internal.EnterExtra
-import com.eygraber.portal.internal.Entry
-import com.eygraber.portal.internal.ExitExtra
 import com.eygraber.portal.internal.PortalBackstackEntry
-import com.eygraber.portal.internal.PortalEntry
 import com.eygraber.portal.internal.PortalState
 import com.eygraber.portal.internal.deserializePortalManagerState
 import com.eygraber.portal.internal.serializePortalManagerState
@@ -25,18 +21,15 @@ public interface PortalManagerQueries<KeyT> {
 @DslMarker
 internal annotation class PortalTransactionBuilderDsl
 
-public abstract class AbstractPortalManager<KeyT, EntryT, EnterExtraT, ExitExtraT, PortalT>(
+public abstract class PortalManager<KeyT>(
   private val defaultErrorHandler: ((Throwable) -> Unit)? = null,
-  private val entryCallbacks: PortalEntry.Callbacks<KeyT, EntryT, EnterExtraT, ExitExtraT, PortalT>,
   validation: PortalManagerValidation = PortalManagerValidation()
-) : PortalManagerQueries<KeyT>
-  where EntryT : Entry<KeyT, EnterExtraT, ExitExtraT, PortalT>,
-        EnterExtraT : EnterExtra,
-        ExitExtraT : ExitExtra,
-        PortalT : Portal {
-  override val size: Int get() = portalState.portalEntries.filterNot { it.isDisappearing }.size
+) : PortalManagerQueries<KeyT> {
+  override val size: Int
+    get() = portalState.portalEntries.filterNot { it.isDisappearing }.size
 
-  override val portals: List<Pair<KeyT, PortalT>> get() = portalState.portalEntries.map { it.key to it.portal }
+  override val portals: List<Pair<KeyT, Portal>>
+    get() = portalState.portalEntries.map { it.key to it.portal }
 
   override operator fun contains(key: KeyT): Boolean =
     portalState.portalEntries.findLast { entry ->
@@ -52,14 +45,13 @@ public abstract class AbstractPortalManager<KeyT, EntryT, EnterExtraT, ExitExtra
   public fun restoreState(
     serializedState: String,
     keyDeserializer: (String) -> KeyT,
-    portalFactory: (KeyT) -> PortalT
+    portalFactory: (KeyT) -> Portal
   ) {
     lock.withLock {
       val (entries, backstack) = deserializePortalManagerState(
         serializedState = serializedState,
         keyDeserializer = keyDeserializer,
-        portalFactory = portalFactory,
-        entryCallbacks = entryCallbacks
+        portalFactory = portalFactory
       )
 
       portalState.restoreState(
@@ -71,7 +63,7 @@ public abstract class AbstractPortalManager<KeyT, EntryT, EnterExtraT, ExitExtra
 
   public fun withTransaction(
     errorHandler: ((Throwable) -> Unit)? = defaultErrorHandler,
-    @PortalTransactionBuilderDsl builder: EntryBuilder<KeyT, EnterExtraT, ExitExtraT, PortalT>.() -> Unit
+    @PortalTransactionBuilderDsl builder: EntryBuilder<KeyT>.() -> Unit
   ) {
     lock.withLock {
       portalState.startTransaction(_backstack)
@@ -96,52 +88,45 @@ public abstract class AbstractPortalManager<KeyT, EntryT, EnterExtraT, ExitExtra
   public fun updates(): Flow<Unit> = portalState.portalEntriesUpdateFlow().map {}
 
   private val lock = reentrantLock()
-  private val portalState = PortalState(
-    validation = validation,
-    entryCallbacks = entryCallbacks
-  )
+  private val portalState = PortalState<KeyT>(validation = validation)
 
-  protected fun portalEntriesUpdateFlow(): StateFlow<List<EntryT>> =
+  protected fun portalEntriesUpdateFlow(): StateFlow<List<PortalEntry<KeyT>>> =
     portalState.portalEntriesUpdateFlow()
 
   protected fun backstackEntriesUpdateFlow(): StateFlow<List<PortalBackstackEntry<KeyT>>> =
     portalState.backstackEntriesUpdateFlow()
 
-  private val _backstack: PortalBackstack<KeyT, EnterExtraT, ExitExtraT, PortalT> =
-    PortalBackstackImpl(portalState)
+  private val _backstack: PortalBackstack<KeyT> = PortalBackstackImpl(portalState)
 
   public val backstack: ReadOnlyBackstack = _backstack
 
-  public interface EntryBuilder<KeyT, EnterExtraT, ExitExtraT, PortalT> : PortalManagerQueries<KeyT>
-    where EnterExtraT : EnterExtra,
-          ExitExtraT : ExitExtra,
-          PortalT : Portal {
-    public val backstack: PortalBackstack<KeyT, EnterExtraT, ExitExtraT, PortalT>
+  public interface EntryBuilder<KeyT> : PortalManagerQueries<KeyT> {
+    public val backstack: PortalBackstack<KeyT>
 
     public fun add(
       key: KeyT,
       isAttachedToComposition: Boolean = true,
-      extra: EnterExtraT? = null,
-      portal: PortalT
+      transitionOverride: EnterTransitionOverride? = null,
+      portal: Portal
     )
 
     public fun attachToComposition(
       key: KeyT,
-      extra: EnterExtraT? = null
+      transitionOverride: EnterTransitionOverride? = null
     )
 
     public fun detachFromComposition(
       key: KeyT,
-      extra: ExitExtraT? = null
+      transitionOverride: ExitTransitionOverride? = null
     )
 
     public fun remove(
       key: KeyT,
-      extra: ExitExtraT? = null
+      transitionOverride: ExitTransitionOverride? = null
     )
 
     public fun clear(
-      extraProvider: ((KeyT) -> ExitExtraT?)? = null
+      transitionOverrideProvider: ((KeyT) -> ExitTransitionOverride?)? = null
     )
   }
 }

@@ -19,13 +19,13 @@ fun ParentPortal.onSaveState(bundle: Bundle?) {
   }
 
   traverseChildren(
-    onPortal = {
-      if(it is SaveablePortal) {
-        it.saveState()
+    onPortal = { portal ->
+      if(portal is SaveablePortal) {
+        portal.saveState()
       }
 
-      if(bundle != null && it is ParcelablePortal) {
-        it.saveState(bundle)
+      if(bundle != null && portal is ParcelablePortal) {
+        portal.saveState(bundle)
       }
     }
   )

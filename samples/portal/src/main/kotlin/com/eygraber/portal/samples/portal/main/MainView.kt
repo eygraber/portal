@@ -17,12 +17,12 @@ import androidx.compose.material.icons.filled.Whatshot
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.eygraber.portal.compose.PortalManager
+import com.eygraber.portal.compose.ComposePortalManager
 import com.eygraber.portal.samples.portal.View
 
 class MainView(
-  private val appPortalManager: PortalManager<AppPortalKey>,
-  private val mainPortalManager: PortalManager<MainPortalKey>,
+  private val appPortalManager: ComposePortalManager<AppPortalKey>,
+  private val mainPortalManager: ComposePortalManager<MainPortalKey>,
   override val vm: MainViewModel
 ) : View<MainState> {
   @Composable
