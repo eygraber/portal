@@ -39,7 +39,7 @@ publish = { id = "com.vanniktech.maven.publish", version.ref = "publish" }
 [libraries]
 androidx-activity-compose = "androidx.activity:activity-compose:1.5.0-rc01"
 androidx-appcompat = "androidx.appcompat:appcompat:1.5.0-alpha01"
-androidx-core = "androidx.core:core-ktx:1.8.0-rc01"
+androidx-core = "androidx.core:core-ktx:1.8.0-rc02"
 
 buildscript-android = { module = "com.android.tools.build:gradle", version.ref = "agp" }
 buildscript-androidCacheFix = { module = "gradle.plugin.org.gradle.android:android-cache-fix-gradle-plugin", version = "2.5.3" }
