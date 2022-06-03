@@ -4,7 +4,7 @@ public interface PortalRemovedListener {
   public fun onPortalRemoved(isCompletelyRemoved: Boolean)
 }
 
-public interface LifecyclePortal : Portal, PortalRemovedListener {
+public interface PortalLifecycleManager : PortalRemovedListener {
   public fun addPortalRemovedListener(listener: PortalRemovedListener)
   public fun removePortalRemovedListener(listener: PortalRemovedListener)
 }

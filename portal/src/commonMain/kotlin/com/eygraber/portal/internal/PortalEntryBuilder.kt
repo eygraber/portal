@@ -13,6 +13,7 @@ import com.eygraber.portal.PortalRemovedListener
 import com.eygraber.portal.PortalRendererState
 import com.eygraber.portal.PortalTransactionBuilderDsl
 import kotlinx.atomicfu.atomic
+import kotlinx.atomicfu.update
 
 internal class PortalEntryBuilder<KeyT>(
   override val backstack: PortalBackstack<KeyT>,
@@ -142,10 +143,12 @@ internal class PortalEntryBuilder<KeyT>(
   ) {
     key.applyMutationToPortalEntries { entry ->
       if(entry.isDisappearing) {
-        _postTransactionOps.value = _postTransactionOps.value.plus {
-          entry.portal.notifyOfRemoval(
-            isCompletelyRemoved = true
-          )
+        _postTransactionOps.update { oldPostTransactionOps ->
+          oldPostTransactionOps + {
+            entry.portal.notifyOfRemoval(
+              isCompletelyRemoved = true
+            )
+          }
         }
         // removes the entry from portalEntries
         null
@@ -198,13 +201,15 @@ internal class PortalEntryBuilder<KeyT>(
   private fun Portal.notifyOfRemoval(
     isCompletelyRemoved: Boolean
   ) {
-    _postTransactionOps.value = _postTransactionOps.value.plus {
-      if(this is ParentPortal) {
-        notifyChildrenOfRemoval(isCompletelyRemoved = isCompletelyRemoved)
-      }
+    _postTransactionOps.update { oldPostTransactionOps ->
+      oldPostTransactionOps + {
+        if(this is ParentPortal) {
+          notifyChildrenOfRemoval(isCompletelyRemoved = isCompletelyRemoved)
+        }
 
-      if(this is PortalRemovedListener) {
-        onPortalRemoved(isCompletelyRemoved = isCompletelyRemoved)
+        if(this is PortalRemovedListener) {
+          onPortalRemoved(isCompletelyRemoved = isCompletelyRemoved)
+        }
       }
     }
   }
