@@ -5,6 +5,7 @@ plugins {
   id("com.vanniktech.maven.publish")
 }
 
-mavenPublish {
-  sonatypeHost = SonatypeHost.S01
+mavenPublishing {
+  publishToMavenCentral(SonatypeHost.S01)
+  signAllPublications()
 }
