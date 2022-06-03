@@ -31,12 +31,12 @@ class MainViewModel(
 
   init {
     mainBottomNavPortalManager.withTransaction {
-      add(MainBottomNavPortalKey.Alarm, portal = homePortalProvider())
+      add(portal = homePortalProvider())
 
       add(
-        MainBottomNavPortalKey.Two,
         isAttachedToComposition = false,
-        portal = object : ComposePortal {
+        portal = object : ComposePortal<MainBottomNavPortalKey> {
+          override val key = MainBottomNavPortalKey.Two
           @Composable
           override fun Render() {
             Text(
@@ -49,9 +49,9 @@ class MainViewModel(
       )
 
       add(
-        MainBottomNavPortalKey.Three,
         isAttachedToComposition = false,
-        portal = object : ComposePortal {
+        portal = object : ComposePortal<MainBottomNavPortalKey> {
+          override val key = MainBottomNavPortalKey.Three
           @Composable
           override fun Render() {
             Text(
@@ -64,9 +64,9 @@ class MainViewModel(
       )
 
       add(
-        MainBottomNavPortalKey.Four,
         isAttachedToComposition = false,
-        portal = object : ComposePortal {
+        portal = object : ComposePortal<MainBottomNavPortalKey> {
+          override val key = MainBottomNavPortalKey.Four
           @Composable
           override fun Render() {
             Text(

@@ -21,7 +21,9 @@ import org.kodein.di.provider
 
 class MainPortal(
   override val parent: ParentPortal
-) : ComposePortal, KodeinDIPortal(), ParentPortal, ChildPortal {
+) : ComposePortal<AppPortalKey>, KodeinDIPortal(), ParentPortal, ChildPortal {
+  override val key = AppPortalKey.Main
+
   private val appPortalManager by on(context = this).instance<ComposePortalManager<AppPortalKey>>()
   private val mainPortalManager by on(context = this).instance<ComposePortalManager<MainPortalKey>>()
   private val mainView by on(context = this).instance<MainView>()

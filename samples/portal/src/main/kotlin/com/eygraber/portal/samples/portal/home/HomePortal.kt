@@ -8,6 +8,7 @@ import com.eygraber.portal.kodein.di.KodeinDIPortal
 import com.eygraber.portal.kodein.di.portalSingleton
 import com.eygraber.portal.samples.portal.alarmlist.AlarmListPortal
 import com.eygraber.portal.samples.portal.main.MainPortal
+import com.eygraber.portal.samples.portal.main.MainPortalKey
 import org.kodein.di.DI
 import org.kodein.di.bind
 import org.kodein.di.instance
@@ -16,7 +17,9 @@ import org.kodein.di.provider
 
 class HomePortal(
   override val parent: Portal
-) : ComposePortal, KodeinDIPortal(), ChildPortal {
+) : ComposePortal<MainPortalKey>, KodeinDIPortal(), ChildPortal {
+  override val key = MainPortalKey.One
+
   private val homeView by on(context = this).instance<HomeView>()
 
   override fun provideModule() = DI.Module("Home") {

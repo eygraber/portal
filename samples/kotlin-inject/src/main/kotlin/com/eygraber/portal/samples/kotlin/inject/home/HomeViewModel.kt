@@ -18,7 +18,7 @@ class HomeViewModel(
   fun openAlarmsClicked() {
     appPortalManager.withTransaction {
       backstack.push(AppPortalKey.AlarmList) {
-        add(AppPortalKey.AlarmList, portal = alarmListPortalProvider())
+        add(portal = alarmListPortalProvider())
       }
     }
   }

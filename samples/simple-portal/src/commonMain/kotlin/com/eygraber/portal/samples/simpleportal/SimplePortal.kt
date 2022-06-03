@@ -162,8 +162,7 @@ suspend fun ComposePortalManager<PortalKey>.addTenNumberBoxPortals() {
         if(previousKey != null) detachFromComposition(previousKey)
 
         add(
-          key,
-          portal = NumberBoxPortal(key.value)
+          portal = NumberBoxPortal(key)
         )
       }
     }

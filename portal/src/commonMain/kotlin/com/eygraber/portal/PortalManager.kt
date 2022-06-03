@@ -45,7 +45,7 @@ public abstract class PortalManager<KeyT>(
   public fun restoreState(
     serializedState: String,
     keyDeserializer: (String) -> KeyT,
-    portalFactory: (KeyT) -> Portal
+    portalFactory: (KeyT) -> KeyedPortal<KeyT>
   ) {
     lock.withLock {
       val (entries, backstack) = deserializePortalManagerState(
@@ -104,10 +104,9 @@ public abstract class PortalManager<KeyT>(
     public val backstack: PortalBackstack<KeyT>
 
     public fun add(
-      key: KeyT,
+      portal: KeyedPortal<KeyT>,
       isAttachedToComposition: Boolean = true,
-      transitionOverride: EnterTransitionOverride? = null,
-      portal: Portal
+      transitionOverride: EnterTransitionOverride? = null
     )
 
     public fun attachToComposition(

@@ -8,11 +8,14 @@ import androidx.compose.ui.graphics.Color
 import com.eygraber.portal.compose.ComposePortal
 import com.eygraber.portal.compose.ComposePortalManager
 import com.eygraber.portal.kodein.di.KodeinRootPortal
+import com.eygraber.portal.samples.portal.main.AppPortalKey
 import com.eygraber.portal.samples.portal.main.MainPortal
 import org.kodein.di.DI
 import org.kodein.di.instance
 
-class AppRootPortal(di: DI) : ComposePortal, KodeinRootPortal(di) {
+class AppRootPortal(di: DI) : ComposePortal<AppPortalKey>, KodeinRootPortal(di) {
+  override val key = AppPortalKey.Root
+
   override val portalManagers = emptyList<ComposePortalManager<*>>()
 
   private val mainPortal by instance<MainPortal>()

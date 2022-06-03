@@ -4,10 +4,10 @@ import androidx.compose.runtime.Composable
 import com.eygraber.portal.compose.ComposePortal
 
 class NumberBoxPortal(
-  private val number: String
-) : ComposePortal {
+  override val key: PortalKey
+) : ComposePortal<PortalKey> {
   @Composable
   override fun Render() {
-    NumberBox(number)
+    NumberBox(key.value)
   }
 }

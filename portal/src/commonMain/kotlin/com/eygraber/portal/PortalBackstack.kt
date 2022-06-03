@@ -42,10 +42,9 @@ public interface PortalBackstack<KeyT> : ReadOnlyBackstack {
 
   public interface PushBuilder<KeyT> {
     public fun add(
-      key: KeyT,
+      portal: KeyedPortal<KeyT>,
       isAttachedToComposition: Boolean = true,
-      transitionOverride: EnterTransitionOverride? = null,
-      portal: Portal
+      transitionOverride: EnterTransitionOverride? = null
     )
 
     public fun attachToComposition(
