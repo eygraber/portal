@@ -25,7 +25,7 @@ ksp = "1.6.21-1.0.5"
 kotlinx-coroutines = "1.6.2"
 kotlinx-atomicFu = "0.17.3"
 
-publish = "0.18.0"
+publish = "0.20.0"
 
 [plugins]
 agp = { id = "com.android.application", version.ref = "agp" }
