@@ -1,22 +1,23 @@
 package com.eygraber.portal.kodein.di
 
 import com.eygraber.portal.ChildPortal
-import com.eygraber.portal.LifecyclePortal
 import com.eygraber.portal.ParentPortal
 import com.eygraber.portal.Portal
+import com.eygraber.portal.PortalLifecycleManager
 import com.eygraber.portal.PortalRemovedListener
 import kotlinx.atomicfu.atomic
+import kotlinx.atomicfu.update
 import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.bind
 import org.kodein.di.provider
 
-public interface KodeinDIPortalInitializer : KodeinDIComponentInitializer<LifecyclePortal> {
+public interface KodeinDIPortalInitializer : KodeinDIComponentInitializer<PortalLifecycleManager> {
   override fun initializeKodeinDI(): DI = DI.lazy {
     extend(parentDI)
 
     bind<Portal>(overrides = kodeinDIComponent is ChildPortal) with provider {
-      kodeinDIComponent
+      kodeinDIComponent as Portal
     }
 
     provideModule()?.let { module ->
@@ -25,7 +26,7 @@ public interface KodeinDIPortalInitializer : KodeinDIComponentInitializer<Lifecy
   }
 }
 
-public abstract class KodeinDIPortal : LifecyclePortal, KodeinDIPortalInitializer {
+public abstract class KodeinDIPortal : PortalLifecycleManager, KodeinDIPortalInitializer {
   override val parentDI: DI by closestDI()
 
   @Suppress("LeakingThis")
@@ -34,11 +35,11 @@ public abstract class KodeinDIPortal : LifecyclePortal, KodeinDIPortalInitialize
   private val listeners = atomic(emptyList<PortalRemovedListener>())
 
   override fun addPortalRemovedListener(listener: PortalRemovedListener) {
-    listeners.value = listeners.value + listener
+    listeners.update { oldListeners -> oldListeners + listener }
   }
 
   override fun removePortalRemovedListener(listener: PortalRemovedListener) {
-    listeners.value = listeners.value - listener
+    listeners.update { oldListeners -> oldListeners - listener }
   }
 
   override fun onPortalRemoved(isCompletelyRemoved: Boolean) {
@@ -53,7 +54,7 @@ public abstract class KodeinDIPortal : LifecyclePortal, KodeinDIPortalInitialize
  *
  * @param [parentDI] the application level DI that will be extended throughout the [Portal] hierarchy.
  */
-public abstract class KodeinRootPortal(
+public abstract class KodeinDIRoot(
   final override val parentDI: DI
 ) : ParentPortal, KodeinDIPortal()
 

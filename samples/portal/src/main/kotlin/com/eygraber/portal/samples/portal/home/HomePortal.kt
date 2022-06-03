@@ -2,7 +2,7 @@ package com.eygraber.portal.samples.portal.home
 
 import androidx.compose.runtime.Composable
 import com.eygraber.portal.ChildPortal
-import com.eygraber.portal.Portal
+import com.eygraber.portal.ParentPortal
 import com.eygraber.portal.compose.ComposePortal
 import com.eygraber.portal.kodein.di.KodeinDIPortal
 import com.eygraber.portal.kodein.di.portalSingleton
@@ -16,7 +16,7 @@ import org.kodein.di.on
 import org.kodein.di.provider
 
 class HomePortal(
-  override val parent: Portal
+  override val parent: ParentPortal
 ) : ComposePortal<MainPortalKey>, KodeinDIPortal(), ChildPortal {
   override val key = MainPortalKey.One
 

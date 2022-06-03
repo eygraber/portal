@@ -1,6 +1,6 @@
 package com.eygraber.portal.kodein.di
 
-import com.eygraber.portal.LifecyclePortal
+import com.eygraber.portal.PortalLifecycleManager
 import com.eygraber.portal.PortalRemovedListener
 import org.kodein.di.DI
 import org.kodein.di.bind
@@ -17,11 +17,11 @@ import org.kodein.di.scoped
 import org.kodein.di.singleton
 
 @PublishedApi
-internal object PortalScope : Scope<LifecyclePortal> {
+internal object PortalScope : Scope<PortalLifecycleManager> {
   private val newRegistry = ::StandardScopeRegistry
-  private val map = HashMap<LifecyclePortal, ScopeRegistry>()
+  private val map = HashMap<PortalLifecycleManager, ScopeRegistry>()
 
-  override fun getRegistry(context: LifecyclePortal) = synchronizedIfNull(
+  override fun getRegistry(context: PortalLifecycleManager) = synchronizedIfNull(
     lock = map,
     predicate = { map[context] },
     ifNotNull = { it },
@@ -46,17 +46,17 @@ internal object PortalScope : Scope<LifecyclePortal> {
 }
 
 public inline fun <reified T : Any> DI.Builder.portalSingleton(
-  noinline creator: NoArgBindingDI<LifecyclePortal>.() -> T
-): Singleton<LifecyclePortal, T> = scoped(PortalScope).singleton(creator = creator)
+  noinline creator: NoArgBindingDI<PortalLifecycleManager>.() -> T
+): Singleton<PortalLifecycleManager, T> = scoped(PortalScope).singleton(creator = creator)
 
 public inline fun <reified A : Any, reified T : Any> DI.Builder.portalMultiton(
-  noinline creator: BindingDI<LifecyclePortal>.(A) -> T
-): Multiton<LifecyclePortal, A, T> = scoped(PortalScope).multiton(creator = creator)
+  noinline creator: BindingDI<PortalLifecycleManager>.(A) -> T
+): Multiton<PortalLifecycleManager, A, T> = scoped(PortalScope).multiton(creator = creator)
 
 public inline fun <reified T : Any> DI.Builder.bindPortalSingleton(
   tag: Any? = null,
   overrides: Boolean? = null,
-  noinline creator: NoArgBindingDI<LifecyclePortal>.() -> T
+  noinline creator: NoArgBindingDI<PortalLifecycleManager>.() -> T
 ) {
   bind<T>(
     tag = tag,
@@ -67,7 +67,7 @@ public inline fun <reified T : Any> DI.Builder.bindPortalSingleton(
 public inline fun <reified A : Any, reified T : Any> DI.Builder.bindPortalMultiton(
   tag: Any? = null,
   overrides: Boolean? = null,
-  noinline creator: BindingDI<LifecyclePortal>.(A) -> T
+  noinline creator: BindingDI<PortalLifecycleManager>.(A) -> T
 ) {
   bind<T>(
     tag = tag,

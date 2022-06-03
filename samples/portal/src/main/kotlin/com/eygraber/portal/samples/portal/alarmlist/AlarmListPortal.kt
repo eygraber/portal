@@ -2,7 +2,7 @@ package com.eygraber.portal.samples.portal.alarmlist
 
 import androidx.compose.runtime.Composable
 import com.eygraber.portal.ChildPortal
-import com.eygraber.portal.Portal
+import com.eygraber.portal.ParentPortal
 import com.eygraber.portal.compose.ComposePortal
 import com.eygraber.portal.kodein.di.KodeinDIPortal
 import com.eygraber.portal.kodein.di.portalSingleton
@@ -14,7 +14,7 @@ import org.kodein.di.instance
 import org.kodein.di.on
 
 class AlarmListPortal(
-  override val parent: Portal
+  override val parent: ParentPortal
 ) : ComposePortal<AppPortalKey>, KodeinDIPortal(), ChildPortal {
   override val key = AppPortalKey.AlarmList
 
