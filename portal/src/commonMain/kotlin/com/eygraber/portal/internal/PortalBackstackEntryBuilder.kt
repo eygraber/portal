@@ -2,7 +2,7 @@ package com.eygraber.portal.internal
 
 import com.eygraber.portal.EnterTransitionOverride
 import com.eygraber.portal.ExitTransitionOverride
-import com.eygraber.portal.Portal
+import com.eygraber.portal.KeyedPortal
 import com.eygraber.portal.PortalBackstack
 
 internal class PortalBackstackEntryBuilder<KeyT>(
@@ -11,15 +11,14 @@ internal class PortalBackstackEntryBuilder<KeyT>(
   private val backstackMutations = mutableListOf<PortalBackstackMutation<KeyT>>()
 
   override fun add(
-    key: KeyT,
+    portal: KeyedPortal<KeyT>,
     isAttachedToComposition: Boolean,
-    transitionOverride: EnterTransitionOverride?,
-    portal: Portal
+    transitionOverride: EnterTransitionOverride?
   ) {
-    builder.add(key, isAttachedToComposition, transitionOverride, portal)
+    builder.add(portal, isAttachedToComposition, transitionOverride)
 
     backstackMutations += PortalBackstackMutation.Remove(
-      key = key
+      key = portal.key
     )
   }
 

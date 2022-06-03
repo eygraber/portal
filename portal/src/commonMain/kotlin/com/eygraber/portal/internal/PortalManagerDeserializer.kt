@@ -1,6 +1,6 @@
 package com.eygraber.portal.internal
 
-import com.eygraber.portal.Portal
+import com.eygraber.portal.KeyedPortal
 import com.eygraber.portal.PortalEntry
 import com.eygraber.portal.PortalRendererState
 import kotlinx.serialization.json.Json
@@ -13,7 +13,7 @@ import kotlinx.serialization.json.jsonPrimitive
 internal fun <KeyT> deserializePortalManagerState(
   serializedState: String,
   keyDeserializer: (String) -> KeyT,
-  portalFactory: (KeyT) -> Portal
+  portalFactory: (KeyT) -> KeyedPortal<KeyT>
 ): Pair<List<PortalEntry<KeyT>>, List<PortalBackstackEntry<KeyT>>> {
   val json = Json.parseToJsonElement(serializedState).jsonObject
 
@@ -33,7 +33,7 @@ internal fun <KeyT> deserializePortalManagerState(
 
 private fun <KeyT> JsonArray.deserializeToPortalEntries(
   keyDeserializer: (String) -> KeyT,
-  portalFactory: (KeyT) -> Portal
+  portalFactory: (KeyT) -> KeyedPortal<KeyT>
 ) = map { entry ->
   val jsonEntry = entry.jsonObject
 
@@ -44,7 +44,7 @@ private fun <KeyT> JsonArray.deserializeToPortalEntries(
   }.let(keyDeserializer)
 
   PortalEntry(
-    key = key,
+    portal = portalFactory(key),
     wasContentPreviouslyVisible = requireNotNull(
       jsonEntry["wasContentPreviouslyVisible"]?.jsonPrimitive?.contentOrNull
     ) {
@@ -66,8 +66,7 @@ private fun <KeyT> JsonArray.deserializeToPortalEntries(
       "A serialized PortalEntry needs a \"rendererState\" field"
     }.let(PortalRendererState::valueOf),
     enterTransitionOverride = null,
-    exitTransitionOverride = null,
-    portal = portalFactory(key)
+    exitTransitionOverride = null
   )
 }
 

@@ -29,12 +29,12 @@ class MainViewModel(
 
   init {
     mainPortalManager.withTransaction {
-      add(MainPortalKey.One, portal = homePortalProvider())
+      add(portal = homePortalProvider())
 
       add(
-        MainPortalKey.Two,
         isAttachedToComposition = false,
-        portal = object : ComposePortal {
+        portal = object : ComposePortal<MainPortalKey> {
+          override val key = MainPortalKey.Two
           @Composable
           override fun Render() {
             Text(
@@ -47,9 +47,9 @@ class MainViewModel(
       )
 
       add(
-        MainPortalKey.Three,
         isAttachedToComposition = false,
-        portal = object : ComposePortal {
+        portal = object : ComposePortal<MainPortalKey> {
+          override val key = MainPortalKey.Three
           @Composable
           override fun Render() {
             Text(
@@ -62,9 +62,9 @@ class MainViewModel(
       )
 
       add(
-        MainPortalKey.Four,
         isAttachedToComposition = false,
-        portal = object : ComposePortal {
+        portal = object : ComposePortal<MainPortalKey> {
+          override val key = MainPortalKey.Four
           @Composable
           override fun Render() {
             Text(

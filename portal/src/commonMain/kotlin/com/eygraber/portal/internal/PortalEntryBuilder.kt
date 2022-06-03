@@ -2,6 +2,7 @@ package com.eygraber.portal.internal
 
 import com.eygraber.portal.EnterTransitionOverride
 import com.eygraber.portal.ExitTransitionOverride
+import com.eygraber.portal.KeyedPortal
 import com.eygraber.portal.ParentPortal
 import com.eygraber.portal.Portal
 import com.eygraber.portal.PortalBackstack
@@ -33,13 +34,12 @@ internal class PortalEntryBuilder<KeyT>(
     } != null
 
   override fun add(
-    key: KeyT,
+    portal: KeyedPortal<KeyT>,
     isAttachedToComposition: Boolean,
-    transitionOverride: EnterTransitionOverride?,
-    portal: Portal
+    transitionOverride: EnterTransitionOverride?
   ) {
     transactionPortalEntries += PortalEntry(
-      key = key,
+      portal = portal,
       wasContentPreviouslyVisible = false,
       isDisappearing = false,
       isBackstackMutation = false,
@@ -48,8 +48,7 @@ internal class PortalEntryBuilder<KeyT>(
         else -> PortalRendererState.Detached
       },
       enterTransitionOverride = transitionOverride,
-      exitTransitionOverride = null,
-      portal = portal
+      exitTransitionOverride = null
     )
   }
 
@@ -215,7 +214,7 @@ private fun ParentPortal.notifyChildrenOfRemoval(
   isCompletelyRemoved: Boolean
 ) {
   for(manager in portalManagers) {
-    for(childPortal in manager.portals) {
+    for((_, childPortal) in manager.portals) {
       if(childPortal is ParentPortal) {
         notifyChildrenOfRemoval(isCompletelyRemoved)
       }

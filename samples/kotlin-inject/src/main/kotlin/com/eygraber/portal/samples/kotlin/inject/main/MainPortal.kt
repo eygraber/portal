@@ -10,7 +10,9 @@ import me.tatarka.inject.annotations.Inject
 
 @AppScope
 @Inject
-class MainPortal : ComposePortal, ParentPortal, InjectablePortal<MainComponent> {
+class MainPortal : ComposePortal<AppPortalKey>, ParentPortal, InjectablePortal<MainComponent> {
+  override val key = AppPortalKey.Main
+
   override val component = MainComponent::class.create(appComponent, this)
 
   private val appPortalManager by lazy {
