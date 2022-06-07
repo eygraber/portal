@@ -129,3 +129,6 @@ public abstract class PortalManager<KeyT>(
     )
   }
 }
+
+public val PortalManager<*>.isEmpty: Boolean get() = size == 0
+public val PortalManager<*>.isNotEmpty: Boolean get() = size > 0
