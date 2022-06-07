@@ -5,7 +5,7 @@ android-sdk-compile = "31"
 android-sdk-target = "31"
 android-sdk-min = "24"
 
-compose = "1.2.0-alpha01-dev703"
+compose = "1.2.0-alpha01-dev707"
 
 detekt = "1.20.0"
 detektEygraber = "1.0.11"
