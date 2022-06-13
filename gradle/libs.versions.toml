@@ -61,6 +61,8 @@ kodein-core = { module = "org.kodein.di:kodein-di", version.ref = "kodein" }
 
 kotlinx-atomicFu = { module = "org.jetbrains.kotlinx:atomicfu", version.ref = "kotlinx-atomicFu" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
+kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
 kotlinx-serialization-json = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3"
 
 kotlinInject-compiler = { module = "me.tatarka.inject:kotlin-inject-compiler-ksp", version.ref = "kotlinInject" }
@@ -68,4 +70,9 @@ kotlinInject-runtime = { module = "me.tatarka.inject:kotlin-inject-runtime", ver
 
 kotlinDurationExtensions = "com.eygraber:kotlin-duration-extensions:1.1.1"
 
+test-espresso = "androidx.test.espresso:espresso-core:3.5.0-alpha07"
+test-jetpack-compose-ui-junit = "androidx.compose.ui:ui-test-junit4:1.1.1"
+test-jetpack-compose-ui-manifest = "androidx.compose.ui:ui-test-manifest:1.1.1"
+test-junit = { module = "junit:junit", version = "4.13.2" }
 test-kotest-assertions = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
+test-robolectric = "org.robolectric:robolectric:4.8.1"
