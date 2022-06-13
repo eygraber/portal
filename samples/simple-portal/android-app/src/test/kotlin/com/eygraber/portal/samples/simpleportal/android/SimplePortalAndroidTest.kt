@@ -26,7 +26,7 @@ class SimplePortalAndroidTest {
   }
 
   @Test
-  fun testSomething() {
+  fun testSimplePortal() {
     val mainClock = rule.mainClock
 
     rule.setContent {
