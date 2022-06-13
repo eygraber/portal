@@ -44,6 +44,12 @@ android {
     sourceCompatibility = JavaVersion.toVersion(libs.versions.jdk.get())
     targetCompatibility = JavaVersion.toVersion(libs.versions.jdk.get())
   }
+
+  testOptions {
+    unitTests {
+      isIncludeAndroidResources = true
+    }
+  }
 }
 
 dependencies {
@@ -55,4 +61,10 @@ dependencies {
   implementation(libs.androidx.activity.compose)
   implementation(libs.androidx.appcompat)
   implementation(libs.androidx.core)
+
+  testImplementation(libs.test.espresso)
+  testImplementation(libs.test.jetpack.compose.ui.junit)
+  implementation(libs.test.jetpack.compose.ui.manifest)
+  testImplementation(libs.test.junit)
+  testImplementation(libs.test.robolectric)
 }

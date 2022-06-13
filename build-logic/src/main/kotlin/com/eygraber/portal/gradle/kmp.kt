@@ -17,7 +17,7 @@ fun KotlinMultiplatformExtension.portalTargets(
 
   if(android) {
     android {
-      publishAllLibraryVariants()
+      publishLibraryVariants("release")
     }
   }
 
