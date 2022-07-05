@@ -1,8 +1,8 @@
 [versions]
-agp = "7.2.1"
+agp = "7.4.0-alpha07"
 
-android-sdk-compile = "31"
-android-sdk-target = "31"
+android-sdk-compile = "32"
+android-sdk-target = "32"
 android-sdk-min = "24"
 
 compose = "1.2.0-alpha01-dev741"
