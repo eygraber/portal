@@ -5,27 +5,26 @@ android-sdk-compile = "31"
 android-sdk-target = "31"
 android-sdk-min = "24"
 
-compose = "1.2.0-alpha01-dev731"
+compose = "1.2.0-alpha01-dev741"
 
 detekt = "1.21.0-RC2"
 detektEygraber = "1.0.11"
 
-# https://github.com/Kotlin/dokka/issues/2472
-dokka = "1.5.0"
+dokka = "1.7.0"
 
 jdk = "11"
 
 kodein = "7.13.0"
-kotlin = "1.6.21"
+kotlin = "1.7.0"
 
 kotlinInject = "0.4.1"
 
-ksp = "1.6.21-1.0.6"
+ksp = "1.7.0-1.0.6"
 
 kotest = "5.3.2"
 
-kotlinx-coroutines = "1.6.2"
-kotlinx-atomicFu = "0.17.3"
+kotlinx-coroutines = "1.6.3"
+kotlinx-atomicFu = "0.18.2"
 
 publish = "0.20.0"
 
