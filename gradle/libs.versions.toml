@@ -24,7 +24,7 @@ ksp = "1.7.10-1.0.6"
 kotest = "5.3.2"
 
 kotlinx-coroutines = "1.6.4"
-kotlinx-atomicFu = "0.18.2"
+kotlinx-atomicFu = "0.18.3"
 
 publish = "0.21.0"
 
