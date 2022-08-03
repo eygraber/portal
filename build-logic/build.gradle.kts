@@ -20,10 +20,6 @@ kotlin {
 tasks.withType<KotlinCompile>().configureEach {
   kotlinOptions {
     jvmTarget = libs.versions.jdk.get()
-
-    freeCompilerArgs = freeCompilerArgs + listOf(
-      "-Xopt-in=kotlin.RequiresOptIn"
-    )
   }
 }
 
