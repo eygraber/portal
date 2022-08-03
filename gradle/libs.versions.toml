@@ -5,7 +5,9 @@ android-sdk-compile = "32"
 android-sdk-target = "32"
 android-sdk-min = "24"
 
-compose = "1.2.0-alpha01-dev745"
+compose-android = "1.2.0"
+compose-androidCompiler = "1.3.0-rc01"
+compose-jetbrains = "1.2.0-alpha01-dev745"
 
 detekt = "1.21.0"
 detektEygraber = "1.0.11"
@@ -31,7 +33,7 @@ publish = "0.21.0"
 [plugins]
 agp = { id = "com.android.application", version.ref = "agp" }
 atomicFu = { id = "kotlinx-atomicfu", version.ref = "kotlinx-atomicFu" }
-compose = { id = "org.jetbrains.compose", version.ref = "compose" }
+compose = { id = "org.jetbrains.compose", version.ref = "compose-jetbrains" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 kotlin = { id = "kotlin-multiplatform", version.ref = "kotlin" }
@@ -42,10 +44,13 @@ androidx-activity-compose = "androidx.activity:activity-compose:1.5.1"
 androidx-appcompat = "androidx.appcompat:appcompat:1.5.0-rc01"
 androidx-core = "androidx.core:core-ktx:1.8.0"
 
+compose-android-material = { module = "androidx.compose.material:material", version.ref = "compose-android" }
+compose-android-materialIconsExtended = { module = "androidx.compose.material:material-icons-extended", version.ref = "compose-android" }
+
 buildscript-android = { module = "com.android.tools.build:gradle", version.ref = "agp" }
 buildscript-androidCacheFix = { module = "gradle.plugin.org.gradle.android:android-cache-fix-gradle-plugin", version = "2.5.6" }
 buildscript-atomicFu = { module = "org.jetbrains.kotlinx:atomicfu-gradle-plugin", version.ref = "kotlinx-atomicFu" }
-buildscript-compose = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "compose" }
+buildscript-compose = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "compose-jetbrains" }
 buildscript-detekt = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
 buildscript-dokka = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "dokka" }
 buildscript-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
@@ -70,8 +75,8 @@ kotlinInject-runtime = { module = "me.tatarka.inject:kotlin-inject-runtime", ver
 kotlinDurationExtensions = "com.eygraber:kotlin-duration-extensions:1.1.1"
 
 test-espresso = "androidx.test.espresso:espresso-core:3.5.0-alpha07"
-test-jetpack-compose-ui-junit = "androidx.compose.ui:ui-test-junit4:1.2.0"
-test-jetpack-compose-ui-manifest = "androidx.compose.ui:ui-test-manifest:1.2.0"
+test-compose-android-uiJunit = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "compose-android" }
+test-compose-android-uiTestManifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "compose-android" }
 test-junit = { module = "junit:junit", version = "4.13.2" }
 test-kotest-assertions = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
 test-robolectric = "org.robolectric:robolectric:4.8.1"
