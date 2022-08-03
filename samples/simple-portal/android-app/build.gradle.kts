@@ -13,6 +13,14 @@ android {
 
   namespace = "com.eygraber.portal.samples.simpleportal.android"
 
+  buildFeatures {
+    compose = true
+  }
+
+  composeOptions {
+    kotlinCompilerExtensionVersion = libs.versions.compose.androidCompiler.get()
+  }
+
   defaultConfig {
     applicationId = "com.eygraber.portal.samples.simpleportal.android"
     minSdk = libs.versions.android.sdk.min.get().toInt()
@@ -55,16 +63,16 @@ android {
 dependencies {
   implementation(projects.samples.simplePortal)
 
-  implementation(compose.material)
-  implementation(compose.materialIconsExtended)
+  implementation(libs.compose.android.material)
+  implementation(libs.compose.android.materialIconsExtended)
 
   implementation(libs.androidx.activity.compose)
   implementation(libs.androidx.appcompat)
   implementation(libs.androidx.core)
 
   testImplementation(libs.test.espresso)
-  testImplementation(libs.test.jetpack.compose.ui.junit)
-  implementation(libs.test.jetpack.compose.ui.manifest)
+  testImplementation(libs.test.compose.android.uiJunit)
+  implementation(libs.test.compose.android.uiTestManifest)
   testImplementation(libs.test.junit)
   testImplementation(libs.test.robolectric)
 }
