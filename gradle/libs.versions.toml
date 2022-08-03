@@ -17,7 +17,7 @@ jdk = "11"
 kodein = "7.14.0"
 kotlin = "1.7.10"
 
-kotlinInject = "0.4.1"
+kotlinInject = "0.5.0"
 
 ksp = "1.7.10-1.0.6"
 
