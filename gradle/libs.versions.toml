@@ -23,7 +23,7 @@ kotlinInject = "0.5.1"
 
 ksp = "1.7.10-1.0.6"
 
-kotest = "5.4.1"
+kotest = "5.4.2"
 
 kotlinx-coroutines = "1.6.4"
 kotlinx-atomicFu = "0.18.3"
