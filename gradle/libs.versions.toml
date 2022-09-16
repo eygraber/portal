@@ -1,8 +1,8 @@
 [versions]
 agp = "7.4.0-alpha10"
 
-android-sdk-compile = "32"
-android-sdk-target = "32"
+android-sdk-compile = "33"
+android-sdk-target = "33"
 android-sdk-min = "24"
 
 compose-android = "1.2.1"
@@ -79,4 +79,4 @@ test-compose-android-uiJunit = { module = "androidx.compose.ui:ui-test-junit4", 
 test-compose-android-uiTestManifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "compose-android" }
 test-junit = { module = "junit:junit", version = "4.13.2" }
 test-kotest-assertions = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
-test-robolectric = "org.robolectric:robolectric:4.8.2"
+test-robolectric = "org.robolectric:robolectric:4.9-alpha-1"
