@@ -42,7 +42,7 @@ publish = { id = "com.vanniktech.maven.publish", version.ref = "publish" }
 [libraries]
 androidx-activity-compose = "androidx.activity:activity-compose:1.5.1"
 androidx-appcompat = "androidx.appcompat:appcompat:1.5.1"
-androidx-core = "androidx.core:core-ktx:1.8.0"
+androidx-core = "androidx.core:core-ktx:1.9.0"
 
 compose-android-material = { module = "androidx.compose.material:material", version.ref = "compose-android" }
 compose-android-materialIconsExtended = { module = "androidx.compose.material:material-icons-extended", version.ref = "compose-android" }
