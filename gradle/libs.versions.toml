@@ -40,7 +40,7 @@ kotlin = { id = "kotlin-multiplatform", version.ref = "kotlin" }
 publish = { id = "com.vanniktech.maven.publish", version.ref = "publish" }
 
 [libraries]
-androidx-activity-compose = "androidx.activity:activity-compose:1.5.1"
+androidx-activity-compose = "androidx.activity:activity-compose:1.6.0"
 androidx-appcompat = "androidx.appcompat:appcompat:1.5.1"
 androidx-core = "androidx.core:core-ktx:1.9.0"
 
