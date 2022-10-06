@@ -68,7 +68,7 @@ jobs:
 
       - name: Create release
         id: create_release
-        uses: ncipollo/release-action@v1.11.0
+        uses: ncipollo/release-action@v1.11.1
         with:
           body: ${{ steps.build_changelog.outputs.changelog }}
           commit: release
