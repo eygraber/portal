@@ -48,7 +48,7 @@ compose-android-material = { module = "androidx.compose.material:material", vers
 compose-android-materialIconsExtended = { module = "androidx.compose.material:material-icons-extended", version.ref = "compose-android" }
 
 buildscript-android = { module = "com.android.tools.build:gradle", version.ref = "agp" }
-buildscript-androidCacheFix = { module = "gradle.plugin.org.gradle.android:android-cache-fix-gradle-plugin", version = "2.5.7" }
+buildscript-androidCacheFix = { module = "gradle.plugin.org.gradle.android:android-cache-fix-gradle-plugin", version = "2.6.0" }
 buildscript-atomicFu = { module = "org.jetbrains.kotlinx:atomicfu-gradle-plugin", version.ref = "kotlinx-atomicFu" }
 buildscript-compose = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "compose-jetbrains" }
 buildscript-detekt = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
