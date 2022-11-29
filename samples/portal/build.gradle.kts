@@ -3,7 +3,7 @@ import org.jetbrains.compose.compose
 plugins {
   kotlin("jvm")
   id("portal-kotlin-library")
-  id("org.jetbrains.compose")
+  id("portal-compose-jetbrains")
   id("portal-detekt")
 }
 

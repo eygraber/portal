@@ -11,7 +11,6 @@ tasks.withType<JavaCompile> {
 
 kotlin {
   jvmToolchain {
-    require(this is JavaToolchainSpec)
     languageVersion.set(JavaLanguageVersion.of(libs.versions.jdk.get()))
     vendor.set(JvmVendorSpec.AZUL)
   }
@@ -40,6 +39,7 @@ dependencies {
   implementation(libs.buildscript.android)
   implementation(libs.buildscript.androidCacheFix)
   implementation(libs.buildscript.atomicFu)
+  implementation(libs.buildscript.compose)
   implementation(libs.buildscript.detekt)
   implementation(libs.buildscript.dokka)
   implementation(libs.buildscript.kotlin)
