@@ -21,10 +21,6 @@ buildscript {
 
 }
 
-plugins {
-  id("validate-gradle-properties")
-}
-
 tasks.register<Delete>("clean") {
   delete(buildDir)
 }
