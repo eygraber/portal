@@ -4,7 +4,7 @@ import org.jetbrains.compose.compose
 plugins {
   id("portal-kotlin-multiplatform")
   id("portal-android-library")
-  id("org.jetbrains.compose")
+  id("portal-compose-jetbrains")
   id("portal-detekt")
 }
 

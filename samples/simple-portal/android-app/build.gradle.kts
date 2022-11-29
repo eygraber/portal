@@ -1,10 +1,8 @@
-import org.jetbrains.compose.compose
-
 plugins {
   id("com.android.application")
   kotlin("android")
   id("portal-kotlin-library")
-  id("org.jetbrains.compose")
+  id("portal-compose-jetpack")
   id("portal-detekt")
 }
 
@@ -18,7 +16,7 @@ android {
   }
 
   composeOptions {
-    kotlinCompilerExtensionVersion = libs.versions.compose.androidCompiler.get()
+    kotlinCompilerExtensionVersion = libs.versions.composeAndroid.compiler.get()
   }
 
   defaultConfig {
