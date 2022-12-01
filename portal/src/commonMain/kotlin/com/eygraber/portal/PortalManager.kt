@@ -79,6 +79,12 @@ public abstract class PortalManager<KeyT>(
     }
   }
 
+  protected fun markAddedEntryAsAttached(key: KeyT) {
+    portalState.transact {
+      attachToComposition(key)
+    }
+  }
+
   protected fun makeEntryDisappear(key: KeyT) {
     portalState.transact {
       disappear(key)
@@ -124,7 +130,12 @@ public abstract class PortalManager<KeyT>(
       transitionOverride: ExitTransitionOverride? = null
     )
 
+    /**
+     * [clearDisappearingEntries] can be set to `true`
+     * if you want to clear removed entries that are still running their [ExitTransitionOverride].
+     */
     public fun clear(
+      clearDisappearingEntries: Boolean = false,
       transitionOverrideProvider: ((KeyT) -> ExitTransitionOverride?)? = null
     )
   }

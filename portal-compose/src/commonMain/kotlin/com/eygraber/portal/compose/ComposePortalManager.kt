@@ -6,6 +6,7 @@ import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -110,6 +111,13 @@ public class ComposePortalManager<KeyT>(
             withTransaction {
               makeEntryDisappear(entry.key)
             }
+          }
+        }
+      }
+      else if(entry.rendererState == PortalRendererState.Added && visibleState.isIdle) {
+        LaunchedEffect(Unit) {
+          withTransaction {
+            markAddedEntryAsAttached(entry.key)
           }
         }
       }
