@@ -13,23 +13,6 @@ plugins {
   id("portal-compose")
 }
 
-// only apply to android/jvm targets if we're in a multiplatform project
-plugins.withId("org.jetbrains.kotlin.multiplatform") {
-  plugins.removeAll {
-    it is ComposeCompilerKotlinSupportPlugin
-  }
-
-  class ComposeOnlyJvmPlugin : KotlinCompilerPluginSupportPlugin by ComposeCompilerKotlinSupportPlugin() {
-    override fun isApplicable(kotlinCompilation: KotlinCompilation<*>): Boolean =
-      when(kotlinCompilation.target.platformType) {
-        KotlinPlatformType.androidJvm, KotlinPlatformType.jvm -> true
-        else -> false
-      }
-  }
-
-  apply<ComposeOnlyJvmPlugin>()
-}
-
 compose.kotlinCompilerPlugin.set(libs.composeAndroid.compiler.map { it.toString() })
 
 plugins.withType<BasePlugin> {

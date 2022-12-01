@@ -18,9 +18,16 @@ buildscript {
     classpath(libs.buildscript.kotlin)
     classpath(libs.buildscript.atomicFu)
   }
-
 }
 
-tasks.register<Delete>("clean") {
-  delete(buildDir)
+plugins {
+  base
+}
+
+tasks.named("clean").configure {
+  val buildDir = buildDir
+
+  doFirst {
+    buildDir.deleteRecursively()
+  }
 }
