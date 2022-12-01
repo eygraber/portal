@@ -11,6 +11,9 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.pm20.KotlinCompilationData
 fun KotlinMultiplatformExtension.portalTargets(
   jvm: Boolean = true,
   android: Boolean = true,
+  js: Boolean = true,
+  isJsLeafModule: Boolean = false,
+  jsModuleName: String? = null,
   ios: Boolean = false
 ) {
   if(jvm) {
@@ -20,6 +23,20 @@ fun KotlinMultiplatformExtension.portalTargets(
   if(android) {
     android {
       publishLibraryVariants("release")
+    }
+  }
+
+  if(js) {
+    js(IR) {
+      if(jsModuleName != null) {
+        moduleName = jsModuleName
+      }
+
+      browser {
+        if(isJsLeafModule) {
+          binaries.executable()
+        }
+      }
     }
   }
 

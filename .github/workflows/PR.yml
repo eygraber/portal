@@ -54,7 +54,7 @@ jobs:
           gradle-version: wrapper
 
       - name: Run detekt with type resolution
-        run: ./gradlew detektJvmMain detektDebug detektMetadataMain
+        run: ./gradlew detektJvmMain detektJsMain detektDebug detektMetadataMain
 
   lint:
     runs-on: ubuntu-latest

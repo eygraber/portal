@@ -18,7 +18,9 @@ pluginManagement {
 
 @Suppress("UnstableApiUsage")
 dependencyResolutionManagement {
-  repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+  // comment this out for now because it doesn't work with KMP js
+  // https://youtrack.jetbrains.com/issue/KT-51379/
+  // repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
 
   repositories {
     google {
@@ -48,5 +50,6 @@ include(":samples:portal")
 include(":samples:simple-portal")
 include(":samples:simple-portal:android-app")
 include(":samples:simple-portal:desktop-app")
+include(":samples:simple-portal:js-app")
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")

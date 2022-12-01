@@ -12,13 +12,13 @@ enum class PortalKey {
 
 class PortalSizeTest {
   @Test
-  fun `Adding a portal increments the size`() {
+  fun adding_a_portal_increments_the_size() {
     // asserts size internally
     createPortalManagerWithTestPortal()
   }
 
   @Test
-  fun `Removing a portal decrements the size`() {
+  fun removing_a_portal_decrements_the_size() {
     val portalManager = createPortalManagerWithTestPortal()
 
     portalManager.withTransaction {
@@ -31,13 +31,13 @@ class PortalSizeTest {
   }
 
   @Test
-  fun `Adding a portal to the backstack increments the size`() {
+  fun adding_a_portal_to_the_backstack_increments_the_size() {
     // asserts size internally
     createPortalManagerWithTestPortalOnTheBackstack()
   }
 
   @Test
-  fun `Adding a portal increments the size within the transaction`() {
+  fun adding_a_portal_increments_the_size_within_the_transaction() {
     val portalManager = createPortalManagerWithTestPortal()
 
     portalManager.withTransaction {
@@ -50,7 +50,7 @@ class PortalSizeTest {
   }
 
   @Test
-  fun `Adding a portal does not increment the size outside of the transaction`() {
+  fun adding_a_portal_does_not_increment_the_size_outside_of_the_transaction() {
     val portalManager = createPortalManagerWithTestPortal()
 
     portalManager.withTransaction {
@@ -65,7 +65,7 @@ class PortalSizeTest {
   }
 
   @Test
-  fun `Popping a portal from the backstack decrements the size`() {
+  fun popping_a_portal_from_the_backstack_decrements_the_size() {
     val portalManager = createPortalManagerWithTestPortalOnTheBackstack()
 
     portalManager.withTransaction {
@@ -78,7 +78,7 @@ class PortalSizeTest {
   }
 
   @Test
-  fun `Removing a portal that is in the backstack decrements the size`() {
+  fun removing_a_portal_that_is_in_the_backstack_decrements_the_size() {
     val portalManager = createPortalManagerWithTestPortalOnTheBackstack()
 
     portalManager.withTransaction {
