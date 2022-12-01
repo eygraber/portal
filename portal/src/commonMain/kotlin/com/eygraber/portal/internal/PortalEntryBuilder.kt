@@ -100,10 +100,19 @@ internal class PortalEntryBuilder<KeyT>(
     key: KeyT,
     transitionOverride: ExitTransitionOverride?
   ) {
+    internalRemove(key, transitionOverride)
+  }
+
+  private fun internalRemove(
+    key: KeyT,
+    transitionOverride: ExitTransitionOverride?,
+    suppressDisappearingValidation: Boolean = false
+  ) {
     key.applyMutationToPortalEntries { entry ->
       when {
         entry.isDisappearing -> when {
-          validation.validatePortalTransactions -> error("Cannot remove if the entry is disappearing")
+          validation.validatePortalTransactions && !suppressDisappearingValidation ->
+            error("Cannot remove if the entry is disappearing")
           else -> null
         }.also {
           entry.portal.notifyOfRemoval(
@@ -128,20 +137,28 @@ internal class PortalEntryBuilder<KeyT>(
   }
 
   override fun clear(
+    clearDisappearingEntries: Boolean,
     transitionOverrideProvider: ((KeyT) -> ExitTransitionOverride?)?
   ) {
     transactionPortalEntries.reversed().forEach { entry ->
-      remove(
-        key = entry.key,
-        transitionOverride = transitionOverrideProvider?.invoke(entry.key)
-      )
+      if(!entry.isDisappearing || clearDisappearingEntries) {
+        internalRemove(
+          key = entry.key,
+          transitionOverride = transitionOverrideProvider?.invoke(entry.key),
+          suppressDisappearingValidation = true
+        )
+      }
     }
   }
 
   internal fun disappear(
     key: KeyT
   ) {
-    key.applyMutationToPortalEntries { entry ->
+    key.applyMutationToPortalEntries(
+      entryMatcher = { entry ->
+        entry.key == key && entry.isDisappearing
+      }
+    ) { entry ->
       if(entry.isDisappearing) {
         _postTransactionOps.update { oldPostTransactionOps ->
           oldPostTransactionOps + {
@@ -180,10 +197,11 @@ internal class PortalEntryBuilder<KeyT>(
   ).builder(transactionBackstackEntries)
 
   private fun KeyT.applyMutationToPortalEntries(
+    entryMatcher: (PortalEntry<KeyT>) -> Boolean = { it.key == this },
     mutate: (PortalEntry<KeyT>) -> PortalEntry<KeyT>?
   ) {
     transactionPortalEntries
-      .indexOfLast { entry -> entry.key == this }
+      .indexOfLast { entry -> entryMatcher(entry) }
       .takeIf { it > -1 }
       ?.let { index ->
         val entry = transactionPortalEntries[index]
