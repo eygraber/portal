@@ -26,3 +26,5 @@ dependencyResolutionManagement {
     }
   }
 }
+
+rootProject.name = "portal-build-logic"
