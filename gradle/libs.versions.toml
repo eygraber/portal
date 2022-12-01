@@ -6,7 +6,7 @@ android-sdk-target = "33"
 android-sdk-min = "24"
 
 composeAndroid-bom = "2022.11.00"
-composeAndroid-compiler = "1.3.2"
+composeAndroid-compiler = "1.4.0-alpha02"
 composeJetbrains = "1.3.0-beta03"
 
 detekt = "1.22.0"
@@ -17,11 +17,11 @@ dokka = "1.7.20"
 jdk = "11"
 
 kodein = "7.16.0"
-kotlin = "1.7.20"
+kotlin = "1.7.21"
 
 kotlinInject = "0.5.1"
 
-ksp = "1.7.20-1.0.8"
+ksp = "1.7.21-1.0.8"
 
 kotest = "5.5.4"
 
@@ -44,8 +44,9 @@ androidx-activity-compose = "androidx.activity:activity-compose:1.6.1"
 androidx-appcompat = "androidx.appcompat:appcompat:1.6.0-rc01"
 androidx-core = "androidx.core:core-ktx:1.9.0"
 
-compose-android-material = { module = "androidx.compose.material:material" }
-compose-android-materialIconsExtended = { module = "androidx.compose.material:material-icons-extended" }
+composeAndroid-compiler = { module = "androidx.compose.compiler:compiler", version.ref = "composeAndroid-compiler" }
+composeAndroid-material = { module = "androidx.compose.material:material" }
+composeAndroid-materialIconsExtended = { module = "androidx.compose.material:material-icons-extended" }
 
 buildscript-android = { module = "com.android.tools.build:gradle", version.ref = "agp" }
 buildscript-androidCacheFix = { module = "gradle.plugin.org.gradle.android:android-cache-fix-gradle-plugin", version = "2.6.0" }

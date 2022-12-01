@@ -1,9 +1,12 @@
 import com.android.build.gradle.BasePlugin
 import com.eygraber.portal.gradle.android
+import org.gradle.accessors.dm.LibrariesForLibs
 import org.jetbrains.compose.ComposeCompilerKotlinSupportPlugin
 import org.jetbrains.kotlin.gradle.plugin.KotlinCompilation
 import org.jetbrains.kotlin.gradle.plugin.KotlinCompilerPluginSupportPlugin
 import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
+
+val libs = the<LibrariesForLibs>()
 
 plugins {
   id("org.jetbrains.compose")
@@ -26,6 +29,8 @@ plugins.withId("org.jetbrains.kotlin.multiplatform") {
 
   apply<ComposeOnlyJvmPlugin>()
 }
+
+compose.kotlinCompilerPlugin.set(libs.composeAndroid.compiler.map { it.toString() })
 
 plugins.withType<BasePlugin> {
   android {
