@@ -1,13 +1,14 @@
-import com.eygraber.portal.gradle.portalTargets
+import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
 
 plugins {
-  id("portal-kotlin-multiplatform")
-  id("portal-compose-jetbrains")
-  id("portal-detekt")
+  id("com.eygraber.conventions-kotlin-multiplatform")
+  id("com.eygraber.conventions-compose-jetbrains")
+  id("com.eygraber.conventions-detekt")
 }
 
 kotlin {
-  portalTargets(
+  kmpTargets(
+    project = project,
     js = true,
     isJsLeafModule = true,
     android = false,
@@ -28,4 +29,8 @@ kotlin {
 
 compose.experimental {
   web.application {}
+}
+
+gradleConventions.kotlin {
+  explicitApiMode = ExplicitApiMode.Disabled
 }

@@ -26,12 +26,18 @@ jobs:
           distribution: 'zulu'
           java-version-file: .ci-java-version
 
+      - uses: actions/setup-java@v3.9.0
+        with:
+          distribution: 'zulu'
+          java-version-file: .ci-java-version
+
       - uses: gradle/wrapper-validation-action@v1.0.5
 
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2.3.3
         with:
           gradle-version: wrapper
+          gradle-home-cache-cleanup: true
 
       - name: Run detekt
         run: ./detekt
@@ -52,6 +58,11 @@ jobs:
         uses: gradle/gradle-build-action@v2.3.3
         with:
           gradle-version: wrapper
+          gradle-home-cache-cleanup: true
+          gradle-home-cache-includes: |
+            caches
+            notifications
+            jdks
 
       - name: Run checks
         run: ./gradlew lintRelease
@@ -72,6 +83,11 @@ jobs:
         uses: gradle/gradle-build-action@v2.3.3
         with:
           gradle-version: wrapper
+          gradle-home-cache-cleanup: true
+          gradle-home-cache-includes: |
+            caches
+            notifications
+            jdks
 
       - name: Run checks
         run: ./gradlew test

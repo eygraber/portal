@@ -1,11 +1,10 @@
-import com.eygraber.portal.gradle.portalTargets
-import org.jetbrains.compose.compose
+import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
 
 plugins {
-  id("portal-kotlin-multiplatform")
-  id("portal-android-library")
-  id("portal-compose-jetbrains")
-  id("portal-detekt")
+  id("com.eygraber.conventions-kotlin-multiplatform")
+  id("com.eygraber.conventions-android-library")
+  id("com.eygraber.conventions-compose-jetbrains")
+  id("com.eygraber.conventions-detekt")
 }
 
 android {
@@ -13,7 +12,12 @@ android {
 }
 
 kotlin {
-  portalTargets()
+  kmpTargets(
+    project = project,
+    android = true,
+    jvm = true,
+    js = true
+  )
 
   sourceSets.commonMain {
     dependencies {
@@ -24,4 +28,8 @@ kotlin {
       implementation(libs.kotlinx.coroutines.core)
     }
   }
+}
+
+gradleConventions.kotlin {
+  explicitApiMode = ExplicitApiMode.Disabled
 }

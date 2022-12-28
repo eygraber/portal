@@ -1,9 +1,11 @@
+import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
+
 plugins {
   id("com.android.application")
   kotlin("android")
-  id("portal-kotlin-library")
-  id("portal-compose-jetpack")
-  id("portal-detekt")
+  id("com.eygraber.conventions-kotlin-library")
+  id("com.eygraber.conventions-compose-jetpack")
+  id("com.eygraber.conventions-detekt")
 }
 
 android {
@@ -73,4 +75,8 @@ dependencies {
   implementation(libs.test.compose.android.uiTestManifest)
   testImplementation(libs.test.junit)
   testImplementation(libs.test.robolectric)
+}
+
+gradleConventions.kotlin {
+  explicitApiMode = ExplicitApiMode.Disabled
 }

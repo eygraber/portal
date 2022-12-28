@@ -1,11 +1,9 @@
-import com.eygraber.portal.gradle.portalTargets
-
 plugins {
-  id("portal-kotlin-multiplatform")
-  id("portal-android-library")
-  id("portal-compose-jetbrains")
-  id("portal-detekt")
-  id("portal-publish")
+  id("com.eygraber.conventions-kotlin-multiplatform")
+  id("com.eygraber.conventions-android-library")
+  id("com.eygraber.conventions-compose-jetbrains")
+  id("com.eygraber.conventions-detekt")
+  id("com.eygraber.conventions-publish-maven-central")
 }
 
 android {
@@ -13,9 +11,12 @@ android {
 }
 
 kotlin {
-  explicitApi()
-
-  portalTargets()
+  kmpTargets(
+    project = project,
+    android = true,
+    jvm = true,
+    js = true
+  )
 
   sourceSets {
     commonMain {
