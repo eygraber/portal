@@ -1,3 +1,5 @@
+import com.eygraber.conventions.repositories.addCommonRepositories
+
 pluginManagement {
   repositories {
     google {
@@ -7,13 +9,29 @@ pluginManagement {
         includeGroupByRegex("androidx.*")
       }
     }
-    gradlePluginPortal()
-    mavenCentral()
-    maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
-  }
 
-  @Suppress("UnstableApiUsage")
-  includeBuild("build-logic")
+    maven("https://maven.pkg.jetbrains.space/public/p/compose/dev") {
+      content {
+        includeGroupByRegex("org\\.jetbrains.*")
+      }
+    }
+
+    mavenCentral()
+
+    maven("https://oss.sonatype.org/content/repositories/snapshots") {
+      mavenContent {
+        snapshotsOnly()
+      }
+    }
+
+    maven("https://s01.oss.sonatype.org/content/repositories/snapshots") {
+      mavenContent {
+        snapshotsOnly()
+      }
+    }
+
+    gradlePluginPortal()
+  }
 }
 
 @Suppress("UnstableApiUsage")
@@ -23,23 +41,19 @@ dependencyResolutionManagement {
   // repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
 
   repositories {
-    google {
-      content {
-        includeGroupByRegex("com\\.google.*")
-        includeGroupByRegex("com\\.android.*")
-        includeGroupByRegex("androidx.*")
-      }
-    }
-    mavenCentral()
-    maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
-    maven("https://oss.sonatype.org/content/repositories/snapshots")
-    maven("https://s01.oss.sonatype.org/content/repositories/snapshots")
-    maven("https://jitpack.io")
+    addCommonRepositories(
+      includeMavenCentral = true,
+      includeMavenCentralSnapshots = true,
+      includeGoogle = true,
+      includeJetbrainsCompose = true
+    )
   }
 }
 
 plugins {
-  id("org.gradle.toolchains.foojay-resolver-convention") version("0.4.0")
+  id("com.eygraber.conventions.settings") version "0.0.26"
+  id("com.gradle.enterprise") version "3.12.1"
+  id("org.gradle.toolchains.foojay-resolver-convention") version "0.4.0"
 }
 
 rootProject.name = "portals"
@@ -49,7 +63,10 @@ include(":portal-android-serialization")
 include(":portal-compose")
 include(":portal-kodein-di")
 
-include(":samples:kotlin-inject")
+include(":samples:kotlin-inject:android-app")
+include(":samples:kotlin-inject:desktop-app")
+include(":samples:kotlin-inject:js-app")
+include(":samples:kotlin-inject:shared")
 include(":samples:portal")
 include(":samples:simple-portal")
 include(":samples:simple-portal:android-app")
@@ -57,3 +74,13 @@ include(":samples:simple-portal:desktop-app")
 include(":samples:simple-portal:js-app")
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
+gradleEnterprise {
+  buildScan {
+    termsOfServiceUrl = "https://gradle.com/terms-of-service"
+    if(System.getenv("CI") != null) {
+      termsOfServiceAgree = "yes"
+      publishAlways()
+    }
+  }
+}

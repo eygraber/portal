@@ -1,9 +1,9 @@
 plugins {
-  id("portal-android-library")
   id("kotlin-android")
-  id("portal-kotlin-library")
-  id("portal-detekt")
-  id("portal-publish")
+  id("com.eygraber.conventions-kotlin-library")
+  id("com.eygraber.conventions-android-library")
+  id("com.eygraber.conventions-detekt")
+  id("com.eygraber.conventions-publish-maven-central")
 }
 
 android {

@@ -1,10 +1,10 @@
-import org.jetbrains.compose.compose
+import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
 
 plugins {
   kotlin("jvm")
-  id("portal-kotlin-library")
-  id("portal-compose-jetbrains")
-  id("portal-detekt")
+  id("com.eygraber.conventions-kotlin-library")
+  id("com.eygraber.conventions-compose-jetbrains")
+  id("com.eygraber.conventions-detekt")
 }
 
 dependencies {
@@ -18,4 +18,8 @@ compose.desktop {
   application {
     mainClass = "com.eygraber.portal.samples.simpleportal.SimplePortalAppKt"
   }
+}
+
+gradleConventions.kotlin {
+  explicitApiMode = ExplicitApiMode.Disabled
 }
