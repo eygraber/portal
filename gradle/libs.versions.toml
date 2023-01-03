@@ -72,7 +72,7 @@ kotlinInject-runtime = { module = "me.tatarka.inject:kotlin-inject-runtime", ver
 
 kotlinDurationExtensions = "com.eygraber:kotlin-duration-extensions:1.1.1"
 
-test-espresso = "androidx.test.espresso:espresso-core:3.5.0"
+test-espresso = "androidx.test.espresso:espresso-core:3.5.1"
 test-compose-android-uiJunit = { module = "androidx.compose.ui:ui-test-junit4" }
 test-compose-android-uiTestManifest = { module = "androidx.compose.ui:ui-test-manifest" }
 test-junit = { module = "junit:junit", version = "4.13.2" }
