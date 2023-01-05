@@ -65,11 +65,11 @@ public abstract class PortalManager<KeyT>(
     @PortalTransactionBuilderDsl builder: EntryBuilder<KeyT>.() -> Unit
   ) {
     lock.withLock {
-      portalState.startTransaction(_backstack)
+      val isRootTransaction = portalState.startTransaction(_backstack)
 
       try {
         portalState.transact(builder)
-        portalState.commitTransaction()
+        if(isRootTransaction) portalState.commitTransaction()
       }
       catch(error: Throwable) {
         errorHandler?.invoke(error)

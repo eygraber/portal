@@ -29,9 +29,9 @@ internal class PortalState<KeyT>(
     mutableBackstackEntries.value = backstack
   }
 
-  fun startTransaction(backstack: PortalBackstack<KeyT>) {
+  fun startTransaction(backstack: PortalBackstack<KeyT>): Boolean {
     // reentrant
-    if(transactionBuilder != null) return
+    if(transactionBuilder != null) return false
 
     transactionBuilder = PortalEntryBuilder(
       backstack = backstack,
@@ -40,6 +40,8 @@ internal class PortalState<KeyT>(
       isForBackstack = false,
       validation = validation
     )
+
+    return true
   }
 
   fun <R> transact(
