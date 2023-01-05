@@ -27,7 +27,7 @@ internal class PortalEntryBuilder<KeyT>(
 
   override val size get() = transactionPortalEntries.filterNot { it.isDisappearing }.size
 
-  override val portals: List<Pair<KeyT, Portal>> get() = transactionPortalEntries.map { it.key to it.portal }
+  override val portalEntries: List<PortalEntry<KeyT>> get() = transactionPortalEntries
 
   override fun contains(key: KeyT) =
     transactionPortalEntries.findLast { entry ->
@@ -85,6 +85,7 @@ internal class PortalEntryBuilder<KeyT>(
           validation.validatePortalTransactions -> error("Cannot detach if the entry is disappearing")
           else -> entry
         }
+
         else -> entry.copy(
           wasContentPreviouslyVisible = entry.rendererState.isAddedOrAttached,
           isBackstackMutation = isForBackstack,
@@ -113,6 +114,7 @@ internal class PortalEntryBuilder<KeyT>(
         entry.isDisappearing -> when {
           validation.validatePortalTransactions && !suppressDisappearingValidation ->
             error("Cannot remove if the entry is disappearing")
+
           else -> null
         }.also {
           entry.portal.notifyOfRemoval(
@@ -237,7 +239,9 @@ private fun ParentPortal.notifyChildrenOfRemoval(
   isCompletelyRemoved: Boolean
 ) {
   for(manager in portalManagers) {
-    for((_, childPortal) in manager.portals) {
+    for(entry in manager.portalEntries) {
+      val childPortal = entry.portal
+
       if(childPortal is ParentPortal) {
         notifyChildrenOfRemoval(isCompletelyRemoved)
       }

@@ -28,10 +28,10 @@ public interface PortalBackstack<KeyT> : ReadOnlyBackstack {
   )
 
   public fun pop(
-    untilBackstackEntryId: String? = null,
     inclusive: Boolean = true,
     enterTransitionOverride: ((KeyT) -> EnterTransitionOverride?)? = null,
-    exitTransitionOverride: ((KeyT) -> ExitTransitionOverride?)? = null
+    exitTransitionOverride: ((KeyT) -> ExitTransitionOverride?)? = null,
+    popPredicate: (PortalBackstackEntry<KeyT>) -> Boolean = { false }
   ): Boolean
 
   public fun clear(
@@ -113,10 +113,10 @@ internal class PortalBackstackImpl<KeyT>(
   }
 
   override fun pop(
-    untilBackstackEntryId: String?,
     inclusive: Boolean,
     enterTransitionOverride: ((KeyT) -> EnterTransitionOverride?)?,
-    exitTransitionOverride: ((KeyT) -> ExitTransitionOverride?)?
+    exitTransitionOverride: ((KeyT) -> ExitTransitionOverride?)?,
+    popPredicate: (PortalBackstackEntry<KeyT>) -> Boolean
   ): Boolean = portalState.transactWithBackstack { backstackStack ->
     val originalSize = backstackStack.size
     var stop = false
@@ -126,10 +126,10 @@ internal class PortalBackstackImpl<KeyT>(
         enterTransitionOverride,
         exitTransitionOverride
       ) { entryToPop ->
-        if(untilBackstackEntryId == null || entryToPop.id == untilBackstackEntryId) {
+        if(!popPredicate(entryToPop)) {
           stop = true
 
-          untilBackstackEntryId == null || inclusive
+          inclusive
         }
         else {
           true
@@ -201,31 +201,48 @@ private fun <KeyT> PortalEntryBuilder<KeyT>.applyBackstackMutations(
 
 public fun <KeyT> PortalBackstack<KeyT>.push(
   backstackEntryId: KeyT,
+  keyMapper: (KeyT) -> String = { it.toString() },
   builder: PortalBackstack.PushBuilder<KeyT>.() -> Unit
 ) {
-  push(backstackEntryId.toString(), builder)
+  push(keyMapper(backstackEntryId), builder)
 }
 
-public fun <KeyT> PortalBackstack<KeyT>.pop(
-  untilBackstackEntryId: KeyT? = null,
+public fun <KeyT> PortalBackstack<KeyT>.popUntil(
+  backstackEntryId: String,
   inclusive: Boolean = true,
   enterTransitionOverride: ((KeyT) -> EnterTransitionOverride?)? = null,
   exitTransitionOverride: ((KeyT) -> ExitTransitionOverride?)? = null
 ): Boolean = pop(
-  untilBackstackEntryId.toString(),
+  inclusive,
+  enterTransitionOverride,
+  exitTransitionOverride
+) { entry ->
+  entry.id != backstackEntryId
+}
+
+public fun <KeyT> PortalBackstack<KeyT>.popUntil(
+  backstackEntryId: KeyT,
+  keyMapper: (KeyT) -> String = { it.toString() },
+  inclusive: Boolean = true,
+  enterTransitionOverride: ((KeyT) -> EnterTransitionOverride?)? = null,
+  exitTransitionOverride: ((KeyT) -> ExitTransitionOverride?)? = null
+): Boolean = popUntil(
+  keyMapper(backstackEntryId),
   inclusive,
   enterTransitionOverride,
   exitTransitionOverride
 )
 
 public fun <KeyT> PortalBackstack<KeyT>.contains(
-  backstackEntryId: KeyT
-): Boolean = backstackEntryId.toString() in this
+  backstackEntryId: KeyT,
+  keyMapper: (KeyT) -> String = { it.toString() }
+): Boolean = keyMapper(backstackEntryId) in this
 
 public fun <KeyT> PortalBackstack<KeyT>.isTop(
   backstackEntryId: String
 ): Boolean = peek() == backstackEntryId
 
 public fun <KeyT> PortalBackstack<KeyT>.isTop(
-  backstackEntryId: KeyT
-): Boolean = isTop(backstackEntryId.toString())
+  backstackEntryId: KeyT,
+  keyMapper: (KeyT) -> String = { it.toString() },
+): Boolean = isTop(keyMapper(backstackEntryId))

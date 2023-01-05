@@ -35,7 +35,9 @@ private fun ParentPortal.traverseChildrenDFS(
       onPortalManager(portalManager)
     }
 
-    portalManager.portals.forEach { (_, childPortal) ->
+    portalManager.portalEntries.forEach { entry ->
+      val childPortal = entry.portal
+
       if(childPortal is ParentPortal) {
         if(traversal == PortalTraversal.Depth.Pre) {
           onPortal(childPortal)
@@ -68,11 +70,11 @@ private fun traverseChildrenBFS(
 
     onPortalManager(portalManager)
 
-    for((_, portal) in portalManager.portals) {
-      onPortal(portal)
+    for(entry in portalManager.portalEntries) {
+      onPortal(entry.portal)
 
-      if(portal is ParentPortal) {
-        portalManagers.addAll(portal.portalManagers)
+      if(entry.portal is ParentPortal) {
+        portalManagers.addAll(entry.portal.portalManagers)
       }
     }
   }
