@@ -8,12 +8,11 @@ import kotlinx.atomicfu.locks.reentrantLock
 import kotlinx.atomicfu.locks.withLock
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
 
 public interface PortalManagerQueries<KeyT> {
   public val size: Int
 
-  public val portals: List<Pair<KeyT, Portal>>
+  public val portalEntries: List<PortalEntry<KeyT>>
 
   public operator fun contains(key: KeyT): Boolean
 }
@@ -28,8 +27,8 @@ public abstract class PortalManager<KeyT>(
   override val size: Int
     get() = portalState.portalEntries.filterNot { it.isDisappearing }.size
 
-  override val portals: List<Pair<KeyT, Portal>>
-    get() = portalState.portalEntries.map { it.key to it.portal }
+  override val portalEntries: List<PortalEntry<KeyT>>
+    get() = portalState.portalEntries
 
   override operator fun contains(key: KeyT): Boolean =
     portalState.portalEntries.findLast { entry ->
@@ -91,7 +90,7 @@ public abstract class PortalManager<KeyT>(
     }
   }
 
-  public fun updates(): Flow<Unit> = portalState.portalEntriesUpdateFlow().map {}
+  public fun updates(): Flow<List<PortalEntry<KeyT>>> = portalState.portalEntriesUpdateFlow()
 
   private val lock = reentrantLock()
   private val portalState = PortalState<KeyT>(validation = validation)
