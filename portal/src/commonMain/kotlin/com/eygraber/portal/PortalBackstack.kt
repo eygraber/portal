@@ -246,5 +246,5 @@ public fun <KeyT> PortalBackstack<KeyT>.isTop(
   keyMapper: (KeyT) -> String = { it.toString() },
 ): Boolean = isTop(keyMapper(backstackEntryId))
 
-public val PortalBackstack<*>.isEmpty: Boolean get() = size == 0
-public val PortalBackstack<*>.isNotEmpty: Boolean get() = size > 0
+public val ReadOnlyBackstack<*>.isEmpty: Boolean get() = size == 0
+public val ReadOnlyBackstack<*>.isNotEmpty: Boolean get() = size > 0
