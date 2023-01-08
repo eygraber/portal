@@ -103,7 +103,7 @@ public abstract class PortalManager<KeyT>(
 
   private val _backstack: PortalBackstack<KeyT> = PortalBackstackImpl(portalState)
 
-  public val backstack: ReadOnlyBackstack = _backstack
+  public val backstack: ReadOnlyBackstack<KeyT> = _backstack
 
   public interface EntryBuilder<KeyT> : PortalManagerQueries<KeyT> {
     public val backstack: PortalBackstack<KeyT>

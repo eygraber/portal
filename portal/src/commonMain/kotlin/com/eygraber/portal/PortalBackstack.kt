@@ -6,22 +6,21 @@ import com.eygraber.portal.internal.PortalBackstackMutation
 import com.eygraber.portal.internal.PortalEntryBuilder
 import com.eygraber.portal.internal.PortalState
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 
 @DslMarker
 internal annotation class BackstackDsl
 
-public interface ReadOnlyBackstack {
+public interface ReadOnlyBackstack<KeyT> {
   public val size: Int
 
-  public val changes: Flow<Unit>
+  public val changes: Flow<List<PortalBackstackEntry<KeyT>>>
 
   public operator fun contains(backstackEntryId: String): Boolean
 
   public fun peek(): String?
 }
 
-public interface PortalBackstack<KeyT> : ReadOnlyBackstack {
+public interface PortalBackstack<KeyT> : ReadOnlyBackstack<KeyT> {
   public fun push(
     backstackEntryId: String,
     @BackstackDsl builder: PushBuilder<KeyT>.() -> Unit
@@ -64,7 +63,7 @@ internal class PortalBackstackImpl<KeyT>(
 ) : PortalBackstack<KeyT> {
   override val size: Int get() = portalState.backstackEntries.size
 
-  override val changes = portalState.backstackEntriesUpdateFlow().map {}
+  override val changes = portalState.backstackEntriesUpdateFlow()
 
   override fun contains(backstackEntryId: String) =
     portalState.backstackEntries.indexOfLast { it.id == backstackEntryId } >= 0
