@@ -1,7 +1,7 @@
 package com.eygraber.portal
 
 public data class PortalEntry<KeyT>(
-  public val portal: KeyedPortal<KeyT>,
+  public val portal: KeyedPortal<out KeyT>,
   public val wasContentPreviouslyVisible: Boolean,
   public val isDisappearing: Boolean,
   public val isBackstackMutation: Boolean,
