@@ -35,7 +35,7 @@ internal class PortalEntryBuilder<KeyT>(
     } != null
 
   override fun add(
-    portal: KeyedPortal<KeyT>,
+    portal: KeyedPortal<out KeyT>,
     isAttachedToComposition: Boolean,
     transitionOverride: EnterTransitionOverride?
   ) {

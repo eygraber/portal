@@ -11,7 +11,7 @@ internal class PortalBackstackEntryBuilder<KeyT>(
   private val backstackMutations = mutableListOf<PortalBackstackMutation<KeyT>>()
 
   override fun add(
-    portal: KeyedPortal<KeyT>,
+    portal: KeyedPortal<out KeyT>,
     isAttachedToComposition: Boolean,
     transitionOverride: EnterTransitionOverride?
   ) {

@@ -109,7 +109,7 @@ public abstract class PortalManager<KeyT>(
     public val backstack: PortalBackstack<KeyT>
 
     public fun add(
-      portal: KeyedPortal<KeyT>,
+      portal: KeyedPortal<out KeyT>,
       isAttachedToComposition: Boolean = true,
       transitionOverride: EnterTransitionOverride? = null
     )

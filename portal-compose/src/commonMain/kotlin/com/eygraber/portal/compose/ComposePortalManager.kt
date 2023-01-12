@@ -39,7 +39,7 @@ public class ComposePortalManager<KeyT>(
   }
 
   @Composable
-  private fun PortalRenderer(entry: ComposePortalEntry<KeyT>) {
+  private fun PortalRenderer(entry: ComposePortalEntry<out KeyT>) {
     val transitionOverride = when(entry.rendererState) {
       PortalRendererState.Added,
       PortalRendererState.Attached -> entry.enterTransitionOverride?.let { enterTransition ->
