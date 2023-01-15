@@ -10,7 +10,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshots.Snapshot
 import com.eygraber.portal.PortalManager
 import com.eygraber.portal.PortalManagerValidation
 import com.eygraber.portal.PortalRendererState
@@ -91,14 +94,8 @@ public class ComposePortalManager<KeyT>(
 
     // since this case won't render the AnimatedVisibility content
     // we need to handle disposing the disappearing entry here
-    if(entry.isDisappearing && !entry.isAttachedToComposition) {
-      DisposableEffect(Unit) {
-        onDispose {
-          withTransaction {
-            makeEntryDisappear(entry.key)
-          }
-        }
-      }
+    if(entry.isDisappearing && !entry.isAttachedToComposition && !entry.wasContentPreviouslyVisible) {
+      RegisterDisposeForNonAnimatedDisappearance(entry)
     }
 
     AnimatedVisibility(
@@ -123,6 +120,24 @@ public class ComposePortalManager<KeyT>(
             markAddedEntryAsAttached(entry.key)
           }
         }
+      }
+    }
+  }
+
+  @Composable
+  private fun RegisterDisposeForNonAnimatedDisappearance(entry: ComposePortalEntry<out KeyT>) {
+    var keepInComposition by remember { mutableStateOf(true) }
+
+    if(keepInComposition) {
+      DisposableEffect(Unit) {
+        onDispose {
+          withTransaction {
+            makeEntryDisappear(entry.key)
+          }
+        }
+      }
+      Snapshot.withMutableSnapshot {
+        keepInComposition = false
       }
     }
   }
