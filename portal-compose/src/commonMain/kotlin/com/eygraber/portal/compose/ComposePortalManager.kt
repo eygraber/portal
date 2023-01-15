@@ -9,6 +9,7 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
 import com.eygraber.portal.PortalManager
 import com.eygraber.portal.PortalManagerValidation
@@ -34,7 +35,9 @@ public class ComposePortalManager<KeyT>(
     )
 
     for(entry in portalEntries) {
-      PortalRenderer(entry)
+      key(entry.key) {
+        PortalRenderer(entry)
+      }
     }
   }
 
