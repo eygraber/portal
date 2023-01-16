@@ -19,7 +19,7 @@ dokka = "1.7.20"
 jdk = "17"
 
 kodein = "7.16.0"
-kotlin = "1.7.21"
+kotlin = "1.8.0"
 
 kotlinInject = "0.6.0"
 
