@@ -8,6 +8,8 @@ plugins {
   id("com.google.devtools.ksp")
 }
 
+group = "samples-simple-portal-shared"
+
 android {
   namespace = "com.eygraber.portal.samples.kotlin.inject.shared"
 }

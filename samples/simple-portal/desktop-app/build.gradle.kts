@@ -7,6 +7,8 @@ plugins {
   id("com.eygraber.conventions-detekt")
 }
 
+group = "samples-simple-portal-desktop"
+
 dependencies {
   implementation(projects.samples.simplePortal)
 

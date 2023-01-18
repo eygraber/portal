@@ -7,6 +7,8 @@ plugins {
   id("com.eygraber.conventions-detekt")
 }
 
+group = "samples-kotlin-inject-desktop"
+
 dependencies {
   implementation(projects.portalCompose)
   implementation(projects.samples.kotlinInject.shared)

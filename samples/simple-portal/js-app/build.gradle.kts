@@ -6,6 +6,8 @@ plugins {
   id("com.eygraber.conventions-detekt")
 }
 
+group = "samples-simple-portal-js"
+
 kotlin {
   kmpTargets(
     project = project,

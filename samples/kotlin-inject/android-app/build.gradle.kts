@@ -8,6 +8,8 @@ plugins {
   id("com.eygraber.conventions-detekt")
 }
 
+group = "samples-kotlin-inject-android"
+
 android {
   compileSdk = libs.versions.android.sdk.compile.get().toInt()
 

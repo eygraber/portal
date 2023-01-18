@@ -7,6 +7,8 @@ plugins {
   id("com.eygraber.conventions-detekt")
 }
 
+group = "samples-portal"
+
 dependencies {
   implementation(projects.portalCompose)
   implementation(projects.portalKodeinDi)

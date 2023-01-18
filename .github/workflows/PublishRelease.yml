@@ -7,7 +7,7 @@ on:
 
 env:
   VERSION_FILE: gradle.properties
-  VERSION_EXTRACT_PATTERN: '(?<=VERSION_NAME=).+'
+  VERSION_EXTRACT_PATTERN: '(?<=version=).+'
   GH_USER_NAME: github.actor
   GRADLE_OPTS: -Dorg.gradle.daemon=false -Dkotlin.incremental=false -Dorg.gradle.jvmargs="-Xmx4g -Xms512m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -XX:MaxMetaspaceSize=1024m"
 
@@ -43,7 +43,7 @@ jobs:
           ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.SONATYPE_NEXUS_USERNAME }}
           ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.SONATYPE_NEXUS_PASSWORD }}
           ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.ARTIFACT_SIGNING_PRIVATE_KEY }}
-        run: ./gradlew publish -PVERSION_NAME=${{ env.RELEASE_VERSION }}
+        run: ./gradlew publish -Pversion=${{ env.RELEASE_VERSION }}
 
       - name: Create tag
         id: create_tag

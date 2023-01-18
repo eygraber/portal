@@ -6,6 +6,8 @@ plugins {
   id("com.eygraber.conventions-detekt")
 }
 
+group = "samples-kotlin-inject-js"
+
 kotlin {
   kmpTargets(
     project = project,
