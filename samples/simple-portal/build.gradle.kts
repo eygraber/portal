@@ -7,6 +7,8 @@ plugins {
   id("com.eygraber.conventions-detekt")
 }
 
+group = "samples-simple-portal-shared"
+
 android {
   namespace = "com.eygraber.portal.samples.simpleportal"
 }
