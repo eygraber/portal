@@ -7,9 +7,6 @@ import com.eygraber.portal.internal.PortalEntryBuilder
 import com.eygraber.portal.internal.PortalState
 import kotlinx.coroutines.flow.Flow
 
-@DslMarker
-internal annotation class BackstackDsl
-
 public interface ReadOnlyBackstack<KeyT> {
   public val size: Int
 
@@ -23,7 +20,7 @@ public interface ReadOnlyBackstack<KeyT> {
 public interface PortalBackstack<KeyT> : ReadOnlyBackstack<KeyT> {
   public fun push(
     backstackEntryId: String,
-    @BackstackDsl builder: PushBuilder<KeyT>.() -> Unit
+    @PortalTransactionBuilderDsl builder: PushBuilder<KeyT>.() -> Unit
   )
 
   public fun pop(
