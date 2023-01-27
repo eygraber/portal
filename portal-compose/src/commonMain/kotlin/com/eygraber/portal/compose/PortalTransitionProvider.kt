@@ -1,5 +1,7 @@
 package com.eygraber.portal.compose
 
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import com.eygraber.portal.PortalRendererState
 
 public fun interface PortalTransitionProvider {
@@ -50,28 +52,32 @@ public fun interface PortalTransitionProvider {
 }
 
 public interface SimplePortalTransitionProvider : PortalTransitionProvider {
-  public fun enterExitTransition(): PortalTransition
+  public val enterTransition: EnterTransition
+  public val exitTransition: ExitTransition
 
-  public fun attachDetachTransition(): PortalTransition = enterExitTransition()
+  public val attachTransition: EnterTransition get() = enterTransition
+  public val detachTransition: ExitTransition get() = exitTransition
 
-  public fun popEnterExitTransition(): PortalTransition = enterExitTransition()
+  public val popEnterTransition: EnterTransition get() = enterTransition
+  public val popExitTransition: ExitTransition get() = exitTransition
 
-  public fun popAttachDetachTransition(): PortalTransition = popEnterExitTransition()
+  public val popAttachTransition: EnterTransition get() = popEnterTransition
+  public val popDetachTransition: ExitTransition get() = popExitTransition
 
   override fun provideTransitions(
     compositionState: PortalRendererState,
     isForBackstack: Boolean
   ): PortalTransition = when(compositionState) {
     PortalRendererState.Added, PortalRendererState.Removed -> when {
-      isForBackstack -> popEnterExitTransition()
+      isForBackstack -> PortalTransition(popEnterTransition, popExitTransition)
 
-      else -> enterExitTransition()
+      else -> PortalTransition(enterTransition, exitTransition)
     }
 
     PortalRendererState.Attached, PortalRendererState.Detached -> when {
-      isForBackstack -> popAttachDetachTransition()
+      isForBackstack -> PortalTransition(popAttachTransition, popDetachTransition)
 
-      else -> attachDetachTransition()
+      else -> PortalTransition(attachTransition, detachTransition)
     }
   }
 }

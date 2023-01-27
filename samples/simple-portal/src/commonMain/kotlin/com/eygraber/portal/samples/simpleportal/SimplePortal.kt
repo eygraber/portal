@@ -16,7 +16,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.eygraber.portal.compose.ComposePortalManager
-import com.eygraber.portal.compose.PortalTransition
 import com.eygraber.portal.compose.SimplePortalTransitionProvider
 import com.eygraber.portal.compose.exitTransitionOverride
 import com.eygraber.portal.push
@@ -24,24 +23,22 @@ import kotlinx.coroutines.delay
 
 private val portalManager = ComposePortalManager<PortalKey>(
   defaultTransitionProvider = object : SimplePortalTransitionProvider {
-    override fun enterExitTransition() = PortalTransition(
-      enter = slideInHorizontally(
-        animationSpec = tween(1000),
-        initialOffsetX = { it * 2 }
-      ),
-      exit = slideOutHorizontally(
-        animationSpec = tween(1000),
-        targetOffsetX = { it * 2 }
-      )
+    override val enterTransition = slideInHorizontally(
+      animationSpec = tween(1000),
+      initialOffsetX = { it * 2 }
     )
 
-    override fun popEnterExitTransition() = PortalTransition(
-      enter = fadeIn(
-        animationSpec = tween(1000)
-      ),
-      exit = fadeOut(
-        animationSpec = tween(1000)
-      )
+    override val exitTransition = slideOutHorizontally(
+      animationSpec = tween(1000),
+      targetOffsetX = { it * 2 }
+    )
+
+    override val popEnterTransition = fadeIn(
+      animationSpec = tween(1000)
+    )
+
+    override val popExitTransition = fadeOut(
+      animationSpec = tween(1000)
     )
   }
 )
