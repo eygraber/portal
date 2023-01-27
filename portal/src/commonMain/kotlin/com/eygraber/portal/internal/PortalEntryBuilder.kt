@@ -151,6 +151,9 @@ internal class PortalEntryBuilder<KeyT>(
         )
       }
     }
+
+    // backstack cleanup
+    transactionBackstackEntries.clear()
   }
 
   internal fun disappear(
