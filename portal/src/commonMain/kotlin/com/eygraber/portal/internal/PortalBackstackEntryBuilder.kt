@@ -27,6 +27,10 @@ internal class PortalBackstackEntryBuilder<KeyT>(
     transitionOverride: EnterTransitionOverride?
   ) {
     builder.attachToComposition(key, transitionOverride)
+
+    backstackMutations += PortalBackstackMutation.Detach(
+      key = key
+    )
   }
 
   override fun detachFromComposition(

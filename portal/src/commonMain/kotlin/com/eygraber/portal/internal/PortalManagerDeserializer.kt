@@ -1,6 +1,7 @@
 package com.eygraber.portal.internal
 
 import com.eygraber.portal.KeyedPortal
+import com.eygraber.portal.PortalBackstackState
 import com.eygraber.portal.PortalEntry
 import com.eygraber.portal.PortalRendererState
 import kotlinx.serialization.json.Json
@@ -55,13 +56,13 @@ private fun <KeyT> JsonArray.deserializeToPortalEntries(
     ) {
       "A serialized PortalEntry needs a \"isDisappearing\" field"
     }.toBoolean(),
-    isBackstackMutation = requireNotNull(
-      jsonEntry["isBackstackMutation"]?.jsonPrimitive?.contentOrNull
+    backstackState = requireNotNull(
+      jsonEntry["backstackState"]?.jsonPrimitive?.contentOrNull
     ) {
-      "A serialized PortalEntry needs a \"isBackstackMutation\" field"
-    }.toBoolean(),
+      "A serialized PortalEntry needs a \"backstackState\" field"
+    }.let(PortalBackstackState::valueOf),
     rendererState = requireNotNull(
-      jsonEntry["isBackstackMutation"]?.jsonPrimitive?.contentOrNull
+      jsonEntry["rendererState"]?.jsonPrimitive?.contentOrNull
     ) {
       "A serialized PortalEntry needs a \"rendererState\" field"
     }.let(PortalRendererState::valueOf),

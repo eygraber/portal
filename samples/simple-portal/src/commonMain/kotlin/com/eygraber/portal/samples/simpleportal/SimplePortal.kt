@@ -1,7 +1,6 @@
 package com.eygraber.portal.samples.simpleportal
 
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkOut
 import androidx.compose.animation.slideInHorizontally
@@ -33,11 +32,7 @@ private val portalManager = ComposePortalManager<PortalKey>(
       targetOffsetX = { it * 2 }
     )
 
-    override val popEnterTransition = fadeIn(
-      animationSpec = tween(1000)
-    )
-
-    override val popExitTransition = fadeOut(
+    override val backstackPushDetachTransition = fadeOut(
       animationSpec = tween(1000)
     )
   }
