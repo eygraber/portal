@@ -27,7 +27,7 @@ private fun <KeyT> List<PortalEntry<KeyT>>.serializeEntries(
         put("wasContentPreviouslyVisible", entry.wasContentPreviouslyVisible)
         put("isAttached", entry.rendererState.isAddedOrAttached)
         put("isDisappearing", entry.isDisappearing)
-        put("isBackstackMutation", entry.isBackstackMutation)
+        put("backstackState", entry.backstackState.name)
         put("rendererState", entry.rendererState.name)
       }
     )

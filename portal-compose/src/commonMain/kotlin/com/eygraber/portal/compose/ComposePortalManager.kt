@@ -68,12 +68,12 @@ public class ComposePortalManager<KeyT>(
       null -> when(val transitionProvider = entry.portal) {
         is PortalTransitionProvider -> transitionProvider.provideTransitions(
           compositionState = entry.rendererState,
-          isForBackstack = entry.isBackstackMutation
+          backstackState = entry.backstackState
         )
 
         else -> defaultTransitionProvider.provideTransitions(
           compositionState = entry.rendererState,
-          isForBackstack = entry.isBackstackMutation
+          backstackState = entry.backstackState
         )
       }
 

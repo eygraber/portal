@@ -71,7 +71,9 @@ internal class PortalBackstackImpl<KeyT>(
     backstackEntryId: String,
     builder: PortalBackstack.PushBuilder<KeyT>.() -> Unit
   ) {
-    portalState.transactWithBackstack { backstackStack ->
+    portalState.transactWithBackstack(
+      backstackState = PortalBackstackState.Pushing
+    ) { backstackStack ->
       val backstackMutations =
         PortalBackstackEntryBuilder(this)
           .apply(builder)
@@ -90,7 +92,9 @@ internal class PortalBackstackImpl<KeyT>(
     suppressTransitions: Boolean,
     enterTransitionOverride: ((KeyT) -> EnterTransitionOverride?)?,
     exitTransitionOverride: ((KeyT) -> ExitTransitionOverride?)?
-  ): Boolean = portalState.transactWithBackstack { backstackStack ->
+  ): Boolean = portalState.transactWithBackstack(
+    backstackState = PortalBackstackState.Popping
+  ) { backstackStack ->
     val originalSize = backstackStack.size
 
     backstackStack
@@ -113,7 +117,9 @@ internal class PortalBackstackImpl<KeyT>(
     enterTransitionOverride: ((KeyT) -> EnterTransitionOverride?)?,
     exitTransitionOverride: ((KeyT) -> ExitTransitionOverride?)?,
     popPredicate: (PortalBackstackEntry<KeyT>) -> Boolean
-  ): Boolean = portalState.transactWithBackstack { backstackStack ->
+  ): Boolean = portalState.transactWithBackstack(
+    backstackState = PortalBackstackState.Popping
+  ) { backstackStack ->
     val originalSize = backstackStack.size
     var stop = false
     do {
@@ -160,9 +166,10 @@ internal class PortalBackstackImpl<KeyT>(
   }
 
   private inline fun <R> PortalState<KeyT>.transactWithBackstack(
+    backstackState: PortalBackstackState,
     crossinline block: PortalEntryBuilder<KeyT>.(MutableList<PortalBackstackEntry<KeyT>>) -> R
   ) = transact {
-    usingBackstack(block)
+    usingBackstack(backstackState, block)
   }
 }
 

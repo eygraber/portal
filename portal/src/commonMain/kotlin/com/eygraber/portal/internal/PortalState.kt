@@ -1,6 +1,7 @@
 package com.eygraber.portal.internal
 
 import com.eygraber.portal.PortalBackstack
+import com.eygraber.portal.PortalBackstackState
 import com.eygraber.portal.PortalEntry
 import com.eygraber.portal.PortalManagerValidation
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -37,7 +38,7 @@ internal class PortalState<KeyT>(
       backstack = backstack,
       transactionPortalEntries = mutablePortalEntries.value.toMutableList(),
       transactionBackstackEntries = mutableBackstackEntries.value.toMutableList(),
-      isForBackstack = false,
+      backstackState = PortalBackstackState.None,
       validation = validation
     )
 

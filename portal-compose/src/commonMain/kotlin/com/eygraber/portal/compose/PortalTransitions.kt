@@ -2,8 +2,11 @@ package com.eygraber.portal.compose
 
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutHorizontally
@@ -38,9 +41,9 @@ public data class PortalTransition(
       targetOffsetX = { -it }
     )
 
-    public val defaultEnterForBackstack: EnterTransition = fadeIn()
+    public val defaultBackstackPushEnter: EnterTransition = fadeIn()
 
-    public val defaultExitForBackstack: ExitTransition = fadeOut()
+    public val defaultBackstackPopExit: ExitTransition = fadeOut()
 
     public val defaultAttach: EnterTransition = slideInVertically(
       initialOffsetY = { -it }
@@ -50,9 +53,15 @@ public data class PortalTransition(
       targetOffsetY = { it * 2 }
     )
 
-    public val defaultAttachForBackstack: EnterTransition = fadeIn()
+    public val defaultBackstackPushAttach: EnterTransition = fadeIn()
 
-    public val defaultDetachForBackstack: ExitTransition = fadeOut()
+    public val defaultBackstackPushDetach: ExitTransition = fadeOut()
+
+    @OptIn(ExperimentalAnimationApi::class)
+    public val defaultBackstackPopAttach: EnterTransition = scaleIn()
+
+    @OptIn(ExperimentalAnimationApi::class)
+    public val defaultBackstackPopDetach: ExitTransition = scaleOut()
 
     public val None: PortalTransition = PortalTransition(
       enter = EnterTransition.None,

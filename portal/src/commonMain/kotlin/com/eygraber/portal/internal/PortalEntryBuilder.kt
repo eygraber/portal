@@ -6,6 +6,7 @@ import com.eygraber.portal.KeyedPortal
 import com.eygraber.portal.ParentPortal
 import com.eygraber.portal.Portal
 import com.eygraber.portal.PortalBackstack
+import com.eygraber.portal.PortalBackstackState
 import com.eygraber.portal.PortalEntry
 import com.eygraber.portal.PortalManager
 import com.eygraber.portal.PortalManagerValidation
@@ -19,7 +20,7 @@ internal class PortalEntryBuilder<KeyT>(
   override val backstack: PortalBackstack<KeyT>,
   private val transactionPortalEntries: MutableList<PortalEntry<KeyT>>,
   private val transactionBackstackEntries: MutableList<PortalBackstackEntry<KeyT>>,
-  private val isForBackstack: Boolean,
+  private val backstackState: PortalBackstackState,
   private val validation: PortalManagerValidation
 ) : PortalManager.EntryBuilder<KeyT> {
   private val _postTransactionOps = atomic(emptyList<() -> Unit>())
@@ -43,7 +44,7 @@ internal class PortalEntryBuilder<KeyT>(
       portal = portal,
       wasContentPreviouslyVisible = false,
       isDisappearing = false,
-      isBackstackMutation = false,
+      backstackState = PortalBackstackState.None,
       rendererState = when {
         isAttachedToComposition -> PortalRendererState.Added
         else -> PortalRendererState.Detached
@@ -66,7 +67,7 @@ internal class PortalEntryBuilder<KeyT>(
 
         else -> entry.copy(
           wasContentPreviouslyVisible = entry.rendererState.isAddedOrAttached,
-          isBackstackMutation = isForBackstack,
+          backstackState = backstackState,
           rendererState = PortalRendererState.Attached,
           enterTransitionOverride = transitionOverride,
           exitTransitionOverride = null
@@ -88,7 +89,7 @@ internal class PortalEntryBuilder<KeyT>(
 
         else -> entry.copy(
           wasContentPreviouslyVisible = entry.rendererState.isAddedOrAttached,
-          isBackstackMutation = isForBackstack,
+          backstackState = backstackState,
           rendererState = PortalRendererState.Detached,
           enterTransitionOverride = null,
           exitTransitionOverride = transitionOverride
@@ -124,7 +125,7 @@ internal class PortalEntryBuilder<KeyT>(
 
         else -> entry.copy(
           wasContentPreviouslyVisible = entry.rendererState.isAddedOrAttached,
-          isBackstackMutation = false,
+          backstackState = PortalBackstackState.None,
           rendererState = PortalRendererState.Removed,
           isDisappearing = true,
           enterTransitionOverride = null,
@@ -189,6 +190,7 @@ internal class PortalEntryBuilder<KeyT>(
 
   @Suppress("unused")
   internal inline fun <R> PortalBackstack<KeyT>.usingBackstack(
+    backstackState: PortalBackstackState,
     @PortalTransactionBuilderDsl
     builder: PortalEntryBuilder<KeyT>.(
       MutableList<PortalBackstackEntry<KeyT>>
@@ -197,7 +199,7 @@ internal class PortalEntryBuilder<KeyT>(
     transactionPortalEntries = transactionPortalEntries,
     transactionBackstackEntries = transactionBackstackEntries,
     backstack = backstack,
-    isForBackstack = true,
+    backstackState = backstackState,
     validation = validation
   ).builder(transactionBackstackEntries)
 
