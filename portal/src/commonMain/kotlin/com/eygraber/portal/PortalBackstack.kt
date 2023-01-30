@@ -20,7 +20,7 @@ public interface ReadOnlyBackstack<KeyT> {
 public interface PortalBackstack<KeyT> : ReadOnlyBackstack<KeyT> {
   public fun push(
     backstackEntryId: String,
-    @PortalTransactionBuilderDsl builder: PushBuilder<KeyT>.() -> Unit
+    builder: PushBuilder<KeyT>.() -> Unit
   )
 
   public fun pop(
@@ -36,6 +36,7 @@ public interface PortalBackstack<KeyT> : ReadOnlyBackstack<KeyT> {
     exitTransitionOverride: ((KeyT) -> ExitTransitionOverride?)? = null
   ): Boolean
 
+  @PortalTransactionBuilderDsl
   public interface PushBuilder<KeyT> {
     public fun add(
       portal: KeyedPortal<out KeyT>,

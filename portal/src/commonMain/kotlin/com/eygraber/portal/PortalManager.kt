@@ -17,8 +17,9 @@ public interface PortalManagerQueries<KeyT> {
   public operator fun contains(key: KeyT): Boolean
 }
 
+@Target(AnnotationTarget.CLASS)
 @DslMarker
-internal annotation class PortalTransactionBuilderDsl
+public annotation class PortalTransactionBuilderDsl
 
 public abstract class PortalManager<KeyT>(
   private val defaultErrorHandler: ((Throwable) -> Unit)? = null,
@@ -62,7 +63,7 @@ public abstract class PortalManager<KeyT>(
 
   public fun withTransaction(
     errorHandler: ((Throwable) -> Unit)? = defaultErrorHandler,
-    @PortalTransactionBuilderDsl builder: EntryBuilder<KeyT>.() -> Unit
+    builder: EntryBuilder<KeyT>.() -> Unit
   ) {
     lock.withLock {
       val isRootTransaction = portalState.startTransaction(_backstack)
@@ -105,6 +106,7 @@ public abstract class PortalManager<KeyT>(
 
   public val backstack: ReadOnlyBackstack<KeyT> = _backstack
 
+  @PortalTransactionBuilderDsl
   public interface EntryBuilder<KeyT> : PortalManagerQueries<KeyT> {
     public val backstack: PortalBackstack<KeyT>
 

@@ -12,7 +12,6 @@ import com.eygraber.portal.PortalManager
 import com.eygraber.portal.PortalManagerValidation
 import com.eygraber.portal.PortalRemovedListener
 import com.eygraber.portal.PortalRendererState
-import com.eygraber.portal.PortalTransactionBuilderDsl
 import kotlinx.atomicfu.atomic
 import kotlinx.atomicfu.update
 
@@ -191,7 +190,6 @@ internal class PortalEntryBuilder<KeyT>(
   @Suppress("unused")
   internal inline fun <R> PortalBackstack<KeyT>.usingBackstack(
     backstackState: PortalBackstackState,
-    @PortalTransactionBuilderDsl
     builder: PortalEntryBuilder<KeyT>.(
       MutableList<PortalBackstackEntry<KeyT>>
     ) -> R
