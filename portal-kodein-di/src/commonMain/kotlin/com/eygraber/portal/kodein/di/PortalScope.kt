@@ -16,12 +16,11 @@ import org.kodein.di.multiton
 import org.kodein.di.scoped
 import org.kodein.di.singleton
 
-@PublishedApi
-internal object PortalScope : Scope<PortalLifecycleManager> {
+public object PortalScope : Scope<PortalLifecycleManager> {
   private val newRegistry = ::StandardScopeRegistry
   private val map = HashMap<PortalLifecycleManager, ScopeRegistry>()
 
-  override fun getRegistry(context: PortalLifecycleManager) = synchronizedIfNull(
+  override fun getRegistry(context: PortalLifecycleManager): ScopeRegistry = synchronizedIfNull(
     lock = map,
     predicate = { map[context] },
     ifNotNull = { it },
