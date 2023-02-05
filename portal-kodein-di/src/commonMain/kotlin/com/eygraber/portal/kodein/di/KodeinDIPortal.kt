@@ -10,14 +10,17 @@ import kotlinx.atomicfu.update
 import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.bind
-import org.kodein.di.provider
+import org.kodein.di.instance
 
 public interface KodeinDIPortalInitializer : KodeinDIComponentInitializer<PortalLifecycleManager> {
   override fun initializeKodeinDI(): DI = DI.lazy {
     extend(parentDI)
 
-    bind<Portal>(overrides = kodeinDIComponent is ChildPortal) with provider {
-      kodeinDIComponent as Portal
+    bind<Portal>(overrides = kodeinDIComponent is ChildPortal) with instance(kodeinDIComponent as Portal)
+
+    if(kodeinDIComponent is ChildPortal) {
+      val parent = (kodeinDIComponent as ChildPortal).parent
+      bind<ParentPortal>(overrides = parent is ChildPortal) with instance(parent)
     }
 
     provideModule()?.let { module ->
