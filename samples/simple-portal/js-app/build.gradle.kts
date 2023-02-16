@@ -13,6 +13,7 @@ kotlin {
     project = project,
     js = true,
     isJsLeafModule = true,
+    jsModuleName = "simple-portal",
     android = false,
     jvm = false,
     ios = false
