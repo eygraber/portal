@@ -13,6 +13,7 @@ kotlin {
     project = project,
     js = true,
     isJsLeafModule = true,
+    jsModuleName = "kotlin-inject",
     android = false,
     jvm = false,
     ios = false
