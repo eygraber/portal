@@ -6,7 +6,7 @@ android-sdk-target = "33"
 android-sdk-min = "24"
 
 composeAndroid-bom = "2023.01.00"
-composeAndroid-compiler = "1.4.2"
+composeAndroid-compiler = "1.4.4"
 composeJetbrains = "1.3.1"
 
 conventions = "0.0.30"
@@ -36,8 +36,8 @@ publish = "0.25.1"
 conventions = { id = "com.eygraber.conventions", version.ref = "conventions" }
 
 [libraries]
-androidx-activity-compose = "androidx.activity:activity-compose:1.6.1"
-androidx-appcompat = "androidx.appcompat:appcompat:1.6.0-rc01"
+androidx-activity-compose = "androidx.activity:activity-compose:1.7.0"
+androidx-appcompat = "androidx.appcompat:appcompat:1.7.0-alpha02"
 androidx-core = "androidx.core:core-ktx:1.9.0"
 
 composeAndroid-compiler = { module = "androidx.compose.compiler:compiler", version.ref = "composeAndroid-compiler" }
