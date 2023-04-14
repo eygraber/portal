@@ -1,13 +1,13 @@
 [versions]
-agp = "8.1.0-alpha10"
+agp = "8.1.0-alpha11"
 
 android-sdk-compile = "33"
 android-sdk-target = "33"
 android-sdk-min = "24"
 
-composeAndroid-bom = "2023.01.00"
-composeAndroid-compiler = "1.4.4"
-composeJetbrains = "1.3.1"
+composeAndroid-bom = "2023.04.00"
+composeAndroid-compiler = "1.4.5"
+composeJetbrains = "1.4.0"
 
 conventions = "0.0.30"
 
@@ -19,16 +19,16 @@ dokka = "1.8.10"
 jdk = "17"
 
 kodein = "7.20.1"
-kotlin = "1.8.10"
+kotlin = "1.8.20"
 
 kotlinInject = "0.6.1"
 
-ksp = "1.8.10-1.0.9"
+ksp = "1.8.20-1.0.10"
 
 kotest = "5.5.5"
 
 kotlinx-coroutines = "1.6.4"
-kotlinx-atomicFu = "0.20.2"
+kotlinx-atomicFu = "0.20.0"
 
 publish = "0.25.1"
 
@@ -45,7 +45,7 @@ composeAndroid-material = { module = "androidx.compose.material:material" }
 composeAndroid-materialIconsExtended = { module = "androidx.compose.material:material-icons-extended" }
 
 buildscript-android = { module = "com.android.tools.build:gradle", version.ref = "agp" }
-buildscript-androidCacheFix = { module = "gradle.plugin.org.gradle.android:android-cache-fix-gradle-plugin", version = "2.6.2" }
+buildscript-androidCacheFix = { module = "gradle.plugin.org.gradle.android:android-cache-fix-gradle-plugin", version = "2.7.0" }
 buildscript-atomicFu = { module = "org.jetbrains.kotlinx:atomicfu-gradle-plugin", version.ref = "kotlinx-atomicFu" }
 buildscript-compose = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "composeJetbrains" }
 buildscript-detekt = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
@@ -72,7 +72,7 @@ kotlinInject-runtime = { module = "me.tatarka.inject:kotlin-inject-runtime", ver
 
 kotlinDurationExtensions = "com.eygraber:kotlin-duration-extensions:1.1.1"
 
-test-espresso = "androidx.test.espresso:espresso-core:3.5.1"
+test-espresso = "androidx.test.espresso:espresso-core:3.6.0-alpha01"
 test-compose-android-uiJunit = { module = "androidx.compose.ui:ui-test-junit4" }
 test-compose-android-uiTestManifest = { module = "androidx.compose.ui:ui-test-manifest" }
 test-junit = { module = "junit:junit", version = "4.13.2" }
