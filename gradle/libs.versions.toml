@@ -36,7 +36,7 @@ publish = "0.25.2"
 conventions = { id = "com.eygraber.conventions", version.ref = "conventions" }
 
 [libraries]
-androidx-activity-compose = "androidx.activity:activity-compose:1.7.1"
+androidx-activity-compose = "androidx.activity:activity-compose:1.7.2"
 androidx-appcompat = "androidx.appcompat:appcompat:1.7.0-alpha02"
 androidx-core = "androidx.core:core-ktx:1.10.1"
 
