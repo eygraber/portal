@@ -86,7 +86,9 @@ public class ComposePortalManager<KeyT>(
 
     val isContentVisible = !entry.isDisappearing && entry.isAttachedToComposition
     val visibleState = remember(
-      entry.isDisappearing, isContentVisible, wasContentPreviouslyVisible
+      entry.isDisappearing,
+      isContentVisible,
+      wasContentPreviouslyVisible
     ) {
       MutableTransitionState(wasContentPreviouslyVisible)
         .apply { targetState = isContentVisible }
