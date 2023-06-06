@@ -2,8 +2,8 @@ package com.eygraber.portal
 
 import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
-import kotlin.test.Test
 import io.kotest.matchers.ints.shouldBeExactly
+import kotlin.test.Test
 
 enum class PortalKey {
   Test,

@@ -8,17 +8,27 @@ import kotlin.time.Duration
 public interface PortalTransitionOverride {
   public sealed interface Alignment {
     public enum class Horizontal : Alignment {
-      Start, Center, End
+      Start,
+      Center,
+      End
     }
 
     public enum class Vertical : Alignment {
-      Top, Center, Bottom
+      Top,
+      Center,
+      Bottom
     }
 
     public enum class All : Alignment {
-      TopStart, TopCenter, TopEnd,
-      CenterStart, Center, CenterEnd,
-      BottomStart, BottomCenter, BottomEnd
+      TopStart,
+      TopCenter,
+      TopEnd,
+      CenterStart,
+      Center,
+      CenterEnd,
+      BottomStart,
+      BottomCenter,
+      BottomEnd
     }
   }
 }

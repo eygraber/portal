@@ -10,3 +10,4 @@ build/
 .externalNativeBuild
 .cxx
 danger_out.json
+tmp
