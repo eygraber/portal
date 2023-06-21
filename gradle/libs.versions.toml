@@ -9,7 +9,7 @@ composeAndroid-bom = "2023.04.00"
 composeAndroid-compiler = "1.4.7"
 composeJetbrains = "1.4.0"
 
-conventions = "0.0.33"
+conventions = "0.0.34"
 
 detekt = "1.23.0"
 detektEygraber = "1.0.11"
