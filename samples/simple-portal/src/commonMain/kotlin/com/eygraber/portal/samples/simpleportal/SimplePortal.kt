@@ -53,7 +53,6 @@ fun SimplePortal() {
       val lastWaveDuration = 8000
 
       backstack.clear(
-        suppressTransitions = false,
         exitTransitionOverride = { key ->
           when(key) {
             PortalKey.One -> exitTransitionOverride {

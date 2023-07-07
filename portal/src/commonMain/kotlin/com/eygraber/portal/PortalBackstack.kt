@@ -30,10 +30,15 @@ public interface PortalBackstack<KeyT> : ReadOnlyBackstack<KeyT> {
     popPredicate: (PortalBackstackEntry<KeyT>) -> Boolean = { false }
   ): Boolean
 
+  /**
+   * By default, transitions will be suppressed.
+   *
+   * Passing `null` for [enterTransitionOverride] or [exitTransitionOverride] will use
+   * the [PortalManager] default transitions.
+   */
   public fun clear(
-    suppressTransitions: Boolean = true,
-    enterTransitionOverride: ((KeyT) -> EnterTransitionOverride?)? = null,
-    exitTransitionOverride: ((KeyT) -> ExitTransitionOverride?)? = null
+    enterTransitionOverride: ((KeyT) -> EnterTransitionOverride?)? = { EnterTransitionOverride.None },
+    exitTransitionOverride: ((KeyT) -> ExitTransitionOverride?)? = { ExitTransitionOverride.None }
   ): Boolean
 
   @PortalTransactionBuilderDsl
@@ -90,7 +95,6 @@ internal class PortalBackstackImpl<KeyT>(
   }
 
   override fun clear(
-    suppressTransitions: Boolean,
     enterTransitionOverride: ((KeyT) -> EnterTransitionOverride?)?,
     exitTransitionOverride: ((KeyT) -> ExitTransitionOverride?)?
   ): Boolean = portalState.transactWithBackstack(
