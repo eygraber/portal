@@ -12,16 +12,16 @@ import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.darkColors
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.FeaturedVideo
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Restaurant
-import androidx.compose.material.icons.filled.Whatshot
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.eygraber.portal.compose.ComposePortalManager
+import com.eygraber.portal.samples.icons.FeaturedVideo
+import com.eygraber.portal.samples.icons.Home
+import com.eygraber.portal.samples.icons.Icons
+import com.eygraber.portal.samples.icons.Restaurant
+import com.eygraber.portal.samples.icons.WhatsHot
 import com.eygraber.portal.samples.kotlin.inject.View
 import me.tatarka.inject.annotations.Inject
 
@@ -84,22 +84,22 @@ class MainView(
         .weight(.10F)
     ) {
       BottomNavIcon(
-        icon = Icons.Filled.Home,
+        icon = Icons.Home,
         onClick = vm::handle1Clicked
       )
 
       BottomNavIcon(
-        icon = Icons.Filled.Whatshot,
+        icon = Icons.WhatsHot,
         onClick = vm::handle2Clicked
       )
 
       BottomNavIcon(
-        icon = Icons.Filled.Restaurant,
+        icon = Icons.Restaurant,
         onClick = vm::handle3Clicked
       )
 
       BottomNavIcon(
-        icon = Icons.Filled.FeaturedVideo,
+        icon = Icons.FeaturedVideo,
         onClick = vm::handle4Clicked
       )
     }

@@ -66,7 +66,6 @@ dependencies {
   implementation(projects.samples.simplePortal)
 
   implementation(libs.composeAndroid.material)
-  implementation(libs.composeAndroid.materialIconsExtended)
 
   implementation(libs.androidx.activity.compose)
   implementation(libs.androidx.appcompat)

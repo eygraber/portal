@@ -63,6 +63,7 @@ include(":portal-android-serialization")
 include(":portal-compose")
 include(":portal-kodein-di")
 
+include(":samples:icons")
 include(":samples:kotlin-inject:android-app")
 include(":samples:kotlin-inject:desktop-app")
 include(":samples:kotlin-inject:js-app")

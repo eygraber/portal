@@ -9,15 +9,15 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Button
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.FeaturedVideo
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Restaurant
-import androidx.compose.material.icons.filled.Whatshot
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.eygraber.portal.compose.ComposePortalManager
+import com.eygraber.portal.samples.icons.FeaturedVideo
+import com.eygraber.portal.samples.icons.Home
+import com.eygraber.portal.samples.icons.Icons
+import com.eygraber.portal.samples.icons.Restaurant
+import com.eygraber.portal.samples.icons.WhatsHot
 import com.eygraber.portal.samples.portal.View
 
 class MainView(
@@ -68,22 +68,22 @@ class MainView(
         .weight(.10F)
     ) {
       BottomNavIcon(
-        icon = Icons.Filled.Home,
+        icon = Icons.Home,
         onClick = vm::handle1Clicked
       )
 
       BottomNavIcon(
-        icon = Icons.Filled.Whatshot,
+        icon = Icons.WhatsHot,
         onClick = vm::handle2Clicked
       )
 
       BottomNavIcon(
-        icon = Icons.Filled.Restaurant,
+        icon = Icons.Restaurant,
         onClick = vm::handle3Clicked
       )
 
       BottomNavIcon(
-        icon = Icons.Filled.FeaturedVideo,
+        icon = Icons.FeaturedVideo,
         onClick = vm::handle4Clicked
       )
     }

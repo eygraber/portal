@@ -67,7 +67,6 @@ dependencies {
   implementation(projects.samples.kotlinInject.shared)
 
   implementation(libs.composeAndroid.material)
-  implementation(libs.composeAndroid.materialIconsExtended)
 
   implementation(libs.androidx.activity.compose)
   implementation(libs.androidx.appcompat)

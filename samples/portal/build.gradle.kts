@@ -12,9 +12,9 @@ group = "samples-portal"
 dependencies {
   implementation(projects.portalCompose)
   implementation(projects.portalKodeinDi)
+  implementation(projects.samples.icons)
 
   implementation(compose.material)
-  implementation(compose.materialIconsExtended)
   implementation(compose.desktop.currentOs)
 
   implementation(libs.kodein.core)

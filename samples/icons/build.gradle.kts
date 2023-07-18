@@ -5,13 +5,12 @@ plugins {
   id("com.eygraber.conventions-android-library")
   id("com.eygraber.conventions-compose-jetbrains")
   id("com.eygraber.conventions-detekt")
-  id("com.google.devtools.ksp")
 }
 
-group = "samples-kotlin-inject-shared"
+group = "samples-icons"
 
 android {
-  namespace = "com.eygraber.portal.samples.kotlin.inject.shared"
+  namespace = "com.eygraber.portal.samples.icons"
 }
 
 kotlin {
@@ -22,21 +21,10 @@ kotlin {
     js = true
   )
 
-  commonMainKspDependencies {
-    ksp(libs.kotlinInject.compiler)
-  }
-
   sourceSets {
     commonMain {
       dependencies {
-        implementation(projects.portalCompose)
-        implementation(projects.samples.icons)
-
         implementation(compose.material)
-
-        implementation(libs.kotlinx.coroutines.core)
-        implementation(libs.kotlinx.datetime)
-        implementation(libs.kotlinInject.runtime)
       }
     }
   }
