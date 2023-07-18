@@ -16,13 +16,13 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.Surface
 import androidx.compose.material.Switch
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.eygraber.portal.samples.icons.ArrowBack
+import com.eygraber.portal.samples.icons.Icons
 import com.eygraber.portal.samples.portal.View
 
 class AlarmListView(
@@ -37,7 +37,7 @@ class AlarmListView(
             onClick = { vm.backClicked() }
           ) {
             Icon(
-              imageVector = Icons.Filled.ArrowBack,
+              imageVector = Icons.ArrowBack,
               contentDescription = "Back"
             )
           }

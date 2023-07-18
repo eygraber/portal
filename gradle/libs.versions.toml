@@ -44,7 +44,6 @@ androidx-core = "androidx.core:core-ktx:1.10.1"
 
 composeAndroid-compiler = { module = "androidx.compose.compiler:compiler", version.ref = "composeAndroid-compiler" }
 composeAndroid-material = { module = "androidx.compose.material:material" }
-composeAndroid-materialIconsExtended = { module = "androidx.compose.material:material-icons-extended" }
 
 buildscript-android = { module = "com.android.tools.build:gradle", version.ref = "agp" }
 buildscript-androidCacheFix = { module = "gradle.plugin.org.gradle.android:android-cache-fix-gradle-plugin", version = "2.7.2" }
