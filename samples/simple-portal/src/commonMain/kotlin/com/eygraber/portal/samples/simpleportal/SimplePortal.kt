@@ -162,7 +162,7 @@ suspend fun ComposePortalManager<PortalKey>.addTenNumberBoxPortals() {
   }
 
   PortalKey
-    .values()
+    .entries
     .scan<PortalKey, PortalKey?>(null) { previous, current ->
       addNumberBoxPortal(previous, current)
       current

@@ -6,8 +6,8 @@ android-sdk-target = "33"
 android-sdk-min = "24"
 
 composeAndroid-bom = "2023.04.00"
-composeAndroid-compiler = "1.4.8"
-composeJetbrains = "1.4.1"
+composeAndroid-compiler = "1.5.0"
+composeJetbrains = "1.5.0-dev1104"
 
 conventions = "0.0.39"
 
@@ -19,7 +19,7 @@ dokka = "1.8.20"
 jdk = "17"
 
 kodein = "7.20.2"
-kotlin = "1.8.22"
+kotlin = "1.9.0"
 
 kotlinInject = "0.6.1"
 
@@ -28,7 +28,7 @@ kotest = "5.6.2"
 kotlinx-coroutines = "1.7.2"
 kotlinx-atomicFu = "0.21.0"
 
-ksp = "1.8.22-1.0.11"
+ksp = "1.9.0-1.0.11"
 
 ktlint = "0.50.0"
 

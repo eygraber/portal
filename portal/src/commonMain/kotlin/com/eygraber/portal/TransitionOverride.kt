@@ -56,7 +56,7 @@ public sealed interface EnterTransitionOverride : PortalTransitionOverride {
     val initialAlpha: Float = 0F
   ) : EnterTransitionOverride
 
-  public object None : EnterTransitionOverride {
+  public data object None : EnterTransitionOverride {
     override val duration: Duration? = null
   }
 
@@ -96,7 +96,7 @@ public sealed interface ExitTransitionOverride : PortalTransitionOverride {
     val targetAlpha: Float = 0F
   ) : ExitTransitionOverride
 
-  public object None : ExitTransitionOverride {
+  public data object None : ExitTransitionOverride {
     override val duration: Duration? = null
   }
 

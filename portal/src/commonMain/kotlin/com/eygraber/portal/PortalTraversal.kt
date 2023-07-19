@@ -1,12 +1,12 @@
 package com.eygraber.portal
 
 public sealed interface PortalTraversal {
-  public object Depth {
-    public object Pre : PortalTraversal
-    public object Post : PortalTraversal
+  public data object Depth {
+    public data object Pre : PortalTraversal
+    public data object Post : PortalTraversal
   }
 
-  public object Breadth : PortalTraversal
+  public data object Breadth : PortalTraversal
 }
 
 public fun ParentPortal.traverseChildren(

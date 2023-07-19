@@ -16,7 +16,7 @@ import org.kodein.di.multiton
 import org.kodein.di.scoped
 import org.kodein.di.singleton
 
-public object PortalScope : Scope<PortalLifecycleManager> {
+public data object PortalScope : Scope<PortalLifecycleManager> {
   private val newRegistry = ::StandardScopeRegistry
   private val map = HashMap<PortalLifecycleManager, ScopeRegistry>()
 
