@@ -5,11 +5,11 @@ import com.eygraber.portal.ParentPortal
 import com.eygraber.portal.SaveablePortal
 import com.eygraber.portal.traverseChildren
 
-interface ParcelablePortal {
-  fun saveState(bundle: Bundle)
+public interface ParcelablePortal {
+  public fun saveState(bundle: Bundle)
 }
 
-fun ParentPortal.onSaveState(bundle: Bundle?) {
+public fun ParentPortal.onSaveState(bundle: Bundle?) {
   if(this is SaveablePortal) {
     saveState()
   }
