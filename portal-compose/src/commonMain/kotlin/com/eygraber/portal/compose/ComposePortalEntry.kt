@@ -15,7 +15,8 @@ internal data class ComposePortalEntry<KeyT>(
   val backstackState: PortalBackstackState,
   val rendererState: PortalRendererState,
   val enterTransitionOverride: EnterTransition?,
-  val exitTransitionOverride: ExitTransition?
+  val exitTransitionOverride: ExitTransition?,
+  val uid: Int
 ) {
   val key: KeyT = portal.key
 
@@ -27,7 +28,8 @@ internal data class ComposePortalEntry<KeyT>(
       backstackState = entry.backstackState,
       rendererState = entry.rendererState,
       enterTransitionOverride = entry.enterTransitionOverride?.toComposeTransition(),
-      exitTransitionOverride = entry.exitTransitionOverride?.toComposeTransition()
+      exitTransitionOverride = entry.exitTransitionOverride?.toComposeTransition(),
+      uid = entry.uid
     )
   }
 }

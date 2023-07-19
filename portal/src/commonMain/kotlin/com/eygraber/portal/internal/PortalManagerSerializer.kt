@@ -29,6 +29,7 @@ private fun <KeyT> List<PortalEntry<KeyT>>.serializeEntries(
         put("isDisappearing", entry.isDisappearing)
         put("backstackState", entry.backstackState.name)
         put("rendererState", entry.rendererState.name)
+        put("uid", entry.uid)
       }
     )
   }

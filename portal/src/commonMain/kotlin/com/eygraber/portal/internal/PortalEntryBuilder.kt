@@ -15,6 +15,8 @@ import com.eygraber.portal.PortalRendererState
 import kotlinx.atomicfu.atomic
 import kotlinx.atomicfu.update
 
+private val idGenerator = atomic(1)
+
 internal class PortalEntryBuilder<KeyT>(
   override val backstack: PortalBackstack<KeyT>,
   private val transactionPortalEntries: MutableList<PortalEntry<KeyT>>,
@@ -49,7 +51,8 @@ internal class PortalEntryBuilder<KeyT>(
         else -> PortalRendererState.Detached
       },
       enterTransitionOverride = transitionOverride,
-      exitTransitionOverride = null
+      exitTransitionOverride = null,
+      uid = idGenerator.getAndIncrement()
     )
   }
 
