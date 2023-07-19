@@ -67,7 +67,12 @@ private fun <KeyT> JsonArray.deserializeToPortalEntries(
       "A serialized PortalEntry needs a \"rendererState\" field"
     }.let(PortalRendererState::valueOf),
     enterTransitionOverride = null,
-    exitTransitionOverride = null
+    exitTransitionOverride = null,
+    uid = requireNotNull(
+      jsonEntry["uid"]?.jsonPrimitive?.contentOrNull?.toIntOrNull()
+    ) {
+      "A serialized PortalEntry needs a \"uid\" field"
+    }
   )
 }
 

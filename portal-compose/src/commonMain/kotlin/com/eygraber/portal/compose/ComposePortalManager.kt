@@ -38,7 +38,10 @@ public class ComposePortalManager<KeyT>(
     )
 
     for(entry in portalEntries) {
-      key(entry.key) {
+      // the key function requires uniqueness at this point in composition
+      // since there could be cases where there are multiple PortalEntry keys that are equal
+      // we also use the PortalEntry uid which is guaranteed to be unique for each portal that is added
+      key(entry.uid to entry.key) {
         PortalRenderer(entry)
       }
     }

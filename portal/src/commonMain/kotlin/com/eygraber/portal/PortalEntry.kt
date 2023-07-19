@@ -7,7 +7,8 @@ public data class PortalEntry<KeyT>(
   public val backstackState: PortalBackstackState,
   public val rendererState: PortalRendererState,
   public val enterTransitionOverride: EnterTransitionOverride?,
-  public val exitTransitionOverride: ExitTransitionOverride?
+  public val exitTransitionOverride: ExitTransitionOverride?,
+  public val uid: Int
 ) {
   public val key: KeyT = portal.key
 
@@ -19,7 +20,8 @@ public data class PortalEntry<KeyT>(
       |  backstackState=$backstackState,
       |  rendererState=$rendererState,
       |  enterTransitionOverride=$enterTransitionOverride,
-      |  exitTransitionOverride=$exitTransitionOverride
+      |  exitTransitionOverride=$exitTransitionOverride,
+      |  uid = $uid
       |)
     """.trimMargin()
 
