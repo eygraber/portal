@@ -13,7 +13,6 @@ dependencies {
   implementation(projects.samples.simplePortal)
 
   implementation(compose.desktop.currentOs)
-  implementation(compose.material)
 }
 
 compose.desktop {

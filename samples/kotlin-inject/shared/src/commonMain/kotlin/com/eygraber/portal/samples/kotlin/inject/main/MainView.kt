@@ -8,10 +8,10 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.darkColors
+import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.darkColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -35,10 +35,10 @@ class MainView(
   @Composable
   override fun Render() {
     MaterialTheme(
-      colors = darkColors(
+      colorScheme = darkColorScheme(
         primary = Color(0xFFBB86FC),
-        primaryVariant = Color(0xFF3700B3),
-        secondary = Color(0xFF03DAC5)
+        secondary = Color(0xFF03DAC5),
+        tertiary = Color(0xFF3700B3)
       )
     ) {
       Surface {

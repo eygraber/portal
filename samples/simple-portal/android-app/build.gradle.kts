@@ -65,8 +65,6 @@ android {
 dependencies {
   implementation(projects.samples.simplePortal)
 
-  implementation(libs.composeAndroid.material)
-
   implementation(libs.androidx.activity.compose)
   implementation(libs.androidx.appcompat)
   implementation(libs.androidx.core)

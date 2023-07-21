@@ -36,11 +36,10 @@ gradleConventionsDefaults {
     applyToAndroidAndJvmOnly = false
 
     overrideAndroidComposeVersions(
-      compilerVersion = libs.versions.composeAndroid.compiler,
-      bomVersion = libs.versions.composeAndroid.bom
+      compilerVersion = libs.versions.composeAndroid.compiler
     )
 
-    useAndroidComposeCompilerVersionForJetbrainsComposeCompilerVersion = true
+    useAndroidComposeCompilerVersionForJetbrainsComposeCompilerVersion = false
   }
 
   detekt {

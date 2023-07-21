@@ -24,7 +24,7 @@ kotlin {
   sourceSets {
     commonMain {
       dependencies {
-        implementation(compose.material)
+        implementation(compose.ui)
       }
     }
   }
