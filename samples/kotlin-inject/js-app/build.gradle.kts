@@ -25,7 +25,7 @@ kotlin {
         implementation(projects.portalCompose)
         implementation(projects.samples.kotlinInject.shared)
 
-        implementation(compose.material)
+        implementation(compose.ui)
       }
     }
   }

@@ -1,13 +1,12 @@
 [versions]
 agp = "8.2.0-alpha13"
 
-android-sdk-compile = "33"
+android-sdk-compile = "34"
 android-sdk-target = "33"
 android-sdk-min = "24"
 
-composeAndroid-bom = "2023.04.00"
 composeAndroid-compiler = "1.5.0"
-composeJetbrains = "1.5.0-dev1104"
+composeJetbrains = "1.5.0-dev1114"
 
 conventions = "0.0.39"
 
@@ -38,12 +37,11 @@ publish = "0.25.3"
 conventions = { id = "com.eygraber.conventions", version.ref = "conventions" }
 
 [libraries]
-androidx-activity-compose = "androidx.activity:activity-compose:1.7.2"
+androidx-activity-compose = "androidx.activity:activity-compose:1.8.0-alpha06"
 androidx-appcompat = "androidx.appcompat:appcompat:1.7.0-alpha02"
-androidx-core = "androidx.core:core-ktx:1.10.1"
+androidx-core = "androidx.core:core-ktx:1.12.0-alpha05"
 
 composeAndroid-compiler = { module = "androidx.compose.compiler:compiler", version.ref = "composeAndroid-compiler" }
-composeAndroid-material = { module = "androidx.compose.material:material" }
 
 buildscript-android = { module = "com.android.tools.build:gradle", version.ref = "agp" }
 buildscript-androidCacheFix = { module = "gradle.plugin.org.gradle.android:android-cache-fix-gradle-plugin", version = "2.7.2" }
@@ -62,15 +60,11 @@ kodein-core = { module = "org.kodein.di:kodein-di", version.ref = "kodein" }
 
 kotlinx-atomicFu = { module = "org.jetbrains.kotlinx:atomicfu", version.ref = "kotlinx-atomicFu" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
-kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
-kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
 kotlinx-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.4.0"
 kotlinx-serialization-json = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1"
 
 kotlinInject-compiler = { module = "me.tatarka.inject:kotlin-inject-compiler-ksp", version.ref = "kotlinInject" }
 kotlinInject-runtime = { module = "me.tatarka.inject:kotlin-inject-runtime", version.ref = "kotlinInject" }
-
-kotlinDurationExtensions = "com.eygraber:kotlin-duration-extensions:1.1.1"
 
 # not actually used; just here so renovate picks it up
 ktlint = { module = "com.pinterest.ktlint:ktlint-bom", version.ref = "ktlint" }

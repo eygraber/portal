@@ -66,8 +66,6 @@ dependencies {
   implementation(projects.portalCompose)
   implementation(projects.samples.kotlinInject.shared)
 
-  implementation(libs.composeAndroid.material)
-
   implementation(libs.androidx.activity.compose)
   implementation(libs.androidx.appcompat)
   implementation(libs.androidx.core)

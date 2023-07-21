@@ -24,7 +24,7 @@ kotlin {
       dependencies {
         implementation(projects.samples.simplePortal)
 
-        implementation(compose.material)
+        implementation(compose.ui)
       }
     }
   }

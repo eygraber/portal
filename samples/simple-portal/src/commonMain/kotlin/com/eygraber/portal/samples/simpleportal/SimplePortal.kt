@@ -7,9 +7,9 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.darkColors
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.darkColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
@@ -129,10 +129,10 @@ fun SimplePortal() {
   }
 
   MaterialTheme(
-    colors = darkColors(
+    colorScheme = darkColorScheme(
       primary = Color(0xFFBB86FC),
-      primaryVariant = Color(0xFF3700B3),
-      secondary = Color(0xFF03DAC5)
+      secondary = Color(0xFF03DAC5),
+      tertiary = Color(0xFF3700B3),
     )
   ) {
     Surface(
