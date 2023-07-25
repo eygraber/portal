@@ -16,6 +16,7 @@ public interface PortalManagerQueries<KeyT> {
   public val portalEntries: List<PortalEntry<KeyT>>
 
   public operator fun contains(key: KeyT): Boolean
+  public operator fun contains(uid: PortalEntry.Id): Boolean
 }
 
 @Target(AnnotationTarget.CLASS)
@@ -35,6 +36,11 @@ public abstract class PortalManager<KeyT>(
   override operator fun contains(key: KeyT): Boolean =
     portalState.portalEntries.findLast { entry ->
       entry.key == key
+    } != null
+
+  override operator fun contains(uid: PortalEntry.Id): Boolean =
+    portalState.portalEntries.findLast { entry ->
+      entry.uid == uid
     } != null
 
   public fun saveState(
@@ -86,9 +92,9 @@ public abstract class PortalManager<KeyT>(
     }
   }
 
-  protected fun makeEntryDisappear(key: KeyT, uid: Int) {
+  protected fun makeEntryDisappear(uid: PortalEntry.Id) {
     portalState.transact {
-      disappear(key, uid)
+      disappear(uid)
     }
   }
 
@@ -127,13 +133,28 @@ public abstract class PortalManager<KeyT>(
       transitionOverride: EnterTransitionOverride? = null
     )
 
+    public fun attachToComposition(
+      uid: PortalEntry.Id,
+      transitionOverride: EnterTransitionOverride? = null
+    )
+
     public fun detachFromComposition(
       key: KeyT,
       transitionOverride: ExitTransitionOverride? = null
     )
 
+    public fun detachFromComposition(
+      uid: PortalEntry.Id,
+      transitionOverride: ExitTransitionOverride? = null
+    )
+
     public fun remove(
       key: KeyT,
+      transitionOverride: ExitTransitionOverride? = null
+    )
+
+    public fun remove(
+      uid: PortalEntry.Id,
       transitionOverride: ExitTransitionOverride? = null
     )
 

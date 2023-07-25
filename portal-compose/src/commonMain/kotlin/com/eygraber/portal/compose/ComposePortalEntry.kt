@@ -16,7 +16,7 @@ internal data class ComposePortalEntry<KeyT>(
   val rendererState: PortalRendererState,
   val enterTransitionOverride: EnterTransition?,
   val exitTransitionOverride: ExitTransition?,
-  val uid: Int
+  val uid: PortalEntry.Id
 ) {
   val key: KeyT = portal.key
 

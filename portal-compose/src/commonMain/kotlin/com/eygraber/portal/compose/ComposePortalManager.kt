@@ -127,7 +127,7 @@ public class ComposePortalManager<KeyT>(
         DisposableEffect(Unit) {
           onDispose {
             withTransaction {
-              makeEntryDisappear(entry.key, entry.uid)
+              makeEntryDisappear(entry.uid)
             }
           }
         }
@@ -150,7 +150,7 @@ public class ComposePortalManager<KeyT>(
       DisposableEffect(Unit) {
         onDispose {
           withTransaction {
-            makeEntryDisappear(entry.key, entry.uid)
+            makeEntryDisappear(entry.uid)
           }
         }
       }

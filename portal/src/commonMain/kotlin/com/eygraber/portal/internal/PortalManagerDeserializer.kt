@@ -64,7 +64,7 @@ private fun <KeyT> JsonArray.deserializeToPortalEntries(
     enterTransitionOverride = null,
     exitTransitionOverride = null,
     uid = requireNotNull(
-      jsonEntry["uid"]?.jsonPrimitive?.contentOrNull?.toIntOrNull()
+      jsonEntry["uid"]?.jsonPrimitive?.contentOrNull?.toIntOrNull()?.let { PortalEntry.Id(it) }
     ) {
       "A serialized PortalEntry needs a \"uid\" field"
     }
