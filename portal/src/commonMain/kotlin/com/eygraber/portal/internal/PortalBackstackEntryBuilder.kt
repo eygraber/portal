@@ -4,6 +4,7 @@ import com.eygraber.portal.EnterTransitionOverride
 import com.eygraber.portal.ExitTransitionOverride
 import com.eygraber.portal.KeyedPortal
 import com.eygraber.portal.PortalBackstack
+import com.eygraber.portal.PortalEntry
 
 internal class PortalBackstackEntryBuilder<KeyT>(
   private val builder: PortalEntryBuilder<KeyT>
@@ -15,10 +16,11 @@ internal class PortalBackstackEntryBuilder<KeyT>(
     isAttachedToComposition: Boolean,
     transitionOverride: EnterTransitionOverride?
   ) {
-    builder.add(portal, isAttachedToComposition, transitionOverride)
+    val entry = builder.add(portal, isAttachedToComposition, transitionOverride)
 
     backstackMutations += PortalBackstackMutation.Remove(
-      key = portal.key
+      key = entry.key,
+      uid = entry.uid
     )
   }
 
@@ -26,22 +28,56 @@ internal class PortalBackstackEntryBuilder<KeyT>(
     key: KeyT,
     transitionOverride: EnterTransitionOverride?
   ) {
-    builder.attachToComposition(key, transitionOverride)
+    val entry = builder.attachToComposition(key, transitionOverride)
 
-    backstackMutations += PortalBackstackMutation.Detach(
-      key = key
-    )
+    if(entry != null) {
+      backstackMutations += PortalBackstackMutation.Detach(
+        key = entry.key,
+        uid = entry.uid
+      )
+    }
+  }
+
+  override fun attachToComposition(
+    uid: PortalEntry.Id,
+    transitionOverride: EnterTransitionOverride?
+  ) {
+    val entry = builder.attachToComposition(uid, transitionOverride)
+
+    if(entry != null) {
+      backstackMutations += PortalBackstackMutation.Detach(
+        key = entry.key,
+        uid = entry.uid
+      )
+    }
   }
 
   override fun detachFromComposition(
     key: KeyT,
     transitionOverride: ExitTransitionOverride?
   ) {
-    builder.detachFromComposition(key, transitionOverride)
+    val entry = builder.detachFromComposition(key, transitionOverride)
 
-    backstackMutations += PortalBackstackMutation.Attach(
-      key = key
-    )
+    if(entry != null) {
+      backstackMutations += PortalBackstackMutation.Attach(
+        key = entry.key,
+        uid = entry.uid
+      )
+    }
+  }
+
+  override fun detachFromComposition(
+    uid: PortalEntry.Id,
+    transitionOverride: ExitTransitionOverride?
+  ) {
+    val entry = builder.detachFromComposition(uid, transitionOverride)
+
+    if(entry != null) {
+      backstackMutations += PortalBackstackMutation.Attach(
+        key = entry.key,
+        uid = entry.uid
+      )
+    }
   }
 
   fun build() = backstackMutations

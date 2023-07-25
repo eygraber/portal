@@ -99,6 +99,12 @@ private fun <KeyT> JsonArray.deserializeToBackstackMutations(
     "A serialized PortalBackstackMutation needs a \"key\" field"
   }.let(keyDeserializer)
 
+  val uid = requireNotNull(
+    jsonMutation["uid"]?.jsonPrimitive?.contentOrNull?.toIntOrNull()?.let { PortalEntry.Id(it) }
+  ) {
+    "A serialized PortalBackstackMutation needs a \"uid\" field"
+  }
+
   val type = requireNotNull(
     jsonMutation["type"]?.jsonPrimitive?.contentOrNull
   ) {
@@ -107,15 +113,18 @@ private fun <KeyT> JsonArray.deserializeToBackstackMutations(
 
   when(type) {
     "remove" -> PortalBackstackMutation.Remove(
-      key = key
+      key = key,
+      uid = uid
     )
 
     "attach" -> PortalBackstackMutation.Attach(
-      key = key
+      key = key,
+      uid = uid
     )
 
     "detach" -> PortalBackstackMutation.Detach(
-      key = key
+      key = key,
+      uid = uid
     )
 
     else -> error("\"$type\" is not a valid value")

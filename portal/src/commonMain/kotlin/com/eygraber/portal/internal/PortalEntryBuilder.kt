@@ -53,114 +53,102 @@ internal class PortalEntryBuilder<KeyT>(
     portal: KeyedPortal<out KeyT>,
     isAttachedToComposition: Boolean,
     transitionOverride: EnterTransitionOverride?
-  ) {
-    transactionPortalEntries += PortalEntry(
-      portal = portal,
-      wasContentPreviouslyVisible = false,
-      backstackState = PortalBackstackState.None,
-      rendererState = when {
-        isAttachedToComposition -> PortalRendererState.Added
-        else -> PortalRendererState.Detached
-      },
+  ) = PortalEntry(
+    portal = portal,
+    wasContentPreviouslyVisible = false,
+    backstackState = PortalBackstackState.None,
+    rendererState = when {
+      isAttachedToComposition -> PortalRendererState.Added
+      else -> PortalRendererState.Detached
+    },
+    enterTransitionOverride = transitionOverride,
+    exitTransitionOverride = null,
+    uid = PortalEntry.Id(idGenerator.getAndIncrement())
+  ).also {
+    transactionPortalEntries += it
+  }
+
+  override fun attachToComposition(
+    key: KeyT,
+    transitionOverride: EnterTransitionOverride?
+  ) = transactionPortalEntries.findLast { entry ->
+    entry.key == key
+  }?.let {
+    attachToComposition(it.uid, transitionOverride)
+  }
+
+  override fun attachToComposition(
+    uid: PortalEntry.Id,
+    transitionOverride: EnterTransitionOverride?
+  ) = uid.applyMutationToPortalEntries { entry, _ ->
+    entry.copy(
+      wasContentPreviouslyVisible = entry.rendererState.isAddedOrAttached,
+      backstackState = backstackState,
+      rendererState = PortalRendererState.Attached,
       enterTransitionOverride = transitionOverride,
-      exitTransitionOverride = null,
-      uid = PortalEntry.Id(idGenerator.getAndIncrement())
+      exitTransitionOverride = null
     )
   }
 
-  override fun attachToComposition(
-    key: KeyT,
-    transitionOverride: EnterTransitionOverride?
-  ) {
-    transactionPortalEntries.findLast { entry ->
-      entry.key == key
-    }?.let {
-      attachToComposition(it.uid, transitionOverride)
-    }
-  }
-
-  override fun attachToComposition(
-    uid: PortalEntry.Id,
-    transitionOverride: EnterTransitionOverride?
-  ) {
-    uid.applyMutationToPortalEntries { entry, _ ->
-      entry.copy(
-        wasContentPreviouslyVisible = entry.rendererState.isAddedOrAttached,
-        backstackState = backstackState,
-        rendererState = PortalRendererState.Attached,
-        enterTransitionOverride = transitionOverride,
-        exitTransitionOverride = null
-      )
-    }
-  }
-
   override fun detachFromComposition(
     key: KeyT,
     transitionOverride: ExitTransitionOverride?
-  ) {
-    transactionPortalEntries.findLast { entry ->
-      entry.key == key
-    }?.let {
-      detachFromComposition(it.uid, transitionOverride)
-    }
+  ) = transactionPortalEntries.findLast { entry ->
+    entry.key == key
+  }?.let {
+    detachFromComposition(it.uid, transitionOverride)
   }
 
   override fun detachFromComposition(
     uid: PortalEntry.Id,
     transitionOverride: ExitTransitionOverride?
-  ) {
-    uid.applyMutationToPortalEntries { entry, _ ->
-      entry.copy(
-        wasContentPreviouslyVisible = entry.rendererState.isAddedOrAttached,
-        backstackState = backstackState,
-        rendererState = PortalRendererState.Detached,
-        enterTransitionOverride = null,
-        exitTransitionOverride = transitionOverride
-      )
-    }
+  ) = uid.applyMutationToPortalEntries { entry, _ ->
+    entry.copy(
+      wasContentPreviouslyVisible = entry.rendererState.isAddedOrAttached,
+      backstackState = backstackState,
+      rendererState = PortalRendererState.Detached,
+      enterTransitionOverride = null,
+      exitTransitionOverride = transitionOverride
+    )
   }
 
   override fun remove(
     key: KeyT,
     transitionOverride: ExitTransitionOverride?
-  ) {
-    transactionPortalEntries.findLast { entry ->
-      entry.key == key
-    }?.let {
-      remove(it.uid, transitionOverride)
-    }
+  ) = transactionPortalEntries.findLast { entry ->
+    entry.key == key
+  }?.let {
+    remove(it.uid, transitionOverride)
   }
 
   override fun remove(
     uid: PortalEntry.Id,
     transitionOverride: ExitTransitionOverride?
-  ) {
-    uid.applyMutationToPortalEntries { entry, index ->
-      val insertionIndex = transactionDisappearingPortalEntries.findInsertionIndex(
-        forIndex = index
+  ) = uid.applyMutationToPortalEntries { entry, index ->
+    val insertionIndex = transactionDisappearingPortalEntries.findInsertionIndex(
+      forIndex = index
+    )
+
+    transactionDisappearingPortalEntries.add(
+      insertionIndex,
+      DisappearingPortalEntry(
+        entry = entry.copy(
+          wasContentPreviouslyVisible = entry.rendererState.isAddedOrAttached,
+          backstackState = PortalBackstackState.None,
+          rendererState = PortalRendererState.Removed,
+          enterTransitionOverride = null,
+          exitTransitionOverride = transitionOverride
+        ),
+        index = index
       )
-
-      transactionDisappearingPortalEntries.add(
-        insertionIndex,
-        DisappearingPortalEntry(
-          entry = entry.copy(
-            wasContentPreviouslyVisible = entry.rendererState.isAddedOrAttached,
-            backstackState = PortalBackstackState.None,
-            rendererState = PortalRendererState.Removed,
-            enterTransitionOverride = null,
-            exitTransitionOverride = transitionOverride
-          ),
-          index = index
-        )
-      ).also {
-        entry.portal.notifyOfRemoval(
-          isCompletelyRemoved = false
-        )
-      }
-
-      // returning null removes this entry from transactionPortalEntries
-      null
+    ).also {
+      entry.portal.notifyOfRemoval(
+        isCompletelyRemoved = false
+      )
     }
+
+    // returning null removes this entry from transactionPortalEntries
+    null
   }
 
   override fun clear(
@@ -227,14 +215,13 @@ internal class PortalEntryBuilder<KeyT>(
   private fun PortalEntry.Id.applyMutationToPortalEntries(
     entryMatcher: (PortalEntry<KeyT>) -> Boolean = { it.uid == this },
     mutate: (PortalEntry<KeyT>, Int) -> PortalEntry<KeyT>?
-  ) {
-    transactionPortalEntries
-      .indexOfLast { entry -> entryMatcher(entry) }
-      .takeIf { it > -1 }
-      ?.let { index ->
-        val entry = transactionPortalEntries[index]
+  ) = transactionPortalEntries
+    .indexOfLast { entry -> entryMatcher(entry) }
+    .takeIf { it > -1 }
+    ?.let { index ->
+      val entry = transactionPortalEntries[index]
 
-        val newEntry = mutate(entry, index)
+      mutate(entry, index).also { newEntry ->
         if(newEntry == null) {
           transactionPortalEntries.removeAt(index)
         }
@@ -242,7 +229,7 @@ internal class PortalEntryBuilder<KeyT>(
           transactionPortalEntries[index] = newEntry
         }
       }
-  }
+    }
 
   private fun Portal.notifyOfRemoval(
     isCompletelyRemoved: Boolean
