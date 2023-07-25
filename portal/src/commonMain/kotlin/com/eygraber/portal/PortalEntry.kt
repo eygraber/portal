@@ -3,7 +3,6 @@ package com.eygraber.portal
 public data class PortalEntry<KeyT>(
   public val portal: KeyedPortal<out KeyT>,
   public val wasContentPreviouslyVisible: Boolean,
-  public val isDisappearing: Boolean,
   public val backstackState: PortalBackstackState,
   public val rendererState: PortalRendererState,
   public val enterTransitionOverride: EnterTransitionOverride?,
@@ -15,8 +14,7 @@ public data class PortalEntry<KeyT>(
   override fun toString(): String =
     """$name(
       |  key=$key,
-      |  wasContentPreviouslyVisible=$wasContentPreviouslyVisible
-      |  isDisappearing=$isDisappearing
+      |  wasContentPreviouslyVisible=$wasContentPreviouslyVisible,
       |  backstackState=$backstackState,
       |  rendererState=$rendererState,
       |  enterTransitionOverride=$enterTransitionOverride,

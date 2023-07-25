@@ -51,11 +51,6 @@ private fun <KeyT> JsonArray.deserializeToPortalEntries(
     ) {
       "A serialized PortalEntry needs a \"wasContentPreviouslyVisible\" field"
     }.toBoolean(),
-    isDisappearing = requireNotNull(
-      jsonEntry["isDisappearing"]?.jsonPrimitive?.contentOrNull
-    ) {
-      "A serialized PortalEntry needs a \"isDisappearing\" field"
-    }.toBoolean(),
     backstackState = requireNotNull(
       jsonEntry["backstackState"]?.jsonPrimitive?.contentOrNull
     ) {
@@ -120,10 +115,6 @@ private fun <KeyT> JsonArray.deserializeToBackstackMutations(
     )
 
     "detach" -> PortalBackstackMutation.Detach(
-      key = key
-    )
-
-    "disappearing" -> PortalBackstackMutation.Disappearing(
       key = key
     )
 

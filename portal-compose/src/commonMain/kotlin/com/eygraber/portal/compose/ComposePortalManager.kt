@@ -14,6 +14,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.Snapshot
+import com.eygraber.portal.DisappearingPortalEntry
+import com.eygraber.portal.PortalEntry
 import com.eygraber.portal.PortalManager
 import com.eygraber.portal.PortalManagerValidation
 import com.eygraber.portal.PortalRendererState
@@ -27,15 +29,26 @@ public class ComposePortalManager<KeyT>(
   defaultErrorHandler,
   validation
 ) {
-  private val composePortalEntriesUpdateFlow = portalEntriesUpdateFlow().map { entries ->
-    entries.map(ComposePortalEntry.Companion::fromPortalEntry)
+  private val composePortalEntriesUpdateFlow =
+    portalEntriesUpdateFlow().map { (entries, disappearingEntries) ->
+      combineEntriesAndDisappearingEntries(
+        entries = entries,
+        disappearingEntries = disappearingEntries
+      )
+    }
+
+  private val initial by lazy {
+    portalEntriesUpdateFlow().value.let { (entries, disappearingEntries) ->
+      combineEntriesAndDisappearingEntries(
+        entries = entries,
+        disappearingEntries = disappearingEntries
+      )
+    }
   }
 
   @Composable
   public fun Render() {
-    val portalEntries by composePortalEntriesUpdateFlow.collectAsState(
-      initial = portalEntriesUpdateFlow().value.map(ComposePortalEntry.Companion::fromPortalEntry)
-    )
+    val portalEntries by composePortalEntriesUpdateFlow.collectAsState(initial = initial)
 
     for(entry in portalEntries) {
       // the key function requires uniqueness at this point in composition
@@ -114,7 +127,7 @@ public class ComposePortalManager<KeyT>(
         DisposableEffect(Unit) {
           onDispose {
             withTransaction {
-              makeEntryDisappear(entry.key)
+              makeEntryDisappear(entry.key, entry.uid)
             }
           }
         }
@@ -137,7 +150,7 @@ public class ComposePortalManager<KeyT>(
       DisposableEffect(Unit) {
         onDispose {
           withTransaction {
-            makeEntryDisappear(entry.key)
+            makeEntryDisappear(entry.key, entry.uid)
           }
         }
       }
@@ -150,3 +163,53 @@ public class ComposePortalManager<KeyT>(
 
 private inline val <PortalKey> ComposePortalEntry<PortalKey>.isAttachedToComposition: Boolean
   get() = rendererState.isAddedOrAttached
+
+@Suppress("NOTHING_TO_INLINE")
+private inline fun <KeyT> combineEntriesAndDisappearingEntries(
+  entries: List<PortalEntry<KeyT>>,
+  disappearingEntries: List<DisappearingPortalEntry<out KeyT>>
+) = buildList {
+  if(entries.isEmpty()) {
+    for(i in disappearingEntries.indices) {
+      add(
+        ComposePortalEntry.fromPortalEntry(
+          entry = disappearingEntries[i].entry,
+          isDisappearing = true
+        )
+      )
+    }
+  }
+  else {
+    var disappearingCursor = 0
+    for(i in entries.indices) {
+      var hasRemainingDisappearingEntries = disappearingCursor <= disappearingEntries.lastIndex
+      while(hasRemainingDisappearingEntries && disappearingEntries[disappearingCursor].index == i) {
+        add(
+          ComposePortalEntry.fromPortalEntry(
+            entry = disappearingEntries[disappearingCursor].entry,
+            isDisappearing = true
+          )
+        )
+        hasRemainingDisappearingEntries = ++disappearingCursor <= disappearingEntries.lastIndex
+      }
+
+      add(
+        ComposePortalEntry.fromPortalEntry(
+          entry = entries[i],
+          isDisappearing = false
+        )
+      )
+    }
+
+    if(disappearingCursor <= disappearingEntries.lastIndex) {
+      for(i in disappearingCursor..disappearingEntries.lastIndex) {
+        add(
+          ComposePortalEntry.fromPortalEntry(
+            entry = disappearingEntries[i].entry,
+            isDisappearing = true
+          )
+        )
+      }
+    }
+  }
+}

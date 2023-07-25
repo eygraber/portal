@@ -26,7 +26,6 @@ private fun <KeyT> List<PortalEntry<KeyT>>.serializeEntries(
         put("key", keySerializer(entry.key))
         put("wasContentPreviouslyVisible", entry.wasContentPreviouslyVisible)
         put("isAttached", entry.rendererState.isAddedOrAttached)
-        put("isDisappearing", entry.isDisappearing)
         put("backstackState", entry.backstackState.name)
         put("rendererState", entry.rendererState.name)
         put("uid", entry.uid)
@@ -61,8 +60,6 @@ private fun <KeyT> List<PortalBackstackMutation<KeyT>>.serializeBackstackMutatio
         is PortalBackstackMutation.Attach -> put("type", "attach")
 
         is PortalBackstackMutation.Detach -> put("type", "detach")
-
-        is PortalBackstackMutation.Disappearing -> put("type", "disappearing")
       }
     }
   }

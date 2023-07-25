@@ -8,6 +8,7 @@ import kotlinx.atomicfu.locks.reentrantLock
 import kotlinx.atomicfu.locks.withLock
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
 
 public interface PortalManagerQueries<KeyT> {
   public val size: Int
@@ -26,7 +27,7 @@ public abstract class PortalManager<KeyT>(
   validation: PortalManagerValidation = PortalManagerValidation()
 ) : PortalManagerQueries<KeyT> {
   override val size: Int
-    get() = portalState.portalEntries.filterNot { it.isDisappearing }.size
+    get() = portalState.portalEntries.size
 
   override val portalEntries: List<PortalEntry<KeyT>>
     get() = portalState.portalEntries
@@ -85,18 +86,18 @@ public abstract class PortalManager<KeyT>(
     }
   }
 
-  protected fun makeEntryDisappear(key: KeyT) {
+  protected fun makeEntryDisappear(key: KeyT, uid: Int) {
     portalState.transact {
-      disappear(key)
+      disappear(key, uid)
     }
   }
 
-  public fun updates(): Flow<List<PortalEntry<KeyT>>> = portalState.portalEntriesUpdateFlow()
+  public fun updates(): Flow<List<PortalEntry<KeyT>>> = portalState.portalEntriesUpdateFlow().map { it.entries }
 
   private val lock = reentrantLock()
   private val portalState = PortalState<KeyT>(validation = validation)
 
-  protected fun portalEntriesUpdateFlow(): StateFlow<List<PortalEntry<KeyT>>> =
+  protected fun portalEntriesUpdateFlow(): StateFlow<Entries<KeyT>> =
     portalState.portalEntriesUpdateFlow()
 
   protected fun backstackEntriesUpdateFlow(): StateFlow<List<PortalBackstackEntry<KeyT>>> =
@@ -105,6 +106,11 @@ public abstract class PortalManager<KeyT>(
   private val _backstack: PortalBackstack<KeyT> = PortalBackstackImpl(portalState)
 
   public val backstack: ReadOnlyBackstack<KeyT> = _backstack
+
+  public data class Entries<KeyT>(
+    val entries: List<PortalEntry<KeyT>>,
+    val disappearingEntries: List<DisappearingPortalEntry<KeyT>>
+  )
 
   @PortalTransactionBuilderDsl
   public interface EntryBuilder<KeyT> : PortalManagerQueries<KeyT> {

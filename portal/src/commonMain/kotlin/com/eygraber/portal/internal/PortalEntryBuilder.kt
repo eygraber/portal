@@ -1,5 +1,6 @@
 package com.eygraber.portal.internal
 
+import com.eygraber.portal.DisappearingPortalEntry
 import com.eygraber.portal.EnterTransitionOverride
 import com.eygraber.portal.ExitTransitionOverride
 import com.eygraber.portal.KeyedPortal
@@ -20,6 +21,7 @@ private val idGenerator = atomic(1)
 internal class PortalEntryBuilder<KeyT>(
   override val backstack: PortalBackstack<KeyT>,
   private val transactionPortalEntries: MutableList<PortalEntry<KeyT>>,
+  private val transactionDisappearingPortalEntries: MutableList<DisappearingPortalEntry<KeyT>>,
   private val transactionBackstackEntries: MutableList<PortalBackstackEntry<KeyT>>,
   private val backstackState: PortalBackstackState,
   private val validation: PortalManagerValidation
@@ -27,9 +29,15 @@ internal class PortalEntryBuilder<KeyT>(
   private val _postTransactionOps = atomic(emptyList<() -> Unit>())
   internal val postTransactionOps get() = _postTransactionOps.value
 
-  override val size get() = transactionPortalEntries.filterNot { it.isDisappearing }.size
+  override val size get() = transactionPortalEntries.size
 
   override val portalEntries: List<PortalEntry<KeyT>> get() = transactionPortalEntries
+
+  class Payload<KeyT>(
+    val entries: List<PortalEntry<KeyT>>,
+    val disappearingEntries: List<DisappearingPortalEntry<KeyT>>,
+    val backstackEntries: List<PortalBackstackEntry<KeyT>>
+  )
 
   override fun contains(key: KeyT) =
     transactionPortalEntries.findLast { entry ->
@@ -44,7 +52,6 @@ internal class PortalEntryBuilder<KeyT>(
     transactionPortalEntries += PortalEntry(
       portal = portal,
       wasContentPreviouslyVisible = false,
-      isDisappearing = false,
       backstackState = PortalBackstackState.None,
       rendererState = when {
         isAttachedToComposition -> PortalRendererState.Added
@@ -60,21 +67,14 @@ internal class PortalEntryBuilder<KeyT>(
     key: KeyT,
     transitionOverride: EnterTransitionOverride?
   ) {
-    key.applyMutationToPortalEntries { entry ->
-      when {
-        entry.isDisappearing -> when {
-          validation.validatePortalTransactions -> error("Cannot attach if the entry is disappearing")
-          else -> entry
-        }
-
-        else -> entry.copy(
-          wasContentPreviouslyVisible = entry.rendererState.isAddedOrAttached,
-          backstackState = backstackState,
-          rendererState = PortalRendererState.Attached,
-          enterTransitionOverride = transitionOverride,
-          exitTransitionOverride = null
-        )
-      }
+    key.applyMutationToPortalEntries { entry, _ ->
+      entry.copy(
+        wasContentPreviouslyVisible = entry.rendererState.isAddedOrAttached,
+        backstackState = backstackState,
+        rendererState = PortalRendererState.Attached,
+        enterTransitionOverride = transitionOverride,
+        exitTransitionOverride = null
+      )
     }
   }
 
@@ -82,21 +82,14 @@ internal class PortalEntryBuilder<KeyT>(
     key: KeyT,
     transitionOverride: ExitTransitionOverride?
   ) {
-    key.applyMutationToPortalEntries { entry ->
-      when {
-        entry.isDisappearing -> when {
-          validation.validatePortalTransactions -> error("Cannot detach if the entry is disappearing")
-          else -> entry
-        }
-
-        else -> entry.copy(
-          wasContentPreviouslyVisible = entry.rendererState.isAddedOrAttached,
-          backstackState = backstackState,
-          rendererState = PortalRendererState.Detached,
-          enterTransitionOverride = null,
-          exitTransitionOverride = transitionOverride
-        )
-      }
+    key.applyMutationToPortalEntries { entry, _ ->
+      entry.copy(
+        wasContentPreviouslyVisible = entry.rendererState.isAddedOrAttached,
+        backstackState = backstackState,
+        rendererState = PortalRendererState.Detached,
+        enterTransitionOverride = null,
+        exitTransitionOverride = transitionOverride
+      )
     }
   }
 
@@ -104,40 +97,31 @@ internal class PortalEntryBuilder<KeyT>(
     key: KeyT,
     transitionOverride: ExitTransitionOverride?
   ) {
-    internalRemove(key, transitionOverride)
-  }
+    key.applyMutationToPortalEntries { entry, index ->
+      val insertionIndex = transactionDisappearingPortalEntries.findInsertionIndex(
+        forIndex = index
+      )
 
-  private fun internalRemove(
-    key: KeyT,
-    transitionOverride: ExitTransitionOverride?,
-    suppressDisappearingValidation: Boolean = false
-  ) {
-    key.applyMutationToPortalEntries { entry ->
-      when {
-        entry.isDisappearing -> when {
-          validation.validatePortalTransactions && !suppressDisappearingValidation ->
-            error("Cannot remove if the entry is disappearing")
-
-          else -> null
-        }.also {
-          entry.portal.notifyOfRemoval(
-            isCompletelyRemoved = true
-          )
-        }
-
-        else -> entry.copy(
-          wasContentPreviouslyVisible = entry.rendererState.isAddedOrAttached,
-          backstackState = PortalBackstackState.None,
-          rendererState = PortalRendererState.Removed,
-          isDisappearing = true,
-          enterTransitionOverride = null,
-          exitTransitionOverride = transitionOverride
-        ).also {
-          entry.portal.notifyOfRemoval(
-            isCompletelyRemoved = false
-          )
-        }
+      transactionDisappearingPortalEntries.add(
+        insertionIndex,
+        DisappearingPortalEntry(
+          entry = entry.copy(
+            wasContentPreviouslyVisible = entry.rendererState.isAddedOrAttached,
+            backstackState = PortalBackstackState.None,
+            rendererState = PortalRendererState.Removed,
+            enterTransitionOverride = null,
+            exitTransitionOverride = transitionOverride
+          ),
+          index = index
+        )
+      ).also {
+        entry.portal.notifyOfRemoval(
+          isCompletelyRemoved = false
+        )
       }
+
+      // returning null removes this entry from transactionPortalEntries
+      null
     }
   }
 
@@ -145,14 +129,21 @@ internal class PortalEntryBuilder<KeyT>(
     clearDisappearingEntries: Boolean,
     transitionOverrideProvider: ((KeyT) -> ExitTransitionOverride?)?
   ) {
-    transactionPortalEntries.reversed().forEach { entry ->
-      if(!entry.isDisappearing || clearDisappearingEntries) {
-        internalRemove(
-          key = entry.key,
-          transitionOverride = transitionOverrideProvider?.invoke(entry.key),
-          suppressDisappearingValidation = true
+    if(clearDisappearingEntries) {
+      transactionDisappearingPortalEntries.forEach { disappearingEntry ->
+        disappearingEntry.entry.portal.notifyOfRemoval(
+          isCompletelyRemoved = true
         )
       }
+
+      transactionDisappearingPortalEntries.clear()
+    }
+
+    transactionPortalEntries.reversed().forEach { entry ->
+      remove(
+        key = entry.key,
+        transitionOverride = transitionOverrideProvider?.invoke(entry.key)
+      )
     }
 
     // backstack cleanup
@@ -160,37 +151,28 @@ internal class PortalEntryBuilder<KeyT>(
   }
 
   internal fun disappear(
-    key: KeyT
+    key: KeyT,
+    uid: Int
   ) {
-    key.applyMutationToPortalEntries(
-      entryMatcher = { entry ->
-        entry.key == key && entry.isDisappearing
-      }
-    ) { entry ->
-      if(entry.isDisappearing) {
-        _postTransactionOps.update { oldPostTransactionOps ->
-          oldPostTransactionOps + {
-            entry.portal.notifyOfRemoval(
-              isCompletelyRemoved = true
-            )
-          }
-        }
-        // removes the entry from portalEntries
-        null
-      }
-      else {
-        when {
-          validation.validatePortalTransactions -> error("Cannot disappear if the entry isn't disappearing")
-          else -> entry
-        }
-      }
+    val indexToRemove = transactionDisappearingPortalEntries.indexOfLast { disappearingEntry ->
+      disappearingEntry.entry.key == key && disappearingEntry.entry.uid == uid
+    }
+    if(indexToRemove >= 0) {
+      val disappearingEntry = transactionDisappearingPortalEntries.removeAt(indexToRemove)
+
+      disappearingEntry.entry.portal.notifyOfRemoval(
+        isCompletelyRemoved = true
+      )
     }
   }
 
-  internal fun build(): Pair<List<PortalEntry<KeyT>>, List<PortalBackstackEntry<KeyT>>> =
-    transactionPortalEntries to transactionBackstackEntries
+  internal fun build(): Payload<KeyT> = Payload(
+    entries = transactionPortalEntries,
+    disappearingEntries = transactionDisappearingPortalEntries,
+    backstackEntries = transactionBackstackEntries
+  )
 
-  @Suppress("unused")
+  @Suppress("UnusedReceiverParameter")
   internal inline fun <R> PortalBackstack<KeyT>.usingBackstack(
     backstackState: PortalBackstackState,
     builder: PortalEntryBuilder<KeyT>.(
@@ -198,6 +180,7 @@ internal class PortalEntryBuilder<KeyT>(
     ) -> R
   ) = PortalEntryBuilder(
     transactionPortalEntries = transactionPortalEntries,
+    transactionDisappearingPortalEntries = transactionDisappearingPortalEntries,
     transactionBackstackEntries = transactionBackstackEntries,
     backstack = backstack,
     backstackState = backstackState,
@@ -206,7 +189,7 @@ internal class PortalEntryBuilder<KeyT>(
 
   private fun KeyT.applyMutationToPortalEntries(
     entryMatcher: (PortalEntry<KeyT>) -> Boolean = { it.key == this },
-    mutate: (PortalEntry<KeyT>) -> PortalEntry<KeyT>?
+    mutate: (PortalEntry<KeyT>, Int) -> PortalEntry<KeyT>?
   ) {
     transactionPortalEntries
       .indexOfLast { entry -> entryMatcher(entry) }
@@ -214,7 +197,7 @@ internal class PortalEntryBuilder<KeyT>(
       ?.let { index ->
         val entry = transactionPortalEntries[index]
 
-        val newEntry = mutate(entry)
+        val newEntry = mutate(entry, index)
         if(newEntry == null) {
           transactionPortalEntries.removeAt(index)
         }
@@ -238,6 +221,32 @@ internal class PortalEntryBuilder<KeyT>(
         }
       }
     }
+  }
+}
+
+private fun <KeyT> List<DisappearingPortalEntry<KeyT>>.findInsertionIndex(
+  forIndex: Int
+): Int {
+  val searchIndex = binarySearchBy(forIndex) {
+    it.index
+  }
+
+  return when {
+    searchIndex >= 0 -> {
+      // insert after any existing index matches
+      // because we're assuming that anything disappearing
+      // at the same index at a later time was above the original entry
+      var insertionIndex = searchIndex + 1
+      while(insertionIndex <= lastIndex) {
+        if(this[insertionIndex].index == forIndex) {
+          insertionIndex++
+        }
+      }
+
+      insertionIndex
+    }
+
+    else -> -searchIndex - 1
   }
 }
 
