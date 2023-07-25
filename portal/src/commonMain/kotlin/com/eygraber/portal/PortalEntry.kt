@@ -1,5 +1,6 @@
 package com.eygraber.portal
 
+import kotlinx.atomicfu.atomic
 import kotlin.jvm.JvmInline
 
 public data class PortalEntry<KeyT>(
@@ -14,7 +15,13 @@ public data class PortalEntry<KeyT>(
   public val key: KeyT = portal.key
 
   @JvmInline
-  public value class Id(public val id: Int)
+  public value class Id(public val id: Int) {
+    internal companion object {
+      private val idGenerator = atomic(1)
+
+      fun generate() = Id(idGenerator.getAndIncrement())
+    }
+  }
 
   override fun toString(): String =
     """$name(
