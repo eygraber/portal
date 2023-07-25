@@ -14,8 +14,4 @@ public sealed class PortalBackstackMutation<KeyT> {
   public data class Detach<KeyT>(
     override val key: KeyT
   ) : PortalBackstackMutation<KeyT>()
-
-  public data class Disappearing<KeyT>(
-    override val key: KeyT
-  ) : PortalBackstackMutation<KeyT>()
 }

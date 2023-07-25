@@ -16,15 +16,18 @@ internal data class ComposePortalEntry<KeyT>(
   val rendererState: PortalRendererState,
   val enterTransitionOverride: EnterTransition?,
   val exitTransitionOverride: ExitTransition?,
-  val uid: Int
+  val uid: PortalEntry.Id
 ) {
   val key: KeyT = portal.key
 
   companion object {
-    fun <KeyT> fromPortalEntry(entry: PortalEntry<KeyT>) = ComposePortalEntry(
+    fun <KeyT> fromPortalEntry(
+      entry: PortalEntry<KeyT>,
+      isDisappearing: Boolean
+    ) = ComposePortalEntry(
       portal = entry.portal as? ComposePortal ?: error("portal must be a ComposePortal"),
       wasContentPreviouslyVisible = entry.wasContentPreviouslyVisible,
-      isDisappearing = entry.isDisappearing,
+      isDisappearing = isDisappearing,
       backstackState = entry.backstackState,
       rendererState = entry.rendererState,
       enterTransitionOverride = entry.enterTransitionOverride?.toComposeTransition(),

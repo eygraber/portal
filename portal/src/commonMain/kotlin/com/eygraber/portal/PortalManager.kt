@@ -8,6 +8,7 @@ import kotlinx.atomicfu.locks.reentrantLock
 import kotlinx.atomicfu.locks.withLock
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
 
 public interface PortalManagerQueries<KeyT> {
   public val size: Int
@@ -15,6 +16,7 @@ public interface PortalManagerQueries<KeyT> {
   public val portalEntries: List<PortalEntry<KeyT>>
 
   public operator fun contains(key: KeyT): Boolean
+  public operator fun contains(uid: PortalEntry.Id): Boolean
 }
 
 @Target(AnnotationTarget.CLASS)
@@ -26,7 +28,7 @@ public abstract class PortalManager<KeyT>(
   validation: PortalManagerValidation = PortalManagerValidation()
 ) : PortalManagerQueries<KeyT> {
   override val size: Int
-    get() = portalState.portalEntries.filterNot { it.isDisappearing }.size
+    get() = portalState.portalEntries.size
 
   override val portalEntries: List<PortalEntry<KeyT>>
     get() = portalState.portalEntries
@@ -34,6 +36,11 @@ public abstract class PortalManager<KeyT>(
   override operator fun contains(key: KeyT): Boolean =
     portalState.portalEntries.findLast { entry ->
       entry.key == key
+    } != null
+
+  override operator fun contains(uid: PortalEntry.Id): Boolean =
+    portalState.portalEntries.findLast { entry ->
+      entry.uid == uid
     } != null
 
   public fun saveState(
@@ -85,18 +92,18 @@ public abstract class PortalManager<KeyT>(
     }
   }
 
-  protected fun makeEntryDisappear(key: KeyT) {
+  protected fun makeEntryDisappear(uid: PortalEntry.Id) {
     portalState.transact {
-      disappear(key)
+      disappear(uid)
     }
   }
 
-  public fun updates(): Flow<List<PortalEntry<KeyT>>> = portalState.portalEntriesUpdateFlow()
+  public fun updates(): Flow<List<PortalEntry<KeyT>>> = portalState.portalEntriesUpdateFlow().map { it.entries }
 
   private val lock = reentrantLock()
   private val portalState = PortalState<KeyT>(validation = validation)
 
-  protected fun portalEntriesUpdateFlow(): StateFlow<List<PortalEntry<KeyT>>> =
+  protected fun portalEntriesUpdateFlow(): StateFlow<Entries<KeyT>> =
     portalState.portalEntriesUpdateFlow()
 
   protected fun backstackEntriesUpdateFlow(): StateFlow<List<PortalBackstackEntry<KeyT>>> =
@@ -105,6 +112,11 @@ public abstract class PortalManager<KeyT>(
   private val _backstack: PortalBackstack<KeyT> = PortalBackstackImpl(portalState)
 
   public val backstack: ReadOnlyBackstack<KeyT> = _backstack
+
+  public data class Entries<KeyT>(
+    val entries: List<PortalEntry<KeyT>>,
+    val disappearingEntries: List<DisappearingPortalEntry<KeyT>>
+  )
 
   @PortalTransactionBuilderDsl
   public interface EntryBuilder<KeyT> : PortalManagerQueries<KeyT> {
@@ -121,13 +133,28 @@ public abstract class PortalManager<KeyT>(
       transitionOverride: EnterTransitionOverride? = null
     )
 
+    public fun attachToComposition(
+      uid: PortalEntry.Id,
+      transitionOverride: EnterTransitionOverride? = null
+    )
+
     public fun detachFromComposition(
       key: KeyT,
       transitionOverride: ExitTransitionOverride? = null
     )
 
+    public fun detachFromComposition(
+      uid: PortalEntry.Id,
+      transitionOverride: ExitTransitionOverride? = null
+    )
+
     public fun remove(
       key: KeyT,
+      transitionOverride: ExitTransitionOverride? = null
+    )
+
+    public fun remove(
+      uid: PortalEntry.Id,
       transitionOverride: ExitTransitionOverride? = null
     )
 

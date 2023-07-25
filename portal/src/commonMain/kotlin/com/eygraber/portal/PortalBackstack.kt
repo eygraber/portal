@@ -199,10 +199,6 @@ private fun <KeyT> PortalEntryBuilder<KeyT>.applyBackstackMutations(
         key = mutation.key,
         transitionOverride = exitTransitionOverride?.invoke(mutation.key)
       )
-
-      is PortalBackstackMutation.Disappearing -> disappear(
-        key = mutation.key
-      )
     }
   }
 }
