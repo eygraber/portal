@@ -12,7 +12,7 @@ repositories {
 }
 
 dependencies {
-  implementation("com.eygraber:portal:0.9.25")
+  implementation("com.eygraber:portal:0.9.26")
 }
 ```
 
