@@ -53,6 +53,7 @@ private fun <KeyT> List<PortalBackstackMutation<KeyT>>.serializeBackstackMutatio
   forEach { mutation ->
     buildJsonObject {
       put("key", keySerializer(mutation.key))
+      put("uid", mutation.uid.id)
 
       when(mutation) {
         is PortalBackstackMutation.Remove -> put("type", "remove")

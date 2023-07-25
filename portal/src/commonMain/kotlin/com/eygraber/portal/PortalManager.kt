@@ -126,37 +126,37 @@ public abstract class PortalManager<KeyT>(
       portal: KeyedPortal<out KeyT>,
       isAttachedToComposition: Boolean = true,
       transitionOverride: EnterTransitionOverride? = null
-    )
+    ): PortalEntry<KeyT>
 
     public fun attachToComposition(
       key: KeyT,
       transitionOverride: EnterTransitionOverride? = null
-    )
+    ): PortalEntry<KeyT>?
 
     public fun attachToComposition(
       uid: PortalEntry.Id,
       transitionOverride: EnterTransitionOverride? = null
-    )
+    ): PortalEntry<KeyT>?
 
     public fun detachFromComposition(
       key: KeyT,
       transitionOverride: ExitTransitionOverride? = null
-    )
+    ): PortalEntry<KeyT>?
 
     public fun detachFromComposition(
       uid: PortalEntry.Id,
       transitionOverride: ExitTransitionOverride? = null
-    )
+    ): PortalEntry<KeyT>?
 
     public fun remove(
       key: KeyT,
       transitionOverride: ExitTransitionOverride? = null
-    )
+    ): PortalEntry<KeyT>?
 
     public fun remove(
       uid: PortalEntry.Id,
       transitionOverride: ExitTransitionOverride? = null
-    )
+    ): PortalEntry<KeyT>?
 
     /**
      * [clearDisappearingEntries] can be set to `true`

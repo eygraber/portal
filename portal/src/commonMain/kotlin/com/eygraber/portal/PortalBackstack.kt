@@ -54,8 +54,18 @@ public interface PortalBackstack<KeyT> : ReadOnlyBackstack<KeyT> {
       transitionOverride: EnterTransitionOverride? = null
     )
 
+    public fun attachToComposition(
+      uid: PortalEntry.Id,
+      transitionOverride: EnterTransitionOverride? = null
+    )
+
     public fun detachFromComposition(
       key: KeyT,
+      transitionOverride: ExitTransitionOverride? = null
+    )
+
+    public fun detachFromComposition(
+      uid: PortalEntry.Id,
       transitionOverride: ExitTransitionOverride? = null
     )
   }
@@ -186,17 +196,17 @@ private fun <KeyT> PortalEntryBuilder<KeyT>.applyBackstackMutations(
   mutations.forEach { mutation ->
     when(mutation) {
       is PortalBackstackMutation.Remove -> remove(
-        key = mutation.key,
+        uid = mutation.uid,
         transitionOverride = exitTransitionOverride?.invoke(mutation.key)
       )
 
       is PortalBackstackMutation.Attach -> attachToComposition(
-        key = mutation.key,
+        uid = mutation.uid,
         transitionOverride = enterTransitionOverride?.invoke(mutation.key)
       )
 
       is PortalBackstackMutation.Detach -> detachFromComposition(
-        key = mutation.key,
+        uid = mutation.uid,
         transitionOverride = exitTransitionOverride?.invoke(mutation.key)
       )
     }
