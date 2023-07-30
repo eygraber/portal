@@ -1,5 +1,6 @@
 import com.eygraber.conventions.tasks.deleteRootBuildDirWhenCleaning
 import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 buildscript {
   dependencies {
@@ -32,14 +33,13 @@ gradleConventionsDefaults {
   }
 
   compose {
-    // because we use js
-    applyToAndroidAndJvmOnly = false
-
-    overrideAndroidComposeVersions(
-      compilerVersion = libs.versions.composeAndroid.compiler
+    android(
+      compilerOverride = libs.compose.compilerJetpack
     )
 
-    useAndroidComposeCompilerVersionForJetbrainsComposeCompilerVersion = false
+    multiplatform(
+      compilerOverride = libs.compose.compilerJetbrains
+    )
   }
 
   detekt {
@@ -50,8 +50,7 @@ gradleConventionsDefaults {
   }
 
   kotlin {
-    jdkVersion = libs.versions.jdk.get()
-    jvmDistribution = JvmVendorSpec.AZUL
+    jvmTargetVersion = JvmTarget.JVM_17
     explicitApiMode = ExplicitApiMode.Strict
   }
 }

@@ -15,14 +15,6 @@ android {
 
   namespace = "com.eygraber.portal.samples.simpleportal.android"
 
-  buildFeatures {
-    compose = true
-  }
-
-  composeOptions {
-    kotlinCompilerExtensionVersion = libs.versions.composeAndroid.compiler.get()
-  }
-
   defaultConfig {
     applicationId = "com.eygraber.portal.samples.simpleportal.android"
     minSdk = libs.versions.android.sdk.min.get().toInt()
@@ -48,11 +40,6 @@ android {
       "MissingTranslation",
       "Typos"
     )
-  }
-
-  compileOptions {
-    sourceCompatibility = JavaVersion.toVersion(libs.versions.jdk.get())
-    targetCompatibility = JavaVersion.toVersion(libs.versions.jdk.get())
   }
 
   testOptions {
