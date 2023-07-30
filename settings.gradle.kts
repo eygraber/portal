@@ -51,9 +51,8 @@ dependencyResolutionManagement {
 }
 
 plugins {
-  id("com.eygraber.conventions.settings") version "0.0.39"
+  id("com.eygraber.conventions.settings") version "0.0.45"
   id("com.gradle.enterprise") version "3.14.1"
-  id("org.gradle.toolchains.foojay-resolver-convention") version "0.6.0"
 }
 
 rootProject.name = "portals"
