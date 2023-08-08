@@ -280,7 +280,7 @@ private fun ParentPortal.notifyChildrenOfRemoval(
       val childPortal = entry.portal
 
       if(childPortal is ParentPortal) {
-        notifyChildrenOfRemoval(isCompletelyRemoved)
+        childPortal.notifyChildrenOfRemoval(isCompletelyRemoved)
       }
 
       if(childPortal is PortalRemovedListener) {
