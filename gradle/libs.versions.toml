@@ -49,7 +49,7 @@ buildscript-publish = { module = "com.vanniktech:gradle-maven-publish-plugin", v
 buildscript-ksp = { module = "com.google.devtools.ksp:symbol-processing-gradle-plugin", version.ref = "ksp" }
 
 compose-compilerJetbrains = "org.jetbrains.compose.compiler:compiler:1.5.2"
-compose-compilerJetpack = "androidx.compose.compiler:compiler:1.5.3"
+compose-compilerJetpack = "androidx.compose.compiler:compiler:1.5.4"
 
 detektEygraber-formatting = { module = "com.eygraber.detekt.rules:formatting", version.ref = "detektEygraber" }
 detektEygraber-style = { module = "com.eygraber.detekt.rules:style", version.ref = "detektEygraber" }
