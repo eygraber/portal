@@ -12,7 +12,7 @@ kotlin {
   kmpTargets(
     project = project,
     js = true,
-    isJsLeafModule = true,
+    binaryType = BinaryType.Executable,
     jsModuleName = "simple-portal",
     android = false,
     jvm = false,
