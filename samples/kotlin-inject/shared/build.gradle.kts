@@ -22,7 +22,7 @@ kotlin {
     js = true
   )
 
-  commonMainKspDependencies {
+  commonMainKspDependencies(project) {
     ksp(libs.kotlinInject.compiler)
   }
 

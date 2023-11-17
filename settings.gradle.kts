@@ -31,7 +31,12 @@ pluginManagement {
     }
 
     gradlePluginPortal()
+
+    maven(url = "https://androidx.dev/storage/compose-compiler/repository/")
+    maven(url = "https://maven.pkg.jetbrains.space/public/p/compose/dev")
   }
+
+  includeBuild("../gradle-conventions")
 }
 
 @Suppress("UnstableApiUsage")
@@ -72,6 +77,8 @@ include(":samples:simple-portal")
 include(":samples:simple-portal:android-app")
 include(":samples:simple-portal:desktop-app")
 include(":samples:simple-portal:js-app")
+
+includeBuild("../gradle-conventions")
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
