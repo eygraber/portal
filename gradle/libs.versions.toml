@@ -29,6 +29,7 @@ ksp = "2.0.0-Beta1-1.0.14"
 ktlint = "1.0.1"
 
 publish = "0.25.3"
+animationAndroid = "1.5.4"
 
 [plugins]
 conventions = { id = "com.eygraber.conventions", version.ref = "conventions" }
@@ -73,3 +74,4 @@ test-compose-android-uiTestManifest = "androidx.compose.ui:ui-test-manifest:1.5.
 test-junit = { module = "junit:junit", version = "4.13.2" }
 test-kotest-assertions = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
 test-robolectric = "org.robolectric:robolectric:4.11.1"
+androidx-animation-android = { group = "androidx.compose.animation", name = "animation-android", version.ref = "animationAndroid" }
