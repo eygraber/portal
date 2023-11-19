@@ -52,6 +52,8 @@ dependencyResolutionManagement {
       includeGoogle = true,
       includeJetbrainsCompose = true
     )
+
+    maven(url = "https://androidx.dev/storage/compose-compiler/repository/")
   }
 }
 

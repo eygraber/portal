@@ -12,14 +12,14 @@ kotlin {
   kmpTargets(
     project = project,
     js = true,
-    isJsLeafModule = true,
+    binaryType = BinaryType.Executable,
     android = false,
     jvm = false,
     ios = false
   )
 
   sourceSets {
-    named("jsMain") {
+    jsMain {
       dependencies {
         implementation(projects.portalCompose)
         implementation(projects.samples.ark.shared)

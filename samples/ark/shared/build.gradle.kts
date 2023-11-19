@@ -1,4 +1,3 @@
-import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
 
 plugins {
@@ -6,7 +5,6 @@ plugins {
   id("com.eygraber.conventions-android-library")
   id("com.eygraber.conventions-compose-jetbrains")
   id("com.eygraber.conventions-detekt")
-  id("com.google.devtools.ksp")
 }
 
 group = "samples-ark-shared"
@@ -30,7 +28,6 @@ kotlin {
 
         implementation(compose.foundation)
 
-        @OptIn(ExperimentalComposeLibrary::class)
         implementation(compose.material3)
 
         implementation(libs.kotlinx.coroutines.core)

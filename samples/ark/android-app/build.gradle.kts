@@ -42,11 +42,6 @@ android {
     )
   }
 
-  compileOptions {
-    sourceCompatibility = JavaVersion.toVersion(libs.versions.jdk.get())
-    targetCompatibility = JavaVersion.toVersion(libs.versions.jdk.get())
-  }
-
   testOptions {
     unitTests {
       isIncludeAndroidResources = true
@@ -57,8 +52,6 @@ android {
 dependencies {
   implementation(projects.portalCompose)
   implementation(projects.samples.ark.shared)
-
-  implementation(libs.composeAndroid.material)
 
   implementation(libs.androidx.activity.compose)
   implementation(libs.androidx.appcompat)
