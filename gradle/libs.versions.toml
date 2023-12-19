@@ -26,7 +26,7 @@ kotlinx-atomicFu = "0.23.1"
 
 ksp = "1.9.21-1.0.16"
 
-ktlint = "1.0.1"
+ktlint = "1.1.0"
 
 publish = "0.26.0"
 
