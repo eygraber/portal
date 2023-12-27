@@ -4,7 +4,7 @@ plugins {
   id("com.android.application")
   kotlin("android")
   id("com.eygraber.conventions-kotlin-library")
-  id("com.eygraber.conventions-compose-jetpack")
+  id("com.eygraber.conventions-compose-jetbrains")
   id("com.eygraber.conventions-detekt")
 }
 
