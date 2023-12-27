@@ -15,7 +15,7 @@ detektEygraber = "1.0.11"
 dokka = "1.9.10"
 
 kodein = "7.21.1"
-kotlin = "1.9.21"
+kotlin = "1.9.22"
 
 kotlinInject = "0.6.3"
 
@@ -24,7 +24,7 @@ kotest = "5.8.0"
 kotlinx-coroutines = "1.8.0-RC2"
 kotlinx-atomicFu = "0.23.1"
 
-ksp = "1.9.21-1.0.16"
+ksp = "1.9.22-1.0.16"
 
 ktlint = "1.1.0"
 
@@ -48,8 +48,7 @@ buildscript-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", ver
 buildscript-publish = { module = "com.vanniktech:gradle-maven-publish-plugin", version.ref = "publish" }
 buildscript-ksp = { module = "com.google.devtools.ksp:symbol-processing-gradle-plugin", version.ref = "ksp" }
 
-compose-compilerJetbrains = "org.jetbrains.compose.compiler:compiler:1.5.4"
-compose-compilerJetpack = "androidx.compose.compiler:compiler:1.5.7"
+compose-compilerJetbrains = "org.jetbrains.compose.compiler:compiler:1.5.7"
 
 detektEygraber-formatting = { module = "com.eygraber.detekt.rules:formatting", version.ref = "detektEygraber" }
 detektEygraber-style = { module = "com.eygraber.detekt.rules:style", version.ref = "detektEygraber" }
