@@ -25,12 +25,12 @@ kotlin {
       }
     }
 
-    commonTest {
-      dependencies {
-        implementation(kotlin("test"))
-
-        implementation(libs.test.kotest.assertions)
-      }
-    }
+    // commonTest {
+    //   dependencies {
+    //     implementation(kotlin("test"))
+    //
+    //     implementation(libs.test.kotest.assertions)
+    //   }
+    // }
   }
 }

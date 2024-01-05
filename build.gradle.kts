@@ -56,5 +56,6 @@ gradleConventionsKmpDefaults {
     KmpTarget.Android,
     KmpTarget.Js,
     KmpTarget.Jvm,
+    KmpTarget.WasmJs,
   )
 }
