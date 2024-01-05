@@ -50,3 +50,11 @@ gradleConventionsDefaults {
     explicitApiMode = ExplicitApiMode.Strict
   }
 }
+
+gradleConventionsKmpDefaults {
+  targets(
+    KmpTarget.Android,
+    KmpTarget.Js,
+    KmpTarget.Jvm,
+  )
+}

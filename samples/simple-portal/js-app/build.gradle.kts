@@ -10,17 +10,17 @@ group = "samples-simple-portal-js"
 
 kotlin {
   kmpTargets(
+    KmpTarget.Js,
     project = project,
-    js = true,
     binaryType = BinaryType.Executable,
-    jsModuleName = "simple-portal",
-    android = false,
-    jvm = false,
-    ios = false,
+    webOptions = KmpTarget.WebOptions(
+      isNodeEnabled = true,
+      moduleName = "simple-portal",
+    ),
   )
 
   sourceSets {
-    named("jsMain") {
+    commonJsMain {
       dependencies {
         implementation(projects.samples.simplePortal)
 

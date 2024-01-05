@@ -10,17 +10,17 @@ group = "samples-kotlin-inject-js"
 
 kotlin {
   kmpTargets(
+    KmpTarget.Js,
     project = project,
-    js = true,
     binaryType = BinaryType.Executable,
-    jsModuleName = "kotlin-inject",
-    android = false,
-    jvm = false,
-    ios = false,
+    webOptions = KmpTarget.WebOptions(
+      isNodeEnabled = true,
+      moduleName = "kotlin-inject",
+    ),
   )
 
   sourceSets {
-    named("jsMain") {
+    commonJsMain {
       dependencies {
         implementation(projects.portalCompose)
         implementation(projects.samples.kotlinInject.shared)

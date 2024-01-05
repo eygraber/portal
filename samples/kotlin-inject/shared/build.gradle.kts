@@ -15,11 +15,8 @@ android {
 }
 
 kotlin {
-  kmpTargets(
+  defaultKmpTargets(
     project = project,
-    android = true,
-    jvm = true,
-    js = true,
   )
 
   commonMainKspDependencies {
