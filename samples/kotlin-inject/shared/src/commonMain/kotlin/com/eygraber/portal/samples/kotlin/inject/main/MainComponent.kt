@@ -18,7 +18,7 @@ annotation class MainScope
 @Component
 abstract class MainComponent(
   @Component @get:Provides val appComponent: AppComponent,
-  override val portal: MainPortal,
+  @get:Provides override val portal: MainPortal,
 ) : PortalComponent<MainPortal> {
   abstract val view: MainView
   abstract val appPortalManager: ComposePortalManager<AppPortalKey>
