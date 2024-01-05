@@ -1,3 +1,5 @@
+@file:Suppress("ktlint:standard:value-argument-comment")
+
 package com.eygraber.portal.compose
 
 import androidx.compose.animation.EnterTransition
@@ -8,7 +10,7 @@ import com.eygraber.portal.PortalRendererState
 public fun interface PortalTransitionProvider {
   public fun provideTransitions(
     compositionState: PortalRendererState,
-    backstackState: PortalBackstackState
+    backstackState: PortalBackstackState,
   ): PortalTransition
 
   public companion object {
@@ -22,34 +24,34 @@ public fun interface PortalTransitionProvider {
           PortalRendererState.Added, PortalRendererState.Removed -> when(backstackState) {
             PortalBackstackState.None -> PortalTransition(
               enter = PortalTransition.defaultEnter,
-              exit = PortalTransition.defaultExit
+              exit = PortalTransition.defaultExit,
             )
 
             PortalBackstackState.Pushing -> PortalTransition(
               enter = PortalTransition.defaultBackstackPushEnter,
-              exit = ExitTransition.None // not a valid state
+              exit = ExitTransition.None, // not a valid state
             )
 
             PortalBackstackState.Popping -> PortalTransition(
               enter = EnterTransition.None, // not a valid state
-              exit = PortalTransition.defaultBackstackPopExit
+              exit = PortalTransition.defaultBackstackPopExit,
             )
           }
 
           PortalRendererState.Attached, PortalRendererState.Detached -> when(backstackState) {
             PortalBackstackState.None -> PortalTransition(
               enter = PortalTransition.defaultAttach,
-              exit = PortalTransition.defaultDetach
+              exit = PortalTransition.defaultDetach,
             )
 
             PortalBackstackState.Pushing -> PortalTransition(
               enter = PortalTransition.defaultBackstackPushAttach,
-              exit = PortalTransition.defaultBackstackPushDetach
+              exit = PortalTransition.defaultBackstackPushDetach,
             )
 
             PortalBackstackState.Popping -> PortalTransition(
               enter = PortalTransition.defaultBackstackPopAttach,
-              exit = PortalTransition.defaultBackstackPopDetach
+              exit = PortalTransition.defaultBackstackPopDetach,
             )
           }
         }
@@ -57,7 +59,7 @@ public fun interface PortalTransitionProvider {
 
     public fun provideTransitions(
       state: PortalRendererState,
-      backstackState: PortalBackstackState
+      backstackState: PortalBackstackState,
     ): PortalTransition = Default.provideTransitions(state, backstackState)
   }
 }
@@ -80,39 +82,39 @@ public interface SimplePortalTransitionProvider : PortalTransitionProvider {
 
   override fun provideTransitions(
     compositionState: PortalRendererState,
-    backstackState: PortalBackstackState
+    backstackState: PortalBackstackState,
   ): PortalTransition = when(compositionState) {
     PortalRendererState.Added, PortalRendererState.Removed -> when(backstackState) {
       PortalBackstackState.None -> PortalTransition(
         enter = enterTransition,
-        exit = exitTransition
+        exit = exitTransition,
       )
 
       PortalBackstackState.Pushing -> PortalTransition(
         enter = backstackPushEnterTransition,
-        exit = ExitTransition.None // not a valid state
+        exit = ExitTransition.None, // not a valid state
       )
 
       PortalBackstackState.Popping -> PortalTransition(
         enter = EnterTransition.None, // not a valid state
-        exit = backstackPopExitTransition
+        exit = backstackPopExitTransition,
       )
     }
 
     PortalRendererState.Attached, PortalRendererState.Detached -> when(backstackState) {
       PortalBackstackState.None -> PortalTransition(
         enter = attachTransition,
-        exit = detachTransition
+        exit = detachTransition,
       )
 
       PortalBackstackState.Pushing -> PortalTransition(
         enter = backstackPushAttachTransition,
-        exit = backstackPushDetachTransition
+        exit = backstackPushDetachTransition,
       )
 
       PortalBackstackState.Popping -> PortalTransition(
         enter = backstackPopAttachTransition,
-        exit = backstackPopDetachTransition
+        exit = backstackPopDetachTransition,
       )
     }
   }

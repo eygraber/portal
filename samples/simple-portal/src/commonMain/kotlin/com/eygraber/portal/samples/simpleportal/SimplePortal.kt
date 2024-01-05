@@ -24,18 +24,18 @@ private val portalManager = ComposePortalManager<PortalKey>(
   defaultTransitionProvider = object : SimplePortalTransitionProvider {
     override val enterTransition = slideInHorizontally(
       animationSpec = tween(1000),
-      initialOffsetX = { it * 2 }
+      initialOffsetX = { it * 2 },
     )
 
     override val exitTransition = slideOutHorizontally(
       animationSpec = tween(1000),
-      targetOffsetX = { it * 2 }
+      targetOffsetX = { it * 2 },
     )
 
     override val backstackPushDetachTransition = fadeOut(
-      animationSpec = tween(1000)
+      animationSpec = tween(1000),
     )
-  }
+  },
 )
 
 @Composable
@@ -57,73 +57,73 @@ fun SimplePortal() {
           when(key) {
             PortalKey.One -> exitTransitionOverride {
               fadeOut(
-                animationSpec = tween(durationMillis = lastWaveDuration)
+                animationSpec = tween(durationMillis = lastWaveDuration),
               )
             }
 
             PortalKey.Two -> exitTransitionOverride {
               shrinkOut(
-                animationSpec = tween(durationMillis = lastWaveDuration)
+                animationSpec = tween(durationMillis = lastWaveDuration),
               )
             }
 
             PortalKey.Three -> exitTransitionOverride {
               slideOutVertically(
                 animationSpec = tween(durationMillis = secondWaveDuration),
-                targetOffsetY = { -it }
+                targetOffsetY = { -it },
               )
             }
 
             PortalKey.Four -> exitTransitionOverride {
               slideOutVertically(
                 animationSpec = tween(durationMillis = secondWaveDuration),
-                targetOffsetY = { it * 2 }
+                targetOffsetY = { it * 2 },
               )
             }
 
             PortalKey.Five -> exitTransitionOverride {
               slideOutHorizontally(
                 animationSpec = tween(durationMillis = secondWaveDuration),
-                targetOffsetX = { -it }
+                targetOffsetX = { -it },
               )
             }
 
             PortalKey.Six -> exitTransitionOverride {
               slideOutHorizontally(
                 animationSpec = tween(durationMillis = secondWaveDuration),
-                targetOffsetX = { it * 2 }
+                targetOffsetX = { it * 2 },
               )
             }
 
             PortalKey.Seven -> exitTransitionOverride {
               slideOutVertically(
                 animationSpec = tween(durationMillis = initialWaveDuration),
-                targetOffsetY = { -it }
+                targetOffsetY = { -it },
               )
             }
 
             PortalKey.Eight -> exitTransitionOverride {
               slideOutVertically(
                 animationSpec = tween(durationMillis = initialWaveDuration),
-                targetOffsetY = { it * 2 }
+                targetOffsetY = { it * 2 },
               )
             }
 
             PortalKey.Nine -> exitTransitionOverride {
               slideOutHorizontally(
                 animationSpec = tween(durationMillis = initialWaveDuration),
-                targetOffsetX = { -it }
+                targetOffsetX = { -it },
               )
             }
 
             PortalKey.Ten -> exitTransitionOverride {
               slideOutHorizontally(
                 animationSpec = tween(durationMillis = initialWaveDuration),
-                targetOffsetX = { it * 2 }
+                targetOffsetX = { it * 2 },
               )
             }
           }
-        }
+        },
       )
     }
   }
@@ -133,10 +133,10 @@ fun SimplePortal() {
       primary = Color(0xFFBB86FC),
       secondary = Color(0xFF03DAC5),
       tertiary = Color(0xFF3700B3),
-    )
+    ),
   ) {
     Surface(
-      modifier = Modifier.fillMaxSize()
+      modifier = Modifier.fillMaxSize(),
     ) {
       portalManager.Render()
     }
@@ -146,14 +146,14 @@ fun SimplePortal() {
 suspend fun ComposePortalManager<PortalKey>.addTenNumberBoxPortals() {
   suspend fun ComposePortalManager<PortalKey>.addNumberBoxPortal(
     previousKey: PortalKey?,
-    key: PortalKey
+    key: PortalKey,
   ) {
     withTransaction {
       backstack.push(key) {
         if(previousKey != null) detachFromComposition(previousKey)
 
         add(
-          portal = NumberBoxPortal(key)
+          portal = NumberBoxPortal(key),
         )
       }
     }

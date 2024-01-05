@@ -14,7 +14,7 @@ import org.kodein.di.instance
 import org.kodein.di.on
 
 class AlarmListPortal(
-  override val parent: ParentPortal
+  override val parent: ParentPortal,
 ) : ComposePortal<AppPortalKey>, KodeinDIPortal(), ChildPortal {
   override val key = AppPortalKey.AlarmList
 
@@ -23,13 +23,13 @@ class AlarmListPortal(
   override fun provideModule() = DI.Module("AlarmList") {
     bind<AlarmListView>() with portalSingleton {
       AlarmListView(
-        vm = instance()
+        vm = instance(),
       )
     }
 
     bind<AlarmListViewModel>() with portalSingleton {
       AlarmListViewModel(
-        appPortalManager = on(context = parent as MainPortal).instance()
+        appPortalManager = on(context = parent as MainPortal).instance(),
       )
     }
   }

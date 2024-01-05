@@ -16,7 +16,7 @@ kotlin {
     jsModuleName = "kotlin-inject",
     android = false,
     jvm = false,
-    ios = false
+    ios = false,
   )
 
   sourceSets {

@@ -15,12 +15,12 @@ import kotlin.random.Random
 @AlarmListScope
 @Inject
 class AlarmListViewModel(
-  private val appPortalManager: ComposePortalManager<AppPortalKey>
+  private val appPortalManager: ComposePortalManager<AppPortalKey>,
 ) : VM<AlarmListState> {
   private class MutableAlarmListAlarm(
     id: String,
     isEnabled: Boolean,
-    time: String
+    time: String,
   ) : AlarmListAlarm {
     override var id by mutableStateOf(id)
     override var isEnabled by mutableStateOf(isEnabled)
@@ -33,9 +33,9 @@ class AlarmListViewModel(
         MutableAlarmListAlarm(
           id = Random.nextLong().toString(),
           isEnabled = true,
-          time = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).time.toString()
-        )
-      )
+          time = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).time.toString(),
+        ),
+      ),
     )
   }
   override val state = mutableState
@@ -50,7 +50,7 @@ class AlarmListViewModel(
     mutableState.alarms = mutableState.alarms + MutableAlarmListAlarm(
       id = Random.nextLong().toString(),
       isEnabled = true,
-      time = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).time.toString()
+      time = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).time.toString(),
     )
   }
 

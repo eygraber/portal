@@ -25,7 +25,7 @@ public annotation class PortalTransactionBuilderDsl
 
 public abstract class PortalManager<KeyT>(
   private val defaultErrorHandler: ((Throwable) -> Unit)? = null,
-  validation: PortalManagerValidation = PortalManagerValidation()
+  validation: PortalManagerValidation = PortalManagerValidation(),
 ) : PortalManagerQueries<KeyT> {
   override val size: Int
     get() = portalState.portalEntries.size
@@ -44,7 +44,7 @@ public abstract class PortalManager<KeyT>(
     } != null
 
   public fun saveState(
-    keySerializer: (KeyT) -> String
+    keySerializer: (KeyT) -> String,
   ): String = lock.withLock {
     serializePortalManagerState(keySerializer, portalState)
   }
@@ -52,25 +52,25 @@ public abstract class PortalManager<KeyT>(
   public fun restoreState(
     serializedState: String,
     keyDeserializer: (String) -> KeyT,
-    portalFactory: (KeyT) -> KeyedPortal<KeyT>
+    portalFactory: (KeyT) -> KeyedPortal<KeyT>,
   ) {
     lock.withLock {
       val (entries, backstack) = deserializePortalManagerState(
         serializedState = serializedState,
         keyDeserializer = keyDeserializer,
-        portalFactory = portalFactory
+        portalFactory = portalFactory,
       )
 
       portalState.restoreState(
         entries = entries,
-        backstack = backstack
+        backstack = backstack,
       )
     }
   }
 
   public fun withTransaction(
     errorHandler: ((Throwable) -> Unit)? = defaultErrorHandler,
-    builder: EntryBuilder<KeyT>.() -> Unit
+    builder: EntryBuilder<KeyT>.() -> Unit,
   ) {
     lock.withLock {
       val isRootTransaction = portalState.startTransaction(_backstack)
@@ -115,7 +115,7 @@ public abstract class PortalManager<KeyT>(
 
   public data class Entries<KeyT>(
     val entries: List<PortalEntry<KeyT>>,
-    val disappearingEntries: List<DisappearingPortalEntry<KeyT>>
+    val disappearingEntries: List<DisappearingPortalEntry<KeyT>>,
   )
 
   @PortalTransactionBuilderDsl
@@ -125,37 +125,37 @@ public abstract class PortalManager<KeyT>(
     public fun add(
       portal: KeyedPortal<out KeyT>,
       isAttachedToComposition: Boolean = true,
-      transitionOverride: EnterTransitionOverride? = null
+      transitionOverride: EnterTransitionOverride? = null,
     ): PortalEntry<KeyT>
 
     public fun attachToComposition(
       key: KeyT,
-      transitionOverride: EnterTransitionOverride? = null
+      transitionOverride: EnterTransitionOverride? = null,
     ): PortalEntry<KeyT>?
 
     public fun attachToComposition(
       uid: PortalEntry.Id,
-      transitionOverride: EnterTransitionOverride? = null
+      transitionOverride: EnterTransitionOverride? = null,
     ): PortalEntry<KeyT>?
 
     public fun detachFromComposition(
       key: KeyT,
-      transitionOverride: ExitTransitionOverride? = null
+      transitionOverride: ExitTransitionOverride? = null,
     ): PortalEntry<KeyT>?
 
     public fun detachFromComposition(
       uid: PortalEntry.Id,
-      transitionOverride: ExitTransitionOverride? = null
+      transitionOverride: ExitTransitionOverride? = null,
     ): PortalEntry<KeyT>?
 
     public fun remove(
       key: KeyT,
-      transitionOverride: ExitTransitionOverride? = null
+      transitionOverride: ExitTransitionOverride? = null,
     ): PortalEntry<KeyT>?
 
     public fun remove(
       uid: PortalEntry.Id,
-      transitionOverride: ExitTransitionOverride? = null
+      transitionOverride: ExitTransitionOverride? = null,
     ): PortalEntry<KeyT>?
 
     /**
@@ -164,7 +164,7 @@ public abstract class PortalManager<KeyT>(
      */
     public fun clear(
       clearDisappearingEntries: Boolean = false,
-      transitionOverrideProvider: ((KeyT) -> ExitTransitionOverride?)? = null
+      transitionOverrideProvider: ((KeyT) -> ExitTransitionOverride?)? = null,
     )
   }
 }

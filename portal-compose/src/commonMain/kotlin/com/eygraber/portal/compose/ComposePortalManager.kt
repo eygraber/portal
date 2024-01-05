@@ -24,16 +24,16 @@ import kotlinx.coroutines.flow.map
 public class ComposePortalManager<KeyT>(
   private val defaultTransitionProvider: PortalTransitionProvider = PortalTransitionProvider.Default,
   defaultErrorHandler: ((Throwable) -> Unit)? = null,
-  validation: PortalManagerValidation = PortalManagerValidation()
+  validation: PortalManagerValidation = PortalManagerValidation(),
 ) : PortalManager<KeyT>(
   defaultErrorHandler,
-  validation
+  validation,
 ) {
   private val composePortalEntriesUpdateFlow =
     portalEntriesUpdateFlow().map { (entries, disappearingEntries) ->
       combineEntriesAndDisappearingEntries(
         entries = entries,
-        disappearingEntries = disappearingEntries
+        disappearingEntries = disappearingEntries,
       )
     }
 
@@ -41,7 +41,7 @@ public class ComposePortalManager<KeyT>(
     portalEntriesUpdateFlow().value.let { (entries, disappearingEntries) ->
       combineEntriesAndDisappearingEntries(
         entries = entries,
-        disappearingEntries = disappearingEntries
+        disappearingEntries = disappearingEntries,
       )
     }
   }
@@ -64,18 +64,20 @@ public class ComposePortalManager<KeyT>(
   private fun PortalRenderer(entry: ComposePortalEntry<out KeyT>) {
     val transitionOverride = when(entry.rendererState) {
       PortalRendererState.Added,
-      PortalRendererState.Attached -> entry.enterTransitionOverride?.let { enterTransition ->
+      PortalRendererState.Attached,
+      -> entry.enterTransitionOverride?.let { enterTransition ->
         PortalTransition(
           enterTransition,
-          ExitTransition.None
+          ExitTransition.None,
         )
       }
 
       PortalRendererState.Detached,
-      PortalRendererState.Removed -> entry.exitTransitionOverride?.let { exitTransition ->
+      PortalRendererState.Removed,
+      -> entry.exitTransitionOverride?.let { exitTransition ->
         PortalTransition(
           EnterTransition.None,
-          exitTransition
+          exitTransition,
         )
       }
     }
@@ -84,12 +86,12 @@ public class ComposePortalManager<KeyT>(
       null -> when(val transitionProvider = entry.portal) {
         is PortalTransitionProvider -> transitionProvider.provideTransitions(
           compositionState = entry.rendererState,
-          backstackState = entry.backstackState
+          backstackState = entry.backstackState,
         )
 
         else -> defaultTransitionProvider.provideTransitions(
           compositionState = entry.rendererState,
-          backstackState = entry.backstackState
+          backstackState = entry.backstackState,
         )
       }
 
@@ -104,7 +106,7 @@ public class ComposePortalManager<KeyT>(
     val visibleState = remember(
       entry.isDisappearing,
       isContentVisible,
-      wasContentPreviouslyVisible
+      wasContentPreviouslyVisible,
     ) {
       MutableTransitionState(wasContentPreviouslyVisible)
         .apply { targetState = isContentVisible }
@@ -119,7 +121,7 @@ public class ComposePortalManager<KeyT>(
     AnimatedVisibility(
       visibleState = visibleState,
       enter = enterTransition,
-      exit = exitTransition
+      exit = exitTransition,
     ) {
       entry.portal.Render()
 
@@ -167,15 +169,15 @@ private inline val <PortalKey> ComposePortalEntry<PortalKey>.isAttachedToComposi
 @Suppress("NOTHING_TO_INLINE")
 private inline fun <KeyT> combineEntriesAndDisappearingEntries(
   entries: List<PortalEntry<KeyT>>,
-  disappearingEntries: List<DisappearingPortalEntry<out KeyT>>
+  disappearingEntries: List<DisappearingPortalEntry<out KeyT>>,
 ) = buildList {
   if(entries.isEmpty()) {
     for(i in disappearingEntries.indices) {
       add(
         ComposePortalEntry.fromPortalEntry(
           entry = disappearingEntries[i].entry,
-          isDisappearing = true
-        )
+          isDisappearing = true,
+        ),
       )
     }
   }
@@ -187,8 +189,8 @@ private inline fun <KeyT> combineEntriesAndDisappearingEntries(
         add(
           ComposePortalEntry.fromPortalEntry(
             entry = disappearingEntries[disappearingCursor].entry,
-            isDisappearing = true
-          )
+            isDisappearing = true,
+          ),
         )
         hasRemainingDisappearingEntries = ++disappearingCursor <= disappearingEntries.lastIndex
       }
@@ -196,8 +198,8 @@ private inline fun <KeyT> combineEntriesAndDisappearingEntries(
       add(
         ComposePortalEntry.fromPortalEntry(
           entry = entries[i],
-          isDisappearing = false
-        )
+          isDisappearing = false,
+        ),
       )
     }
 
@@ -206,8 +208,8 @@ private inline fun <KeyT> combineEntriesAndDisappearingEntries(
         add(
           ComposePortalEntry.fromPortalEntry(
             entry = disappearingEntries[i].entry,
-            isDisappearing = true
-          )
+            isDisappearing = true,
+          ),
         )
       }
     }

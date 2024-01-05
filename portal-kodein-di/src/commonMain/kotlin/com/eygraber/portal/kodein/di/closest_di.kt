@@ -17,7 +17,7 @@ private class PortalDIPropertyDelegateProvider : DIPropertyDelegateProvider<Port
 
 private tailrec fun closestDI(thisRef: Any?, portal: Any?): DI = when {
   portal == null -> error(
-    "Trying to find closest DI, but no portals in the hierarchy implement DIAware"
+    "Trying to find closest DI, but no portals in the hierarchy implement DIAware",
   )
   portal is KodeinDIRoot -> portal.di
   portal != thisRef && portal is DIAware -> portal.di

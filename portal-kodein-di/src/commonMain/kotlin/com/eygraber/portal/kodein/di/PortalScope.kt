@@ -40,36 +40,36 @@ public data object PortalScope : Scope<PortalLifecycleManager> {
 
         context.addPortalRemovedListener(listener)
       }
-    }
+    },
   )
 }
 
 public inline fun <reified T : Any> DI.Builder.portalSingleton(
-  noinline creator: NoArgBindingDI<PortalLifecycleManager>.() -> T
+  noinline creator: NoArgBindingDI<PortalLifecycleManager>.() -> T,
 ): Singleton<PortalLifecycleManager, T> = scoped(PortalScope).singleton(creator = creator)
 
 public inline fun <reified A : Any, reified T : Any> DI.Builder.portalMultiton(
-  noinline creator: BindingDI<PortalLifecycleManager>.(A) -> T
+  noinline creator: BindingDI<PortalLifecycleManager>.(A) -> T,
 ): Multiton<PortalLifecycleManager, A, T> = scoped(PortalScope).multiton(creator = creator)
 
 public inline fun <reified T : Any> DI.Builder.bindPortalSingleton(
   tag: Any? = null,
   overrides: Boolean? = null,
-  noinline creator: NoArgBindingDI<PortalLifecycleManager>.() -> T
+  noinline creator: NoArgBindingDI<PortalLifecycleManager>.() -> T,
 ) {
   bind<T>(
     tag = tag,
-    overrides = overrides
+    overrides = overrides,
   ) with portalSingleton(creator)
 }
 
 public inline fun <reified A : Any, reified T : Any> DI.Builder.bindPortalMultiton(
   tag: Any? = null,
   overrides: Boolean? = null,
-  noinline creator: BindingDI<PortalLifecycleManager>.(A) -> T
+  noinline creator: BindingDI<PortalLifecycleManager>.(A) -> T,
 ) {
   bind<T>(
     tag = tag,
-    overrides = overrides
+    overrides = overrides,
   ) with portalMultiton(creator)
 }

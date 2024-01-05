@@ -10,7 +10,7 @@ public data class PortalEntry<KeyT>(
   public val rendererState: PortalRendererState,
   public val enterTransitionOverride: EnterTransitionOverride?,
   public val exitTransitionOverride: ExitTransitionOverride?,
-  public val uid: Id
+  public val uid: Id,
 ) {
   public val key: KeyT = portal.key
 

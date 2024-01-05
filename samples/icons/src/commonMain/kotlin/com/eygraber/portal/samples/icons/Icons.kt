@@ -15,20 +15,20 @@ object Icons
 
 inline fun materialIcon(
   name: String,
-  block: ImageVector.Builder.() -> ImageVector.Builder
+  block: ImageVector.Builder.() -> ImageVector.Builder,
 ): ImageVector = ImageVector.Builder(
   name = name,
   defaultWidth = 24.dp,
   defaultHeight = 24.dp,
   viewportWidth = 24F,
-  viewportHeight = 24F
+  viewportHeight = 24F,
 ).block().build()
 
 inline fun ImageVector.Builder.materialPath(
   fillAlpha: Float = 1f,
   strokeAlpha: Float = 1f,
   pathFillType: PathFillType = DefaultFillType,
-  pathBuilder: PathBuilder.() -> Unit
+  pathBuilder: PathBuilder.() -> Unit,
 ) = path(
   fill = SolidColor(Color.Black),
   fillAlpha = fillAlpha,
@@ -39,5 +39,5 @@ inline fun ImageVector.Builder.materialPath(
   strokeLineJoin = StrokeJoin.Bevel,
   strokeLineMiter = 1f,
   pathFillType = pathFillType,
-  pathBuilder = pathBuilder
+  pathBuilder = pathBuilder,
 )

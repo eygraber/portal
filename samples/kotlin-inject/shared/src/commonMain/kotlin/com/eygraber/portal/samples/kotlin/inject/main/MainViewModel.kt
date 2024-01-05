@@ -23,7 +23,7 @@ import me.tatarka.inject.annotations.Inject
 @Inject
 class MainViewModel(
   private val mainBottomNavPortalManager: ComposePortalManager<MainBottomNavPortalKey>,
-  private val homePortalProvider: () -> HomePortal
+  private val homePortalProvider: () -> HomePortal,
 ) : VM<MainState> {
   private val mutableState = object : MainState {
     override var selectedTab by mutableStateOf(MainBottomNavPortalKey.Alarm)
@@ -42,10 +42,10 @@ class MainViewModel(
             Text(
               text = "2",
               modifier = Modifier.fillMaxSize(),
-              textAlign = TextAlign.Center
+              textAlign = TextAlign.Center,
             )
           }
-        }
+        },
       )
 
       add(
@@ -57,10 +57,10 @@ class MainViewModel(
             Text(
               text = "3",
               modifier = Modifier.fillMaxSize(),
-              textAlign = TextAlign.Center
+              textAlign = TextAlign.Center,
             )
           }
-        }
+        },
       )
 
       add(
@@ -72,10 +72,10 @@ class MainViewModel(
             Text(
               text = "4",
               modifier = Modifier.fillMaxSize(),
-              textAlign = TextAlign.Center
+              textAlign = TextAlign.Center,
             )
           }
-        }
+        },
       )
     }
   }
@@ -108,31 +108,31 @@ class MainViewModel(
         tabMovingFrom,
         exitTransitionOverride {
           transition.exit
-        }
+        },
       )
       attachToComposition(
         tab,
         enterTransitionOverride {
           transition.enter
-        }
+        },
       )
     }
   }
 }
 
 private fun MainBottomNavPortalKey.getTransitionOverride(
-  currentTab: MainBottomNavPortalKey
+  currentTab: MainBottomNavPortalKey,
 ) = currentTab.selectedIndex.let { currentSelectedIndex ->
   if(currentSelectedIndex > selectedIndex) {
     PortalTransition(
       enter = slideInHorizontally { -it },
-      exit = slideOutHorizontally { it * 2 }
+      exit = slideOutHorizontally { it * 2 },
     )
   }
   else if(currentSelectedIndex < selectedIndex) {
     PortalTransition(
       enter = slideInHorizontally { it * 2 },
-      exit = slideOutHorizontally { -it }
+      exit = slideOutHorizontally { -it },
     )
   }
   else {

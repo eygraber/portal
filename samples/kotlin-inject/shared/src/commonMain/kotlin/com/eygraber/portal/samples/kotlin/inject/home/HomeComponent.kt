@@ -12,7 +12,7 @@ annotation class HomeScope
 @Component
 abstract class HomeComponent(
   @Component val parentComponent: MainComponent,
-  override val portal: HomePortal
+  override val portal: HomePortal,
 ) : PortalComponent<HomePortal> {
   abstract val view: HomeView
 }

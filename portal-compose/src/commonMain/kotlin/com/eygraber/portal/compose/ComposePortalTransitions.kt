@@ -26,11 +26,11 @@ import com.eygraber.portal.ExitTransitionOverride
 import com.eygraber.portal.PortalTransitionOverride
 
 public inline fun enterTransitionOverride(
-  crossinline transition: () -> EnterTransition
+  crossinline transition: () -> EnterTransition,
 ): EnterTransitionOverride.Custom = EnterTransitionOverride.Custom { transition() }
 
 public fun enterTransitionOverride(
-  vararg override: EnterTransitionOverride
+  vararg override: EnterTransitionOverride,
 ): EnterTransitionOverride = EnterTransitionOverride.Custom {
   override
     .map(EnterTransitionOverride::toComposeTransition)
@@ -40,11 +40,11 @@ public fun enterTransitionOverride(
 }
 
 public inline fun exitTransitionOverride(
-  crossinline transition: () -> ExitTransition
+  crossinline transition: () -> ExitTransition,
 ): ExitTransitionOverride.Custom = ExitTransitionOverride.Custom { transition() }
 
 public fun exitTransitionOverride(
-  vararg override: ExitTransitionOverride
+  vararg override: ExitTransitionOverride,
 ): ExitTransitionOverride = ExitTransitionOverride.Custom {
   override
     .map(ExitTransitionOverride::toComposeTransition)
@@ -61,31 +61,31 @@ internal fun EnterTransitionOverride.toComposeTransition(): EnterTransition {
 
     is EnterTransitionOverride.ExpandIn -> when(tweenDuration) {
       null -> expandIn(
-        expandFrom = expandFrom.toCompose()
+        expandFrom = expandFrom.toCompose(),
       )
       else -> expandIn(
         animationSpec = tween(tweenDuration),
-        expandFrom = expandFrom.toCompose()
+        expandFrom = expandFrom.toCompose(),
       )
     }
 
     is EnterTransitionOverride.ExpandInHorizontally -> when(tweenDuration) {
       null -> expandHorizontally(
-        expandFrom = expandFrom.toCompose()
+        expandFrom = expandFrom.toCompose(),
       )
       else -> expandHorizontally(
         animationSpec = tween(tweenDuration),
-        expandFrom = expandFrom.toCompose()
+        expandFrom = expandFrom.toCompose(),
       )
     }
 
     is EnterTransitionOverride.ExpandInVertically -> when(tweenDuration) {
       null -> expandVertically(
-        expandFrom = expandFrom.toCompose()
+        expandFrom = expandFrom.toCompose(),
       )
       else -> expandVertically(
         animationSpec = tween(tweenDuration),
-        expandFrom = expandFrom.toCompose()
+        expandFrom = expandFrom.toCompose(),
       )
     }
 
@@ -93,7 +93,7 @@ internal fun EnterTransitionOverride.toComposeTransition(): EnterTransition {
       null -> fadeIn(initialAlpha = initialAlpha)
       else -> fadeIn(
         animationSpec = tween(tweenDuration),
-        initialAlpha = initialAlpha
+        initialAlpha = initialAlpha,
       )
     }
 
@@ -101,35 +101,35 @@ internal fun EnterTransitionOverride.toComposeTransition(): EnterTransition {
       null -> scaleIn(initialScale = initialScale)
       else -> scaleIn(
         animationSpec = tween(tweenDuration),
-        initialScale = initialScale
+        initialScale = initialScale,
       )
     }
 
     is EnterTransitionOverride.SlideInFromBottom -> when(tweenDuration) {
       null -> slideInVertically { it * 2 }
       else -> slideInVertically(
-        animationSpec = tween(tweenDuration)
+        animationSpec = tween(tweenDuration),
       ) { it * 2 }
     }
 
     is EnterTransitionOverride.SlideInFromLeft -> when(tweenDuration) {
       null -> slideInHorizontally { -it }
       else -> slideInHorizontally(
-        animationSpec = tween(tweenDuration)
+        animationSpec = tween(tweenDuration),
       ) { -it }
     }
 
     is EnterTransitionOverride.SlideInFromRight -> when(tweenDuration) {
       null -> slideInHorizontally { it * 2 }
       else -> slideInHorizontally(
-        animationSpec = tween(tweenDuration)
+        animationSpec = tween(tweenDuration),
       ) { it * 2 }
     }
 
     is EnterTransitionOverride.SlideInFromTop -> when(tweenDuration) {
       null -> slideInVertically { -it }
       else -> slideInVertically(
-        animationSpec = tween(tweenDuration)
+        animationSpec = tween(tweenDuration),
       ) { -it }
     }
 
@@ -148,79 +148,79 @@ internal fun ExitTransitionOverride.toComposeTransition(): ExitTransition {
 
     is ExitTransitionOverride.FadeOut -> when(tweenDuration) {
       null -> fadeOut(
-        targetAlpha = targetAlpha
+        targetAlpha = targetAlpha,
       )
       else -> fadeOut(
         animationSpec = tween(tweenDuration),
-        targetAlpha = targetAlpha
+        targetAlpha = targetAlpha,
       )
     }
 
     is ExitTransitionOverride.ScaleOut -> when(tweenDuration) {
       null -> scaleOut(
-        targetScale = targetScale
+        targetScale = targetScale,
       )
       else -> scaleOut(
         animationSpec = tween(tweenDuration),
-        targetScale = targetScale
+        targetScale = targetScale,
       )
     }
 
     is ExitTransitionOverride.ShrinkOut -> when(tweenDuration) {
       null -> shrinkOut(
-        shrinkTowards = shrinkTowards.toCompose()
+        shrinkTowards = shrinkTowards.toCompose(),
       )
       else -> shrinkOut(
         animationSpec = tween(tweenDuration),
-        shrinkTowards = shrinkTowards.toCompose()
+        shrinkTowards = shrinkTowards.toCompose(),
       )
     }
 
     is ExitTransitionOverride.ShrinkOutHorizontally -> when(tweenDuration) {
       null -> shrinkHorizontally(
-        shrinkTowards = shrinkTowards.toCompose()
+        shrinkTowards = shrinkTowards.toCompose(),
       )
       else -> shrinkHorizontally(
         animationSpec = tween(tweenDuration),
-        shrinkTowards = shrinkTowards.toCompose()
+        shrinkTowards = shrinkTowards.toCompose(),
       )
     }
 
     is ExitTransitionOverride.ShrinkOutVertically -> when(tweenDuration) {
       null -> shrinkVertically(
-        shrinkTowards = shrinkTowards.toCompose()
+        shrinkTowards = shrinkTowards.toCompose(),
       )
       else -> shrinkVertically(
         animationSpec = tween(tweenDuration),
-        shrinkTowards = shrinkTowards.toCompose()
+        shrinkTowards = shrinkTowards.toCompose(),
       )
     }
 
     is ExitTransitionOverride.SlideOutToBottom -> when(tweenDuration) {
       null -> slideOutVertically { it * 2 }
       else -> slideOutVertically(
-        animationSpec = tween(tweenDuration)
+        animationSpec = tween(tweenDuration),
       ) { it * 2 }
     }
 
     is ExitTransitionOverride.SlideOutToLeft -> when(tweenDuration) {
       null -> slideOutHorizontally { -it }
       else -> slideOutHorizontally(
-        animationSpec = tween(tweenDuration)
+        animationSpec = tween(tweenDuration),
       ) { -it }
     }
 
     is ExitTransitionOverride.SlideOutToRight -> when(tweenDuration) {
       null -> slideOutHorizontally { it * 2 }
       else -> slideOutHorizontally(
-        animationSpec = tween(tweenDuration)
+        animationSpec = tween(tweenDuration),
       ) { it * 2 }
     }
 
     is ExitTransitionOverride.SlideOutToTop -> when(tweenDuration) {
       null -> slideOutVertically { -it }
       else -> slideOutVertically(
-        animationSpec = tween(tweenDuration)
+        animationSpec = tween(tweenDuration),
       ) { -it }
     }
 

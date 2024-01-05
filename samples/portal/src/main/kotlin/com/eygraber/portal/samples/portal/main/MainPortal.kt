@@ -32,7 +32,7 @@ class MainPortal(di: DI) : ComposePortal<AppPortalKey>, KodeinDIRoot(di) {
   override fun provideModule() = DI.Module("Main") {
     bind<HomePortal>() with portalSingleton {
       HomePortal(
-        parent = instance<Portal>() as ParentPortal
+        parent = instance<Portal>() as ParentPortal,
       )
     }
 
@@ -40,14 +40,14 @@ class MainPortal(di: DI) : ComposePortal<AppPortalKey>, KodeinDIRoot(di) {
       MainView(
         appPortalManager = instance(),
         mainPortalManager = instance(),
-        vm = instance()
+        vm = instance(),
       )
     }
 
     bind<MainViewModel>() with portalSingleton {
       MainViewModel(
         mainPortalManager = instance(),
-        homePortalProvider = provider()
+        homePortalProvider = provider(),
       )
     }
 
@@ -56,12 +56,12 @@ class MainPortal(di: DI) : ComposePortal<AppPortalKey>, KodeinDIRoot(di) {
         defaultTransitionProvider = { _, _ ->
           PortalTransition(
             enter = slideInVertically(animationSpec = tween(durationMillis = 400)) { it * 2 },
-            exit = slideOutVertically(animationSpec = tween(durationMillis = 750)) { it * 2 }
+            exit = slideOutVertically(animationSpec = tween(durationMillis = 750)) { it * 2 },
           )
         },
         defaultErrorHandler = {
           it.printStackTrace()
-        }
+        },
       )
     }
 
@@ -69,7 +69,7 @@ class MainPortal(di: DI) : ComposePortal<AppPortalKey>, KodeinDIRoot(di) {
       ComposePortalManager(
         defaultErrorHandler = {
           it.printStackTrace()
-        }
+        },
       )
     }
   }

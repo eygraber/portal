@@ -4,5 +4,5 @@ enum class MainPortalKey {
   One,
   Two,
   Three,
-  Four
+  Four,
 }

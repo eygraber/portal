@@ -16,7 +16,7 @@ kotlin {
     jsModuleName = "simple-portal",
     android = false,
     jvm = false,
-    ios = false
+    ios = false,
   )
 
   sourceSets {

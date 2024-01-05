@@ -12,7 +12,7 @@ annotation class AlarmListScope
 @Component
 abstract class AlarmListComponent(
   @Component protected val parentComponent: MainComponent,
-  override val portal: AlarmListPortal
+  override val portal: AlarmListPortal,
 ) : PortalComponent<AlarmListPortal> {
   abstract val view: AlarmListView
 }

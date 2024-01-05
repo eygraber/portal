@@ -9,13 +9,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 internal class PortalState<KeyT>(
-  private val validation: PortalManagerValidation
+  private val validation: PortalManagerValidation,
 ) {
   private val mutablePortalEntries = MutableStateFlow(
     PortalManager.Entries<KeyT>(
       entries = emptyList(),
-      disappearingEntries = emptyList()
-    )
+      disappearingEntries = emptyList(),
+    ),
   )
   private val mutableBackstackEntries = MutableStateFlow(emptyList<PortalBackstackEntry<KeyT>>())
 
@@ -30,11 +30,11 @@ internal class PortalState<KeyT>(
 
   fun restoreState(
     entries: List<PortalEntry<KeyT>>,
-    backstack: List<PortalBackstackEntry<KeyT>>
+    backstack: List<PortalBackstackEntry<KeyT>>,
   ) {
     mutablePortalEntries.value = PortalManager.Entries(
       entries = entries,
-      disappearingEntries = emptyList()
+      disappearingEntries = emptyList(),
     )
     mutableBackstackEntries.value = backstack
   }
@@ -49,14 +49,14 @@ internal class PortalState<KeyT>(
       transactionDisappearingPortalEntries = mutablePortalEntries.value.disappearingEntries.toMutableList(),
       transactionBackstackEntries = mutableBackstackEntries.value.toMutableList(),
       backstackState = PortalBackstackState.None,
-      validation = validation
+      validation = validation,
     )
 
     return true
   }
 
   fun <R> transact(
-    builder: PortalEntryBuilder<KeyT>.() -> R
+    builder: PortalEntryBuilder<KeyT>.() -> R,
   ) = requireNotNull(transactionBuilder) {
     "Cannot transact if not in a transaction"
   }.builder()
@@ -69,7 +69,7 @@ internal class PortalState<KeyT>(
     transactionBuilder?.build()?.let { payload ->
       mutablePortalEntries.value = PortalManager.Entries(
         entries = payload.entries,
-        disappearingEntries = payload.disappearingEntries
+        disappearingEntries = payload.disappearingEntries,
       )
       mutableBackstackEntries.value = payload.backstackEntries
     }

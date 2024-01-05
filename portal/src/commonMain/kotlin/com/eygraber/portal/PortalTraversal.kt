@@ -12,7 +12,7 @@ public sealed interface PortalTraversal {
 public fun ParentPortal.traverseChildren(
   onPortal: (Portal) -> Unit = {},
   onPortalManager: (PortalManager<*>) -> Unit = {},
-  traversal: PortalTraversal = PortalTraversal.Depth.Pre
+  traversal: PortalTraversal = PortalTraversal.Depth.Pre,
 ) {
   if(traversal == PortalTraversal.Breadth) {
     val initial = ArrayDeque<PortalManager<*>>().also {
@@ -28,7 +28,7 @@ public fun ParentPortal.traverseChildren(
 private fun ParentPortal.traverseChildrenDFS(
   onPortal: (Portal) -> Unit,
   onPortalManager: (PortalManager<*>) -> Unit,
-  traversal: PortalTraversal = PortalTraversal.Depth.Pre
+  traversal: PortalTraversal = PortalTraversal.Depth.Pre,
 ) {
   for(portalManager in portalManagers) {
     if(traversal == PortalTraversal.Depth.Pre) {
@@ -63,7 +63,7 @@ private fun ParentPortal.traverseChildrenDFS(
 private fun traverseChildrenBFS(
   onPortal: (Portal) -> Unit,
   onPortalManager: (PortalManager<*>) -> Unit,
-  portalManagers: ArrayDeque<PortalManager<*>>
+  portalManagers: ArrayDeque<PortalManager<*>>,
 ) {
   while(portalManagers.isNotEmpty()) {
     val portalManager = portalManagers.removeLast()
