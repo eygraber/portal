@@ -10,13 +10,13 @@ public interface PortalTransitionOverride {
     public enum class Horizontal : Alignment {
       Start,
       Center,
-      End
+      End,
     }
 
     public enum class Vertical : Alignment {
       Top,
       Center,
-      Bottom
+      Bottom,
     }
 
     public enum class All : Alignment {
@@ -28,7 +28,7 @@ public interface PortalTransitionOverride {
       CenterEnd,
       BottomStart,
       BottomCenter,
-      BottomEnd
+      BottomEnd,
     }
   }
 }
@@ -38,22 +38,22 @@ public sealed interface EnterTransitionOverride : PortalTransitionOverride {
 
   public data class ExpandIn(
     override val duration: Duration? = null,
-    val expandFrom: All = All.BottomEnd
+    val expandFrom: All = All.BottomEnd,
   ) : EnterTransitionOverride
 
   public data class ExpandInHorizontally(
     override val duration: Duration? = null,
-    val expandFrom: Horizontal = Horizontal.End
+    val expandFrom: Horizontal = Horizontal.End,
   ) : EnterTransitionOverride
 
   public data class ExpandInVertically(
     override val duration: Duration? = null,
-    val expandFrom: Vertical = Vertical.Bottom
+    val expandFrom: Vertical = Vertical.Bottom,
   ) : EnterTransitionOverride
 
   public data class FadeIn(
     override val duration: Duration? = null,
-    val initialAlpha: Float = 0F
+    val initialAlpha: Float = 0F,
   ) : EnterTransitionOverride
 
   public data object None : EnterTransitionOverride {
@@ -62,23 +62,23 @@ public sealed interface EnterTransitionOverride : PortalTransitionOverride {
 
   public data class ScaleIn(
     override val duration: Duration? = null,
-    val initialScale: Float = 0F
+    val initialScale: Float = 0F,
   ) : EnterTransitionOverride
 
   public data class SlideInFromLeft(
-    override val duration: Duration? = null
+    override val duration: Duration? = null,
   ) : EnterTransitionOverride
 
   public data class SlideInFromTop(
-    override val duration: Duration? = null
+    override val duration: Duration? = null,
   ) : EnterTransitionOverride
 
   public data class SlideInFromRight(
-    override val duration: Duration? = null
+    override val duration: Duration? = null,
   ) : EnterTransitionOverride
 
   public data class SlideInFromBottom(
-    override val duration: Duration? = null
+    override val duration: Duration? = null,
   ) : EnterTransitionOverride
 
   public fun interface Custom : EnterTransitionOverride {
@@ -93,7 +93,7 @@ public sealed interface ExitTransitionOverride : PortalTransitionOverride {
 
   public data class FadeOut(
     override val duration: Duration? = null,
-    val targetAlpha: Float = 0F
+    val targetAlpha: Float = 0F,
   ) : ExitTransitionOverride
 
   public data object None : ExitTransitionOverride {
@@ -102,38 +102,38 @@ public sealed interface ExitTransitionOverride : PortalTransitionOverride {
 
   public data class ScaleOut(
     override val duration: Duration? = null,
-    val targetScale: Float = 0F
+    val targetScale: Float = 0F,
   ) : ExitTransitionOverride
 
   public data class ShrinkOut(
     override val duration: Duration? = null,
-    val shrinkTowards: All = All.BottomEnd
+    val shrinkTowards: All = All.BottomEnd,
   ) : ExitTransitionOverride
 
   public data class ShrinkOutHorizontally(
     override val duration: Duration? = null,
-    val shrinkTowards: Horizontal = Horizontal.End
+    val shrinkTowards: Horizontal = Horizontal.End,
   ) : ExitTransitionOverride
 
   public data class ShrinkOutVertically(
     override val duration: Duration? = null,
-    val shrinkTowards: Vertical = Vertical.Bottom
+    val shrinkTowards: Vertical = Vertical.Bottom,
   ) : ExitTransitionOverride
 
   public data class SlideOutToLeft(
-    override val duration: Duration? = null
+    override val duration: Duration? = null,
   ) : ExitTransitionOverride
 
   public data class SlideOutToTop(
-    override val duration: Duration? = null
+    override val duration: Duration? = null,
   ) : ExitTransitionOverride
 
   public data class SlideOutToRight(
-    override val duration: Duration? = null
+    override val duration: Duration? = null,
   ) : ExitTransitionOverride
 
   public data class SlideOutToBottom(
-    override val duration: Duration? = null
+    override val duration: Duration? = null,
   ) : ExitTransitionOverride
 
   public fun interface Custom : ExitTransitionOverride {

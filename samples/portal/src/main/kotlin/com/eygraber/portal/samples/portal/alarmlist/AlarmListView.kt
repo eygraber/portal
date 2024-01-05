@@ -26,7 +26,7 @@ import com.eygraber.portal.samples.icons.Icons
 import com.eygraber.portal.samples.portal.View
 
 class AlarmListView(
-  override val vm: AlarmListViewModel
+  override val vm: AlarmListViewModel,
 ) : View<AlarmListState> {
   @Composable
   override fun Render() {
@@ -34,11 +34,11 @@ class AlarmListView(
       Column {
         Row {
           IconButton(
-            onClick = { vm.backClicked() }
+            onClick = { vm.backClicked() },
           ) {
             Icon(
               imageVector = Icons.ArrowBack,
-              contentDescription = "Back"
+              contentDescription = "Back",
             )
           }
 
@@ -46,11 +46,11 @@ class AlarmListView(
             text = "Alarm",
             modifier = Modifier
               .align(Alignment.CenterVertically)
-              .padding(start = 16.dp)
+              .padding(start = 16.dp),
           )
         }
         Button(
-          onClick = { vm.addAlarmClicked() }
+          onClick = { vm.addAlarmClicked() },
         ) {
           Text("Add Alarm")
         }
@@ -79,7 +79,7 @@ class AlarmListView(
     }
     AnimatedVisibility(
       visibleState = visibleState,
-      enter = fadeIn()
+      enter = fadeIn(),
     ) {
       Row {
         Switch(
@@ -88,14 +88,14 @@ class AlarmListView(
             vm.alarmEnabledChanged(alarm)
           },
           modifier = Modifier
-            .align(Alignment.CenterVertically)
+            .align(Alignment.CenterVertically),
         )
 
         Text(
           text = alarm.time,
           modifier = Modifier
             .align(Alignment.CenterVertically)
-            .padding(start = 8.dp)
+            .padding(start = 8.dp),
         )
       }
     }

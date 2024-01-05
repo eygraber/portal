@@ -15,7 +15,7 @@ kotlin {
     project = project,
     android = true,
     jvm = true,
-    js = true
+    js = true,
   )
 
   sourceSets {

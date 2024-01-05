@@ -4,5 +4,5 @@ enum class MainBottomNavPortalKey {
   Alarm,
   Two,
   Three,
-  Four
+  Four,
 }

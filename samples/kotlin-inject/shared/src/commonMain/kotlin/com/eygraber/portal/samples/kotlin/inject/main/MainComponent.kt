@@ -18,7 +18,7 @@ annotation class MainScope
 @Component
 abstract class MainComponent(
   @Component @get:Provides val appComponent: AppComponent,
-  override val portal: MainPortal
+  override val portal: MainPortal,
 ) : PortalComponent<MainPortal> {
   abstract val view: MainView
   abstract val appPortalManager: ComposePortalManager<AppPortalKey>
@@ -31,12 +31,12 @@ abstract class MainComponent(
       defaultTransitionProvider = { _, _ ->
         PortalTransition(
           enter = slideInVertically(animationSpec = tween(durationMillis = 400)) { it * 2 },
-          exit = slideOutVertically(animationSpec = tween(durationMillis = 750)) { it * 2 }
+          exit = slideOutVertically(animationSpec = tween(durationMillis = 750)) { it * 2 },
         )
       },
       defaultErrorHandler = {
         it.printStackTrace()
-      }
+      },
     )
 
   @MainScope
@@ -45,6 +45,6 @@ abstract class MainComponent(
     ComposePortalManager<MainBottomNavPortalKey>(
       defaultErrorHandler = {
         it.printStackTrace()
-      }
+      },
     )
 }

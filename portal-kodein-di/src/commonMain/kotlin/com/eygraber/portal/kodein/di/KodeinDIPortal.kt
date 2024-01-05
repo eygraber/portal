@@ -58,7 +58,7 @@ public abstract class KodeinDIPortal : PortalLifecycleManager, KodeinDIPortalIni
  * @param [parentDI] the application level DI that will be extended throughout the [Portal] hierarchy.
  */
 public abstract class KodeinDIRoot(
-  final override val parentDI: DI
+  final override val parentDI: DI,
 ) : ParentPortal, KodeinDIPortal()
 
 public interface KodeinDIComponentInitializer<T> : DIAware {

@@ -12,20 +12,20 @@ import com.eygraber.portal.samples.icons.Icons
 import com.eygraber.portal.samples.portal.View
 
 class HomeView(
-  override val vm: HomeViewModel
+  override val vm: HomeViewModel,
 ) : View<Unit> {
   @Composable
   override fun Render() {
     Box(
       contentAlignment = Alignment.Center,
-      modifier = Modifier.fillMaxSize()
+      modifier = Modifier.fillMaxSize(),
     ) {
       Button(
-        onClick = vm::openAlarmsClicked
+        onClick = vm::openAlarmsClicked,
       ) {
         Icon(
           imageVector = Icons.Alarm,
-          contentDescription = "Open alarm list"
+          contentDescription = "Open alarm list",
         )
       }
     }

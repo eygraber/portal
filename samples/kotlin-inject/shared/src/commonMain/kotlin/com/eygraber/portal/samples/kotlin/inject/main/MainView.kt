@@ -30,7 +30,7 @@ import me.tatarka.inject.annotations.Inject
 class MainView(
   private val appPortalManager: ComposePortalManager<AppPortalKey>,
   private val mainBottomNavPortalManager: ComposePortalManager<MainBottomNavPortalKey>,
-  override val vm: MainViewModel
+  override val vm: MainViewModel,
 ) : View<MainState> {
   @Composable
   override fun Render() {
@@ -38,13 +38,13 @@ class MainView(
       colorScheme = darkColorScheme(
         primary = Color(0xFFBB86FC),
         secondary = Color(0xFF03DAC5),
-        tertiary = Color(0xFF3700B3)
-      )
+        tertiary = Color(0xFF3700B3),
+      ),
     ) {
       Surface {
         Box(
           modifier = Modifier
-            .fillMaxSize()
+            .fillMaxSize(),
         ) {
           BottomNav()
         }
@@ -57,7 +57,7 @@ class MainView(
   private fun BottomNav() {
     Column(
       modifier = Modifier
-        .fillMaxSize()
+        .fillMaxSize(),
     ) {
       BottomNavPortal()
       BottomNavIcons()
@@ -69,7 +69,7 @@ class MainView(
     Box(
       modifier = Modifier
         .fillMaxWidth()
-        .weight(.90F)
+        .weight(.90F),
     ) {
       mainBottomNavPortalManager.Render()
     }
@@ -81,26 +81,26 @@ class MainView(
       horizontalArrangement = Arrangement.SpaceEvenly,
       modifier = Modifier
         .fillMaxWidth()
-        .weight(.10F)
+        .weight(.10F),
     ) {
       BottomNavIcon(
         icon = Icons.Home,
-        onClick = vm::handle1Clicked
+        onClick = vm::handle1Clicked,
       )
 
       BottomNavIcon(
         icon = Icons.WhatsHot,
-        onClick = vm::handle2Clicked
+        onClick = vm::handle2Clicked,
       )
 
       BottomNavIcon(
         icon = Icons.Restaurant,
-        onClick = vm::handle3Clicked
+        onClick = vm::handle3Clicked,
       )
 
       BottomNavIcon(
         icon = Icons.FeaturedVideo,
-        onClick = vm::handle4Clicked
+        onClick = vm::handle4Clicked,
       )
     }
   }
@@ -108,10 +108,10 @@ class MainView(
   @Composable
   private fun BottomNavIcon(
     icon: ImageVector,
-    onClick: () -> Unit
+    onClick: () -> Unit,
   ) {
     Button(
-      onClick = onClick
+      onClick = onClick,
     ) {
       Image(icon, "content")
     }

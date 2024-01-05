@@ -8,7 +8,7 @@ import com.eygraber.portal.samples.portal.main.AppPortalKey
 
 class HomeViewModel(
   private val appPortalManager: ComposePortalManager<AppPortalKey>,
-  private val alarmListPortalProvider: () -> AlarmListPortal
+  private val alarmListPortalProvider: () -> AlarmListPortal,
 ) : VM<Unit> {
   override val state = Unit
 

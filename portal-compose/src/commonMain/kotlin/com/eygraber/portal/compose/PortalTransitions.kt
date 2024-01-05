@@ -16,29 +16,29 @@ import androidx.compose.runtime.Immutable
 @Immutable
 public data class PortalTransition(
   val enter: EnterTransition,
-  val exit: ExitTransition
+  val exit: ExitTransition,
 ) {
   public companion object {
     public fun enter(
-      enter: EnterTransition
+      enter: EnterTransition,
     ): PortalTransition = PortalTransition(
       enter = enter,
-      exit = ExitTransition.None
+      exit = ExitTransition.None,
     )
 
     public fun exit(
-      exit: ExitTransition
+      exit: ExitTransition,
     ): PortalTransition = PortalTransition(
       enter = EnterTransition.None,
-      exit = exit
+      exit = exit,
     )
 
     public val defaultEnter: EnterTransition = slideInHorizontally(
-      initialOffsetX = { it * 2 }
+      initialOffsetX = { it * 2 },
     )
 
     public val defaultExit: ExitTransition = slideOutHorizontally(
-      targetOffsetX = { -it }
+      targetOffsetX = { -it },
     )
 
     public val defaultBackstackPushEnter: EnterTransition = fadeIn()
@@ -46,11 +46,11 @@ public data class PortalTransition(
     public val defaultBackstackPopExit: ExitTransition = fadeOut()
 
     public val defaultAttach: EnterTransition = slideInVertically(
-      initialOffsetY = { -it }
+      initialOffsetY = { -it },
     )
 
     public val defaultDetach: ExitTransition = slideOutVertically(
-      targetOffsetY = { it * 2 }
+      targetOffsetY = { it * 2 },
     )
 
     public val defaultBackstackPushAttach: EnterTransition = fadeIn()

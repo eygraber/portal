@@ -7,7 +7,7 @@ import kotlin.test.Test
 
 enum class PortalKey {
   Test,
-  OtherTest
+  OtherTest,
 }
 
 class PortalSizeTest {

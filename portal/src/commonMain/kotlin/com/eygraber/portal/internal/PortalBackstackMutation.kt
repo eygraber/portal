@@ -8,16 +8,16 @@ public sealed class PortalBackstackMutation<KeyT> {
 
   public data class Remove<KeyT>(
     override val key: KeyT,
-    override val uid: PortalEntry.Id
+    override val uid: PortalEntry.Id,
   ) : PortalBackstackMutation<KeyT>()
 
   public data class Attach<KeyT>(
     override val key: KeyT,
-    override val uid: PortalEntry.Id
+    override val uid: PortalEntry.Id,
   ) : PortalBackstackMutation<KeyT>()
 
   public data class Detach<KeyT>(
     override val key: KeyT,
-    override val uid: PortalEntry.Id
+    override val uid: PortalEntry.Id,
   ) : PortalBackstackMutation<KeyT>()
 }

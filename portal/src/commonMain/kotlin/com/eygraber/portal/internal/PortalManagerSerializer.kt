@@ -9,16 +9,16 @@ import kotlinx.serialization.json.put
 
 internal fun <KeyT> serializePortalManagerState(
   keySerializer: (KeyT) -> String,
-  state: PortalState<KeyT>
+  state: PortalState<KeyT>,
 ) = Json.encodeToString(
   buildJsonObject {
     put("entries", state.portalEntries.serializeEntries(keySerializer))
     put("backstack", state.backstackEntries.serializeBackstackEntries(keySerializer))
-  }
+  },
 )
 
 private fun <KeyT> List<PortalEntry<KeyT>>.serializeEntries(
-  keySerializer: (KeyT) -> String
+  keySerializer: (KeyT) -> String,
 ) = buildJsonArray {
   forEach { entry ->
     add(
@@ -29,26 +29,26 @@ private fun <KeyT> List<PortalEntry<KeyT>>.serializeEntries(
         put("backstackState", entry.backstackState.name)
         put("rendererState", entry.rendererState.name)
         put("uid", entry.uid.id)
-      }
+      },
     )
   }
 }
 
 private fun <KeyT> List<PortalBackstackEntry<KeyT>>.serializeBackstackEntries(
-  keySerializer: (KeyT) -> String
+  keySerializer: (KeyT) -> String,
 ) = buildJsonArray {
   forEach { entry ->
     add(
       buildJsonObject {
         put("id", entry.id)
         put("mutations", entry.mutations.serializeBackstackMutations(keySerializer))
-      }
+      },
     )
   }
 }
 
 private fun <KeyT> List<PortalBackstackMutation<KeyT>>.serializeBackstackMutations(
-  keySerializer: (KeyT) -> String
+  keySerializer: (KeyT) -> String,
 ) = buildJsonArray {
   forEach { mutation ->
     buildJsonObject {

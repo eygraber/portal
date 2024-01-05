@@ -10,7 +10,7 @@ import me.tatarka.inject.annotations.Inject
 
 @Inject
 class AlarmListPortal(
-  override val parent: MainPortal
+  override val parent: MainPortal,
 ) : ComposePortal<AppPortalKey>, ChildPortal, InjectablePortal<AlarmListComponent> {
   override val key = AppPortalKey.AlarmList
 

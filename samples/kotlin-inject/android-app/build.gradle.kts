@@ -38,7 +38,7 @@ android {
       "InvalidPackage",
       "VulnerableCordovaVersion",
       "MissingTranslation",
-      "Typos"
+      "Typos",
     )
   }
 

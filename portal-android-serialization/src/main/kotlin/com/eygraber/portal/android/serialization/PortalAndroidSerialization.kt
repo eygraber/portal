@@ -27,6 +27,6 @@ public fun ParentPortal.onSaveState(bundle: Bundle?) {
       if(bundle != null && portal is ParcelablePortal) {
         portal.saveState(bundle)
       }
-    }
+    },
   )
 }

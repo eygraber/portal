@@ -12,7 +12,7 @@ import me.tatarka.inject.annotations.Inject
 @MainScope
 @Inject
 class HomePortal(
-  override val parent: MainPortal
+  override val parent: MainPortal,
 ) : ComposePortal<MainBottomNavPortalKey>, ChildPortal, InjectablePortal<HomeComponent> {
   override val key = MainBottomNavPortalKey.Alarm
 

@@ -20,7 +20,7 @@ import org.robolectric.shadows.ShadowLog
 @RunWith(RobolectricTestRunner::class)
 // needed until Robolectric supports 34
 @Config(
-  sdk = [33]
+  sdk = [33],
 )
 class SimplePortalAndroidTest {
   @get:Rule val rule = createComposeRule()
@@ -157,7 +157,7 @@ class SimplePortalAndroidTest {
 }
 
 private fun ComposeTestRule.assertPositionThroughTransition(
-  value: Int
+  value: Int,
 ) {
   val strValue = value.toString()
   waitForIdle() // layout pass needed to setup transition
@@ -171,7 +171,7 @@ private fun ComposeTestRule.assertPositionThroughTransition(
   onNodeWithText(strValue)
     .assertIsDisplayed()
     .assertLeftPositionInRootIsEqualTo(
-      if(value == 1) 260.dp else 251.dp
+      if(value == 1) 260.dp else 251.dp,
     )
 
   // apprx 100% of the way through the transition
@@ -180,7 +180,7 @@ private fun ComposeTestRule.assertPositionThroughTransition(
   onNodeWithText(strValue)
     .assertIsDisplayed()
     .assertLeftPositionInRootIsEqualTo(
-      if(value == 1) 160.dp else 159.dp
+      if(value == 1) 160.dp else 159.dp,
     )
 
   if(value - 2 > 0) {

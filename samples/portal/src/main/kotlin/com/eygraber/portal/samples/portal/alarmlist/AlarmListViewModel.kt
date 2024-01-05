@@ -12,12 +12,12 @@ import java.time.format.FormatStyle
 import java.util.UUID
 
 class AlarmListViewModel(
-  private val appPortalManager: ComposePortalManager<AppPortalKey>
+  private val appPortalManager: ComposePortalManager<AppPortalKey>,
 ) : VM<AlarmListState> {
   private class MutableAlarmListAlarm(
     id: String,
     isEnabled: Boolean,
-    time: String
+    time: String,
   ) : AlarmListAlarm {
     override var id by mutableStateOf(id)
     override var isEnabled by mutableStateOf(isEnabled)
@@ -30,9 +30,9 @@ class AlarmListViewModel(
         MutableAlarmListAlarm(
           id = UUID.randomUUID().toString(),
           isEnabled = true,
-          time = LocalTime.now().format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT))
-        )
-      )
+          time = LocalTime.now().format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)),
+        ),
+      ),
     )
   }
   override val state = mutableState
@@ -47,7 +47,7 @@ class AlarmListViewModel(
     mutableState.alarms = mutableState.alarms + MutableAlarmListAlarm(
       id = UUID.randomUUID().toString(),
       isEnabled = true,
-      time = LocalTime.now().format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT))
+      time = LocalTime.now().format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)),
     )
   }
 
