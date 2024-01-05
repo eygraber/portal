@@ -14,9 +14,9 @@ kotlin {
     project = project,
     binaryType = BinaryType.Executable,
     webOptions = KmpTarget.WebOptions(
-      isNodeEnabled = true,
       moduleName = "simple-portal",
     ),
+    ignoreDefaultTargets = true,
   )
 
   sourceSets {
