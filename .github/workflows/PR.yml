@@ -105,10 +105,6 @@ jobs:
         with:
           gradle-version: wrapper
           gradle-home-cache-cleanup: true
-          gradle-home-cache-includes: |
-            caches
-            notifications
-            jdks
 
       - name: Run checks
         run: ./gradlew lintRelease
@@ -130,10 +126,6 @@ jobs:
         with:
           gradle-version: wrapper
           gradle-home-cache-cleanup: true
-          gradle-home-cache-includes: |
-            caches
-            notifications
-            jdks
 
       - name: Run checks
         run: ./gradlew testRelease
