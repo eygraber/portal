@@ -6,6 +6,7 @@ import androidx.compose.animation.shrinkOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -138,7 +139,9 @@ fun SimplePortal() {
     Surface(
       modifier = Modifier.fillMaxSize(),
     ) {
-      portalManager.Render()
+      Box {
+        portalManager.Render()
+      }
     }
   }
 }
