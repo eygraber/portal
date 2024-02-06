@@ -83,13 +83,13 @@ class SimplePortalAndroidTest {
       .assertExists()
       .assertIsNotDisplayed()
       .assertLeftPositionInRootIsEqualTo(159.dp)
-      .assertTopPositionInRootIsEqualTo(614.dp)
+      .assertTopPositionInRootIsEqualTo(616.dp)
 
     rule
       .onNodeWithText("7")
       .assertIsDisplayed()
       .assertLeftPositionInRootIsEqualTo(159.dp)
-      .assertTopPositionInRootIsEqualTo(16.dp)
+      .assertTopPositionInRootIsEqualTo(18.dp)
 
     mainClock.advanceTimeBy(16_500 - mainClock.currentTime)
 
@@ -116,14 +116,14 @@ class SimplePortalAndroidTest {
       .assertExists()
       .assertIsNotDisplayed()
       .assertLeftPositionInRootIsEqualTo(159.dp)
-      .assertTopPositionInRootIsEqualTo(1022.dp)
+      .assertTopPositionInRootIsEqualTo(1024.dp)
 
     rule
       .onNodeWithText("3")
       .assertExists()
       .assertIsNotDisplayed()
       .assertLeftPositionInRootIsEqualTo(159.dp)
-      .assertTopPositionInRootIsEqualTo((-189).dp)
+      .assertTopPositionInRootIsEqualTo((-187).dp)
 
     mainClock.advanceTimeBy(19_500 - mainClock.currentTime)
 
@@ -138,13 +138,13 @@ class SimplePortalAndroidTest {
       .assertExists()
       .assertIsNotDisplayed()
       .assertLeftPositionInRootIsEqualTo((-154).dp)
-      .assertTopPositionInRootIsEqualTo((-244).dp)
+      .assertTopPositionInRootIsEqualTo((-242).dp)
 
     rule
       .onNodeWithText("1")
       .assertIsDisplayed()
       .assertLeftPositionInRootIsEqualTo(159.dp)
-      .assertTopPositionInRootIsEqualTo(215.dp)
+      .assertTopPositionInRootIsEqualTo(217.dp)
 
     mainClock.advanceTimeBy(21_500 - mainClock.currentTime)
 
