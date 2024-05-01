@@ -35,7 +35,7 @@ conventions = { id = "com.eygraber.conventions", version.ref = "conventions" }
 
 [libraries]
 androidx-activity-compose = "androidx.activity:activity-compose:1.9.0"
-androidx-appcompat = "androidx.appcompat:appcompat:1.7.0-alpha03"
+androidx-appcompat = "androidx.appcompat:appcompat:1.7.0-beta01"
 androidx-core = "androidx.core:core-ktx:1.13.0"
 
 buildscript-android = { module = "com.android.tools.build:gradle", version.ref = "agp" }
