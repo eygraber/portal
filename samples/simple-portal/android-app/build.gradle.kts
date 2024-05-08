@@ -53,7 +53,6 @@ dependencies {
   implementation(projects.samples.simplePortal)
 
   implementation(libs.androidx.activity.compose)
-  implementation(libs.androidx.appcompat)
 
   testImplementation(libs.test.espresso)
   testImplementation(libs.test.compose.android.uiJunit)

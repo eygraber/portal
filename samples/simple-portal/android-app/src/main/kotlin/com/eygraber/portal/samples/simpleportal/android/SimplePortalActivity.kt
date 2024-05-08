@@ -1,11 +1,11 @@
 package com.eygraber.portal.samples.simpleportal.android
 
 import android.os.Bundle
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.appcompat.app.AppCompatActivity
 import com.eygraber.portal.samples.simpleportal.SimplePortal
 
-class SimplePortalActivity : AppCompatActivity() {
+class SimplePortalActivity : ComponentActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 

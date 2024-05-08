@@ -54,7 +54,6 @@ dependencies {
   implementation(projects.samples.kotlinInject.shared)
 
   implementation(libs.androidx.activity.compose)
-  implementation(libs.androidx.appcompat)
 }
 
 gradleConventions.kotlin {
