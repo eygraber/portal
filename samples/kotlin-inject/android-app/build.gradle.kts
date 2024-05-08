@@ -55,7 +55,6 @@ dependencies {
 
   implementation(libs.androidx.activity.compose)
   implementation(libs.androidx.appcompat)
-  implementation(libs.androidx.core)
 }
 
 gradleConventions.kotlin {
