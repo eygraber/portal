@@ -54,7 +54,6 @@ dependencies {
 
   implementation(libs.androidx.activity.compose)
   implementation(libs.androidx.appcompat)
-  implementation(libs.androidx.core)
 
   testImplementation(libs.test.espresso)
   testImplementation(libs.test.compose.android.uiJunit)
