@@ -61,10 +61,6 @@ kotlin {
   }
 }
 
-compose.experimental {
-  web.application {}
-}
-
 gradleConventions.kotlin {
   explicitApiMode = ExplicitApiMode.Disabled
 }
