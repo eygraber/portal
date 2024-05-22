@@ -5,9 +5,9 @@ android-sdk-compile = "34"
 android-sdk-target = "34"
 android-sdk-min = "24"
 
-composeJetbrains = "1.6.2"
+composeJetbrains = "1.6.10"
 
-conventions = "0.0.71"
+conventions = "0.0.73"
 
 detekt = "1.23.6"
 detektEygraber = "1.0.11"
@@ -15,7 +15,7 @@ detektEygraber = "1.0.11"
 dokka = "1.9.20"
 
 kodein = "7.21.2"
-kotlin = "1.9.24"
+kotlin = "2.0.0"
 
 kotlinInject = "0.7.0-SNAPSHOT"
 
@@ -24,7 +24,7 @@ kotest = "5.9.0"
 kotlinx-coroutines = "1.8.1"
 kotlinx-atomicFu = "0.24.0"
 
-ksp = "1.9.24-1.0.20"
+ksp = "2.0.0-1.0.21"
 
 ktlint = "1.2.1"
 
@@ -39,14 +39,13 @@ androidx-activity-compose = "androidx.activity:activity-compose:1.9.0"
 buildscript-android = { module = "com.android.tools.build:gradle", version.ref = "agp" }
 buildscript-androidCacheFix = { module = "gradle.plugin.org.gradle.android:android-cache-fix-gradle-plugin", version = "3.0.1" }
 buildscript-atomicFu = { module = "org.jetbrains.kotlinx:atomicfu-gradle-plugin", version.ref = "kotlinx-atomicFu" }
-buildscript-compose = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "composeJetbrains" }
+buildscript-compose-compiler = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
+buildscript-compose-jetbrains = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "composeJetbrains" }
 buildscript-detekt = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
 buildscript-dokka = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "dokka" }
 buildscript-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 buildscript-publish = { module = "com.vanniktech:gradle-maven-publish-plugin", version.ref = "publish" }
 buildscript-ksp = { module = "com.google.devtools.ksp:symbol-processing-gradle-plugin", version.ref = "ksp" }
-
-compose-compilerJetbrains = "org.jetbrains.compose.compiler:compiler:1.5.14"
 
 detektEygraber-formatting = { module = "com.eygraber.detekt.rules:formatting", version.ref = "detektEygraber" }
 detektEygraber-style = { module = "com.eygraber.detekt.rules:style", version.ref = "detektEygraber" }
@@ -68,5 +67,4 @@ test-espresso = "androidx.test.espresso:espresso-core:3.6.0-beta01"
 test-compose-android-uiJunit = { module = "androidx.compose.ui:ui-test-junit4" }
 test-compose-android-uiTestManifest = "androidx.compose.ui:ui-test-manifest:1.6.7"
 test-junit = { module = "junit:junit", version = "4.13.2" }
-test-kotest-assertions = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
 test-robolectric = "org.robolectric:robolectric:4.12.2"

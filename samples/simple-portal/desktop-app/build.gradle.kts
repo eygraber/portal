@@ -10,7 +10,7 @@ plugins {
 group = "samples-simple-portal-desktop"
 
 dependencies {
-  implementation(projects.samples.simplePortal)
+  implementation(projects.samples.simplePortal.shared)
 
   implementation(compose.desktop.currentOs)
 }

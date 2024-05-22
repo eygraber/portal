@@ -8,7 +8,7 @@ import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.unit.dp
-import com.eygraber.portal.samples.simpleportal.SimplePortal
+import com.eygraber.portal.samples.simpleportal.shared.SimplePortal
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test

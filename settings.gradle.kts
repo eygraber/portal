@@ -11,12 +11,6 @@ pluginManagement {
       }
     }
 
-    maven("https://maven.pkg.jetbrains.space/public/p/compose/dev") {
-      content {
-        includeGroupByRegex("org\\.jetbrains.*")
-      }
-    }
-
     mavenCentral()
 
     maven("https://oss.sonatype.org/content/repositories/snapshots") {
@@ -38,7 +32,7 @@ pluginManagement {
 @Suppress("UnstableApiUsage")
 dependencyResolutionManagement {
   // comment this out for now because it doesn't work with KMP js
-  // https://youtrack.jetbrains.com/issue/KT-51379/
+  // https://youtrack.jetbrains.com/issue/KT-55620/KJS-Gradle-plugin-doesnt-support-repositoriesMode
   // repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
 
   repositories {
@@ -52,7 +46,7 @@ dependencyResolutionManagement {
 }
 
 plugins {
-  id("com.eygraber.conventions.settings") version "0.0.71"
+  id("com.eygraber.conventions.settings") version "0.0.73"
   id("com.gradle.develocity") version "3.17.4"
 }
 
@@ -67,12 +61,14 @@ include(":samples:icons")
 include(":samples:kotlin-inject:android-app")
 include(":samples:kotlin-inject:desktop-app")
 include(":samples:kotlin-inject:shared")
-include(":samples:kotlin-inject:webApp")
+include(":samples:kotlin-inject:webJsApp")
+include(":samples:kotlin-inject:webWasmJsApp")
 include(":samples:portal")
-include(":samples:simple-portal")
 include(":samples:simple-portal:android-app")
 include(":samples:simple-portal:desktop-app")
-include(":samples:simple-portal:webApp")
+include(":samples:simple-portal:shared")
+include(":samples:simple-portal:webJsApp")
+include(":samples:simple-portal:webWasmJsApp")
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
