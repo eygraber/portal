@@ -50,7 +50,7 @@ android {
 }
 
 dependencies {
-  implementation(projects.samples.simplePortal)
+  implementation(projects.samples.simplePortal.shared)
 
   implementation(libs.androidx.activity.compose)
 

@@ -19,7 +19,7 @@ kotlin {
     project = project,
   )
 
-  commonMainKspDependencies {
+  commonMainKspDependencies(project) {
     ksp(libs.kotlinInject.compiler)
   }
 
