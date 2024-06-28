@@ -3,7 +3,7 @@ plugins {
   id("com.eygraber.conventions-android-library")
   id("com.eygraber.conventions-detekt")
   id("com.eygraber.conventions-publish-maven-central")
-  id("kotlinx-atomicfu")
+  alias(libs.plugins.atomicfu)
 }
 
 android {
