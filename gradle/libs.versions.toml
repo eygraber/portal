@@ -35,7 +35,7 @@ atomicfu = { id = "org.jetbrains.kotlinx.atomicfu", version.ref = "kotlinx-atomi
 conventions = { id = "com.eygraber.conventions", version.ref = "conventions" }
 
 [libraries]
-androidx-activity-compose = "androidx.activity:activity-compose:1.9.0"
+androidx-activity-compose = "androidx.activity:activity-compose:1.9.1"
 
 buildscript-android = { module = "com.android.tools.build:gradle", version.ref = "agp" }
 buildscript-androidCacheFix = { module = "gradle.plugin.org.gradle.android:android-cache-fix-gradle-plugin", version = "3.0.1" }
