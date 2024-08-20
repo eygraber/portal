@@ -15,7 +15,7 @@ detektEygraber = "1.0.11"
 dokka = "1.9.20"
 
 kodein = "7.22.0"
-kotlin = "2.0.0"
+kotlin = "2.0.10"
 
 kotlinInject = "0.7.2"
 
