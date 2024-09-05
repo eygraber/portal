@@ -71,25 +71,25 @@ class SimplePortalAndroidTest {
       .onNodeWithText("10")
       .assertExists()
       .assertIsNotDisplayed()
-      .assertLeftPositionInRootIsEqualTo(430.dp)
+      .assertLeftPositionInRootIsEqualTo(429.dp)
 
     rule
       .onNodeWithText("9")
       .assertIsDisplayed()
-      .assertLeftPositionInRootIsEqualTo(23.dp)
+      .assertLeftPositionInRootIsEqualTo(24.dp)
 
     rule
       .onNodeWithText("8")
       .assertExists()
       .assertIsNotDisplayed()
       .assertLeftPositionInRootIsEqualTo(159.dp)
-      .assertTopPositionInRootIsEqualTo(616.dp)
+      .assertTopPositionInRootIsEqualTo(613.dp)
 
     rule
       .onNodeWithText("7")
       .assertIsDisplayed()
       .assertLeftPositionInRootIsEqualTo(159.dp)
-      .assertTopPositionInRootIsEqualTo(18.dp)
+      .assertTopPositionInRootIsEqualTo(19.dp)
 
     mainClock.advanceTimeBy(16_500 - mainClock.currentTime)
 
@@ -103,7 +103,7 @@ class SimplePortalAndroidTest {
       .onNodeWithText("6")
       .assertExists()
       .assertIsNotDisplayed()
-      .assertLeftPositionInRootIsEqualTo(709.dp)
+      .assertLeftPositionInRootIsEqualTo(708.dp)
 
     rule
       .onNodeWithText("5")
@@ -123,7 +123,7 @@ class SimplePortalAndroidTest {
       .assertExists()
       .assertIsNotDisplayed()
       .assertLeftPositionInRootIsEqualTo(159.dp)
-      .assertTopPositionInRootIsEqualTo((-187).dp)
+      .assertTopPositionInRootIsEqualTo((-186).dp)
 
     mainClock.advanceTimeBy(19_500 - mainClock.currentTime)
 
@@ -171,7 +171,7 @@ private fun ComposeTestRule.assertPositionThroughTransition(
   onNodeWithText(strValue)
     .assertIsDisplayed()
     .assertLeftPositionInRootIsEqualTo(
-      if(value == 1) 260.dp else 251.dp,
+      if(value == 1) 261.dp else 251.dp,
     )
 
   // apprx 100% of the way through the transition
