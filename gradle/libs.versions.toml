@@ -7,7 +7,7 @@ android-sdk-min = "24"
 
 composeJetbrains = "1.7.1"
 
-conventions = "0.0.79"
+conventions = "0.0.81"
 
 detekt = "1.23.7"
 detektEygraber = "1.0.11"
@@ -15,7 +15,7 @@ detektEygraber = "1.0.11"
 dokka = "1.9.20"
 
 kodein = "7.22.0"
-kotlin = "2.0.0"
+kotlin = "2.1.0"
 
 kotlinInject = "0.7.2"
 
@@ -24,7 +24,7 @@ kotest = "5.9.1"
 kotlinx-coroutines = "1.9.0"
 kotlinx-atomicFu = "0.26.0"
 
-ksp = "2.0.10-1.0.24"
+ksp = "2.1.0-1.0.28"
 
 ktlint = "1.4.1"
 
