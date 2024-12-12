@@ -47,7 +47,7 @@ dependencyResolutionManagement {
 
 plugins {
   id("com.eygraber.conventions.settings") version "0.0.79"
-  id("com.gradle.develocity") version "3.18.2"
+  id("com.gradle.develocity") version "3.19"
 }
 
 rootProject.name = "portals"
