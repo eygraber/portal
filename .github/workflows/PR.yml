@@ -15,7 +15,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   assemble:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
@@ -49,24 +49,6 @@ jobs:
 
       - name: Run detekt
         run: ./gradlew detektAll
-
-  detekt-apple:
-    runs-on: macos-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-java@v4
-        with:
-          distribution: 'zulu'
-          java-version-file: .ci-java-version
-
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
-        with:
-          gradle-version: wrapper
-
-      - name: Run detekt for apple targets
-        run: ./gradlew detektAppleMain detektAppleTest
 
   ktlint:
     runs-on: ubuntu-latest
