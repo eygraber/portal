@@ -7,24 +7,24 @@ android-sdk-min = "24"
 
 composeJetbrains = "1.7.3"
 
-conventions = "0.0.79"
+conventions = "0.0.81"
 
 detekt = "1.23.7"
 detektEygraber = "1.0.11"
 
 dokka = "2.0.0"
 
-kodein = "7.23.1"
-kotlin = "2.0.0"
+kodein = "7.24.1"
+kotlin = "2.1.10-RC"
 
 kotlinInject = "0.7.2"
 
 kotest = "5.9.1"
 
-kotlinx-coroutines = "1.9.0"
-kotlinx-atomicFu = "0.26.1"
+kotlinx-coroutines = "1.10.1"
+kotlinx-atomicFu = "0.27.0"
 
-ksp = "2.0.10-1.0.24"
+ksp = "2.1.0-1.0.29"
 
 ktlint = "1.5.0"
 
@@ -55,7 +55,7 @@ kodein-core = { module = "org.kodein.di:kodein-di", version.ref = "kodein" }
 kotlinx-atomicFu = { module = "org.jetbrains.kotlinx:atomicfu", version.ref = "kotlinx-atomicFu" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 kotlinx-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.6.1"
-kotlinx-serialization-json = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3"
+kotlinx-serialization-json = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0"
 
 kotlinInject-compiler = { module = "me.tatarka.inject:kotlin-inject-compiler-ksp", version.ref = "kotlinInject" }
 kotlinInject-runtime = { module = "me.tatarka.inject:kotlin-inject-runtime", version.ref = "kotlinInject" }
