@@ -524,7 +524,7 @@ style:
   UnnecessaryInheritance:
     active: true
   UnnecessaryLet:
-    active: true
+    active: false
   UnnecessaryParentheses:
     active: true
   UntilInsteadOfRangeTo:

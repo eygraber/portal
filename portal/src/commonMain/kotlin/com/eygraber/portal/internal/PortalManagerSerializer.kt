@@ -1,7 +1,6 @@
 package com.eygraber.portal.internal
 
 import com.eygraber.portal.PortalEntry
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.buildJsonArray
 import kotlinx.serialization.json.buildJsonObject

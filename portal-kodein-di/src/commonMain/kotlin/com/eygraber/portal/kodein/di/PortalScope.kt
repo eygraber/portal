@@ -2,6 +2,7 @@ package com.eygraber.portal.kodein.di
 
 import com.eygraber.portal.PortalLifecycleManager
 import com.eygraber.portal.PortalRemovedListener
+import kotlinx.atomicfu.locks.SynchronizedObject
 import org.kodein.di.DI
 import org.kodein.di.bind
 import org.kodein.di.bindings.BindingDI
@@ -21,7 +22,7 @@ public data object PortalScope : Scope<PortalLifecycleManager> {
   private val map = HashMap<PortalLifecycleManager, ScopeRegistry>()
 
   override fun getRegistry(context: PortalLifecycleManager): ScopeRegistry = synchronizedIfNull(
-    lock = map,
+    lock = SynchronizedObject(),
     predicate = { map[context] },
     ifNotNull = { it },
     ifNull = {
