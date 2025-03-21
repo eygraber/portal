@@ -15,7 +15,7 @@ detektEygraber = "1.0.11"
 dokka = "2.0.0"
 
 kodein = "7.25.0"
-kotlin = "2.1.10-RC2"
+kotlin = "2.1.20"
 
 kotlinInject = "0.7.2"
 
@@ -24,7 +24,7 @@ kotest = "5.9.1"
 kotlinx-coroutines = "1.10.1"
 kotlinx-atomicFu = "0.27.0"
 
-ksp = "2.1.10-1.0.31"
+ksp = "2.1.20-1.0.31"
 
 ktlint = "1.5.0"
 
