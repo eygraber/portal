@@ -17,7 +17,7 @@ dokka = "2.0.0"
 kodein = "7.25.0"
 kotlin = "2.1.20"
 
-kotlinInject = "0.7.2"
+kotlinInject = "0.8.0"
 
 kotest = "5.9.1"
 
