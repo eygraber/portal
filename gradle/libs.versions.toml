@@ -65,7 +65,7 @@ ktlint = { module = "com.pinterest.ktlint:ktlint-bom", version.ref = "ktlint" }
 
 test-espresso = "androidx.test.espresso:espresso-core:3.6.1"
 test-compose-android-uiJunit = { module = "androidx.compose.ui:ui-test-junit4" }
-test-compose-android-uiTestManifest = "androidx.compose.ui:ui-test-manifest:1.8.0"
+test-compose-android-uiTestManifest = "androidx.compose.ui:ui-test-manifest:1.8.1"
 test-junit = { module = "junit:junit", version = "4.13.2" }
 test-kotest-assertions = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
 test-robolectric = "org.robolectric:robolectric:4.14.1"
