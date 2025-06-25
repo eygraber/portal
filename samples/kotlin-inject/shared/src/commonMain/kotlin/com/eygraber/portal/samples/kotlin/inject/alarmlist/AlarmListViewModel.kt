@@ -6,11 +6,12 @@ import androidx.compose.runtime.setValue
 import com.eygraber.portal.compose.ComposePortalManager
 import com.eygraber.portal.samples.kotlin.inject.VM
 import com.eygraber.portal.samples.kotlin.inject.main.AppPortalKey
-import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import me.tatarka.inject.annotations.Inject
 import kotlin.random.Random
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
 @AlarmListScope
 @Inject
@@ -27,6 +28,7 @@ class AlarmListViewModel(
     override var time by mutableStateOf(time)
   }
 
+  @OptIn(ExperimentalTime::class)
   private val mutableState = object : AlarmListState {
     override var alarms by mutableStateOf(
       listOf(
@@ -46,6 +48,7 @@ class AlarmListViewModel(
     }
   }
 
+  @OptIn(ExperimentalTime::class)
   fun addAlarmClicked() {
     mutableState.alarms = mutableState.alarms + MutableAlarmListAlarm(
       id = Random.nextLong().toString(),
