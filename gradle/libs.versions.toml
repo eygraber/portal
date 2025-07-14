@@ -28,7 +28,7 @@ ksp = "2.2.0-2.0.2"
 
 ktlint = "1.6.0"
 
-publish = "0.33.0"
+publish = "0.34.0"
 
 [plugins]
 atomicfu = { id = "org.jetbrains.kotlinx.atomicfu", version.ref = "kotlinx-atomicFu" }
