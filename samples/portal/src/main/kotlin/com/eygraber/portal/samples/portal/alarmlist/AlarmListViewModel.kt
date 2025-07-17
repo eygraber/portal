@@ -44,11 +44,12 @@ class AlarmListViewModel(
   }
 
   fun addAlarmClicked() {
-    mutableState.alarms = mutableState.alarms + MutableAlarmListAlarm(
-      id = UUID.randomUUID().toString(),
-      isEnabled = true,
-      time = LocalTime.now().format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)),
-    )
+    mutableState.alarms = mutableState.alarms +
+      MutableAlarmListAlarm(
+        id = UUID.randomUUID().toString(),
+        isEnabled = true,
+        time = LocalTime.now().format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)),
+      )
   }
 
   fun alarmEnabledChanged(alarm: AlarmListAlarm) {

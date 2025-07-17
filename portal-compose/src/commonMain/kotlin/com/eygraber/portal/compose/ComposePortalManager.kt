@@ -99,7 +99,8 @@ public class ComposePortalManager<KeyT>(
     }
 
     val wasContentPreviouslyVisible =
-      entry.isDisappearing && entry.isAttachedToComposition ||
+      entry.isDisappearing &&
+        entry.isAttachedToComposition ||
         entry.wasContentPreviouslyVisible
 
     val isContentVisible = !entry.isDisappearing && entry.isAttachedToComposition

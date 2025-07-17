@@ -233,15 +233,16 @@ internal class PortalEntryBuilder<KeyT>(
     isCompletelyRemoved: Boolean,
   ) {
     _postTransactionOps.update { oldPostTransactionOps ->
-      oldPostTransactionOps + {
-        if(this is ParentPortal) {
-          notifyChildrenOfRemoval(isCompletelyRemoved = isCompletelyRemoved)
-        }
+      oldPostTransactionOps +
+        {
+          if(this is ParentPortal) {
+            notifyChildrenOfRemoval(isCompletelyRemoved = isCompletelyRemoved)
+          }
 
-        if(this is PortalRemovedListener) {
-          onPortalRemoved(isCompletelyRemoved = isCompletelyRemoved)
+          if(this is PortalRemovedListener) {
+            onPortalRemoved(isCompletelyRemoved = isCompletelyRemoved)
+          }
         }
-      }
     }
   }
 }
