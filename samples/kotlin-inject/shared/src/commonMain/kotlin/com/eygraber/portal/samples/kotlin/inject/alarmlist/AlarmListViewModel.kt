@@ -50,11 +50,12 @@ class AlarmListViewModel(
 
   @OptIn(ExperimentalTime::class)
   fun addAlarmClicked() {
-    mutableState.alarms = mutableState.alarms + MutableAlarmListAlarm(
-      id = Random.nextLong().toString(),
-      isEnabled = true,
-      time = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).time.toString(),
-    )
+    mutableState.alarms = mutableState.alarms +
+      MutableAlarmListAlarm(
+        id = Random.nextLong().toString(),
+        isEnabled = true,
+        time = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).time.toString(),
+      )
   }
 
   fun alarmEnabledChanged(alarm: AlarmListAlarm) {
