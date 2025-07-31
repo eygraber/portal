@@ -63,7 +63,7 @@ kotlinInject-runtime = { module = "me.tatarka.inject:kotlin-inject-runtime", ver
 # not actually used; just here so renovate picks it up
 ktlint = { module = "com.pinterest.ktlint:ktlint-bom", version.ref = "ktlint" }
 
-test-espresso = "androidx.test.espresso:espresso-core:3.6.1"
+test-espresso = "androidx.test.espresso:espresso-core:3.7.0"
 test-compose-android-uiJunit = { module = "androidx.compose.ui:ui-test-junit4" }
 test-compose-android-uiTestManifest = "androidx.compose.ui:ui-test-manifest:1.8.3"
 test-junit = { module = "junit:junit", version = "4.13.2" }
