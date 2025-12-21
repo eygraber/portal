@@ -38,11 +38,13 @@ private fun <KeyT> JsonArray.deserializeToPortalEntries(
 ) = map { entry ->
   val jsonEntry = entry.jsonObject
 
-  val key = requireNotNull(
-    jsonEntry["key"]?.jsonPrimitive?.contentOrNull,
-  ) {
-    "A serialized PortalEntry needs a \"key\" field"
-  }.let(keyDeserializer)
+  val key = keyDeserializer(
+    requireNotNull(
+      jsonEntry["key"]?.jsonPrimitive?.contentOrNull,
+    ) {
+      "A serialized PortalEntry needs a \"key\" field"
+    },
+  )
 
   PortalEntry(
     portal = portalFactory(key),
@@ -51,16 +53,20 @@ private fun <KeyT> JsonArray.deserializeToPortalEntries(
     ) {
       "A serialized PortalEntry needs a \"wasContentPreviouslyVisible\" field"
     }.toBoolean(),
-    backstackState = requireNotNull(
-      jsonEntry["backstackState"]?.jsonPrimitive?.contentOrNull,
-    ) {
-      "A serialized PortalEntry needs a \"backstackState\" field"
-    }.let(PortalBackstackState::valueOf),
-    rendererState = requireNotNull(
-      jsonEntry["rendererState"]?.jsonPrimitive?.contentOrNull,
-    ) {
-      "A serialized PortalEntry needs a \"rendererState\" field"
-    }.let(PortalRendererState::valueOf),
+    backstackState = PortalBackstackState.valueOf(
+      requireNotNull(
+        jsonEntry["backstackState"]?.jsonPrimitive?.contentOrNull,
+      ) {
+        "A serialized PortalEntry needs a \"backstackState\" field"
+      },
+    ),
+    rendererState = PortalRendererState.valueOf(
+      requireNotNull(
+        jsonEntry["rendererState"]?.jsonPrimitive?.contentOrNull,
+      ) {
+        "A serialized PortalEntry needs a \"rendererState\" field"
+      },
+    ),
     enterTransitionOverride = null,
     exitTransitionOverride = null,
     uid = requireNotNull(
@@ -93,11 +99,13 @@ private fun <KeyT> JsonArray.deserializeToBackstackMutations(
 ) = map { mutation ->
   val jsonMutation = mutation.jsonObject
 
-  val key = requireNotNull(
-    jsonMutation["key"]?.jsonPrimitive?.contentOrNull,
-  ) {
-    "A serialized PortalBackstackMutation needs a \"key\" field"
-  }.let(keyDeserializer)
+  val key = keyDeserializer(
+    requireNotNull(
+      jsonMutation["key"]?.jsonPrimitive?.contentOrNull,
+    ) {
+      "A serialized PortalBackstackMutation needs a \"key\" field"
+    },
+  )
 
   val uid = requireNotNull(
     jsonMutation["uid"]?.jsonPrimitive?.contentOrNull?.toIntOrNull()?.let { PortalEntry.Id(it) },

@@ -15,8 +15,8 @@ public fun ParentPortal.traverseChildren(
   traversal: PortalTraversal = PortalTraversal.Depth.Pre,
 ) {
   if(traversal == PortalTraversal.Breadth) {
-    val initial = ArrayDeque<PortalManager<*>>().also {
-      it.addAll(portalManagers)
+    val initial = ArrayDeque<PortalManager<*>>().apply {
+      addAll(portalManagers)
     }
     traverseChildrenBFS(onPortal, onPortalManager, initial)
   }

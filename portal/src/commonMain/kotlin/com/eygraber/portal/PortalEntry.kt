@@ -14,6 +14,8 @@ public data class PortalEntry<KeyT>(
 ) {
   public val key: KeyT = portal.key
 
+  private inline val name get() = this::class.simpleName
+
   @JvmInline
   public value class Id(public val id: Int) {
     internal companion object {
@@ -24,16 +26,15 @@ public data class PortalEntry<KeyT>(
   }
 
   override fun toString(): String =
-    """$name(
-      |  key=$key,
-      |  wasContentPreviouslyVisible=$wasContentPreviouslyVisible,
-      |  backstackState=$backstackState,
-      |  rendererState=$rendererState,
-      |  enterTransitionOverride=$enterTransitionOverride,
-      |  exitTransitionOverride=$exitTransitionOverride,
-      |  uid = $uid
-      |)
+    """
+    |$name(
+    |  key=$key,
+    |  wasContentPreviouslyVisible=$wasContentPreviouslyVisible,
+    |  backstackState=$backstackState,
+    |  rendererState=$rendererState,
+    |  enterTransitionOverride=$enterTransitionOverride,
+    |  exitTransitionOverride=$exitTransitionOverride,
+    |  uid = $uid
+    |)
     """.trimMargin()
-
-  private inline val name get() = this::class.simpleName
 }
