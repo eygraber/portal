@@ -25,7 +25,7 @@ kotlin {
       implementation(projects.portalCompose)
       implementation(projects.samples.icons)
 
-      implementation(compose.material3)
+      implementation(libs.compose.material3)
 
       implementation(libs.kotlinx.coroutines.core)
       implementation(libs.kotlinx.datetime)

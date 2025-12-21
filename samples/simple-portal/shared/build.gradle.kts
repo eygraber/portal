@@ -19,7 +19,7 @@ kotlin {
     dependencies {
       implementation(projects.portalCompose)
 
-      implementation(compose.material3)
+      implementation(libs.compose.material3)
 
       implementation(libs.kotlinx.coroutines.core)
     }

@@ -5,7 +5,8 @@ android-sdk-compile = "36"
 android-sdk-target = "36"
 android-sdk-min = "24"
 
-composeJetbrains = "1.9.3"
+composeJetbrains = "1.10.0-rc02"
+composeMaterial3Jetbrains = "1.9.0"
 
 conventions = "0.0.94"
 
@@ -46,6 +47,10 @@ buildscript-dokka = { module = "org.jetbrains.dokka:dokka-gradle-plugin", versio
 buildscript-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 buildscript-publish = { module = "com.vanniktech:gradle-maven-publish-plugin", version.ref = "publish" }
 buildscript-ksp = { module = "com.google.devtools.ksp:symbol-processing-gradle-plugin", version.ref = "ksp" }
+
+compose-animation = { module = "org.jetbrains.compose.animation:animation", version.ref="composeJetbrains" }
+compose-material3 = { module = "org.jetbrains.compose.material3:material3", version.ref = "composeMaterial3Jetbrains" }
+compose-ui = { module = "org.jetbrains.compose.ui:ui", version.ref = "composeJetbrains" }
 
 detektEygraber-formatting = { module = "com.eygraber.detekt.rules:formatting", version.ref = "detektEygraber" }
 detektEygraber-style = { module = "com.eygraber.detekt.rules:style", version.ref = "detektEygraber" }
