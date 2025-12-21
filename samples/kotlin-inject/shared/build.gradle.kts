@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
 
 plugins {
   id("com.eygraber.conventions-kotlin-multiplatform")
-  id("com.eygraber.conventions-android-library")
+  id("com.eygraber.conventions-android-kmp-library")
   id("com.eygraber.conventions-compose-jetbrains")
   id("com.eygraber.conventions-detekt2")
   id("com.google.devtools.ksp")
@@ -10,13 +10,10 @@ plugins {
 
 group = "samples-kotlin-inject-shared"
 
-android {
-  namespace = "com.eygraber.portal.samples.kotlin.inject.shared"
-}
-
 kotlin {
   defaultKmpTargets(
     project = project,
+    androidNamespace = "com.eygraber.portal.samples.kotlin.inject.shared",
   )
 
   commonMainKspDependencies(project) {
@@ -24,17 +21,15 @@ kotlin {
   }
 
   sourceSets {
-    commonMain {
-      dependencies {
-        implementation(projects.portalCompose)
-        implementation(projects.samples.icons)
+    commonMain.dependencies {
+      implementation(projects.portalCompose)
+      implementation(projects.samples.icons)
 
-        implementation(compose.material3)
+      implementation(compose.material3)
 
-        implementation(libs.kotlinx.coroutines.core)
-        implementation(libs.kotlinx.datetime)
-        implementation(libs.kotlinInject.runtime)
-      }
+      implementation(libs.kotlinx.coroutines.core)
+      implementation(libs.kotlinx.datetime)
+      implementation(libs.kotlinInject.runtime)
     }
   }
 }
