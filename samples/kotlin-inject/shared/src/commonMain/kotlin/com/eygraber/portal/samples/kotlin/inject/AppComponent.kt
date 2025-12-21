@@ -7,6 +7,7 @@ import me.tatarka.inject.annotations.Scope
 @Scope
 annotation class AppScope
 
+@Suppress("AbstractClassCanBeInterface")
 @AppScope
 @Component
 abstract class AppComponent {

@@ -241,10 +241,10 @@ public fun <KeyT> PortalBackstack<KeyT>.popUntil(
   enterTransitionOverride: ((KeyT) -> EnterTransitionOverride?)? = null,
   exitTransitionOverride: ((KeyT) -> ExitTransitionOverride?)? = null,
 ): Boolean = popUntil(
-  keyMapper(backstackEntryId),
-  inclusive,
-  enterTransitionOverride,
-  exitTransitionOverride,
+  backstackEntryId = keyMapper(backstackEntryId),
+  inclusive = inclusive,
+  enterTransitionOverride = enterTransitionOverride,
+  exitTransitionOverride = exitTransitionOverride,
 )
 
 public fun <KeyT> PortalBackstack<KeyT>.contains(

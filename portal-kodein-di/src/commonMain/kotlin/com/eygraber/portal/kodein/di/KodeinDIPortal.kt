@@ -29,6 +29,7 @@ public interface KodeinDIPortalInitializer : KodeinDIComponentInitializer<Portal
   }
 }
 
+@Suppress("AbstractClassCanBeConcreteClass")
 public abstract class KodeinDIPortal : PortalLifecycleManager, KodeinDIPortalInitializer {
   override val parentDI: DI by closestDI()
 

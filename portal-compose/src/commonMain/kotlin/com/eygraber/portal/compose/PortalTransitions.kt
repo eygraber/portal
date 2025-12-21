@@ -19,20 +19,6 @@ public data class PortalTransition(
   val exit: ExitTransition,
 ) {
   public companion object {
-    public fun enter(
-      enter: EnterTransition,
-    ): PortalTransition = PortalTransition(
-      enter = enter,
-      exit = ExitTransition.None,
-    )
-
-    public fun exit(
-      exit: ExitTransition,
-    ): PortalTransition = PortalTransition(
-      enter = EnterTransition.None,
-      exit = exit,
-    )
-
     public val defaultEnter: EnterTransition = slideInHorizontally(
       initialOffsetX = { it * 2 },
     )
@@ -66,6 +52,20 @@ public data class PortalTransition(
     public val None: PortalTransition = PortalTransition(
       enter = EnterTransition.None,
       exit = ExitTransition.None,
+    )
+
+    public fun enter(
+      enter: EnterTransition,
+    ): PortalTransition = PortalTransition(
+      enter = enter,
+      exit = ExitTransition.None,
+    )
+
+    public fun exit(
+      exit: ExitTransition,
+    ): PortalTransition = PortalTransition(
+      enter = EnterTransition.None,
+      exit = exit,
     )
   }
 }

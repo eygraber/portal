@@ -23,6 +23,7 @@ public interface PortalManagerQueries<KeyT> {
 @DslMarker
 public annotation class PortalTransactionBuilderDsl
 
+@Suppress("ClassOrdering")
 public abstract class PortalManager<KeyT>(
   private val defaultErrorHandler: ((Throwable) -> Unit)? = null,
   validation: PortalManagerValidation = PortalManagerValidation(),
