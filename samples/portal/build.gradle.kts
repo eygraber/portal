@@ -14,7 +14,7 @@ dependencies {
   implementation(projects.portalKodeinDi)
   implementation(projects.samples.icons)
 
-  implementation(compose.material3)
+  implementation(libs.compose.material3)
   implementation(compose.desktop.currentOs)
 
   implementation(libs.kodein.core)

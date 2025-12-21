@@ -35,7 +35,7 @@ kotlin {
       dependencies {
         implementation(projects.samples.simplePortal.shared)
 
-        implementation(compose.ui)
+        implementation(libs.compose.ui)
       }
     }
   }

@@ -15,7 +15,7 @@ kotlin {
   sourceSets {
     commonMain.dependencies {
       api(projects.portal)
-      implementation(compose.animation)
+      implementation(libs.compose.animation)
     }
 
     commonTest.dependencies {
