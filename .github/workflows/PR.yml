@@ -92,7 +92,7 @@ jobs:
           gradle-version: wrapper
 
       - name: Run tests
-        run: ./gradlew testRelease allTests
+        run: ./gradlew testDebugUnitTest allTests
 
 env:
   GRADLE_OPTS: -Dorg.gradle.daemon=false -Dkotlin.incremental=false -Dorg.gradle.jvmargs="-Xmx4g -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8 -XX:MaxMetaspaceSize=1024m"

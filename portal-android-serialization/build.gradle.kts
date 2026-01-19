@@ -1,5 +1,4 @@
 plugins {
-  id("kotlin-android")
   id("com.eygraber.conventions-kotlin-library")
   id("com.eygraber.conventions-android-library")
   id("com.eygraber.conventions-detekt2")
