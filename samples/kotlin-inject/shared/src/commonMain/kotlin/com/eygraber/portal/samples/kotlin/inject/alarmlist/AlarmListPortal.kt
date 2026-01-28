@@ -22,6 +22,7 @@ class AlarmListPortal(
 
   @Composable
   override fun Render() {
+    @Suppress("UnnecessaryFullyQualifiedName")
     view.Render()
   }
 }

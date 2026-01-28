@@ -140,6 +140,7 @@ fun SimplePortal() {
       modifier = Modifier.fillMaxSize(),
     ) {
       Box {
+        @Suppress("UnnecessaryFullyQualifiedName")
         portalManager.Render()
       }
     }

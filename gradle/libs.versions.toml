@@ -10,8 +10,7 @@ composeMaterial3Jetbrains = "1.9.0"
 
 conventions = "0.0.98"
 
-detekt = "2.0.0-alpha.1"
-detektEygraber = "1.0.14"
+detekt = "2.0.0-alpha.2"
 
 dokka = "2.1.0"
 
@@ -28,6 +27,7 @@ kotlinx-atomicFu = "0.31.0"
 ksp = "2.3.4"
 
 ktlint = "1.8.0"
+ktlintCustomRules = "0.1.1"
 
 publish = "0.36.0"
 
@@ -52,9 +52,6 @@ compose-animation = { module = "org.jetbrains.compose.animation:animation", vers
 compose-material3 = { module = "org.jetbrains.compose.material3:material3", version.ref = "composeMaterial3Jetbrains" }
 compose-ui = { module = "org.jetbrains.compose.ui:ui", version.ref = "composeJetbrains" }
 
-detektEygraber-formatting = { module = "com.eygraber.detekt.rules:formatting", version.ref = "detektEygraber" }
-detektEygraber-style = { module = "com.eygraber.detekt.rules:style", version.ref = "detektEygraber" }
-
 kodein-core = { module = "org.kodein.di:kodein-di", version.ref = "kodein" }
 
 kotlinx-atomicFu = { module = "org.jetbrains.kotlinx:atomicfu", version.ref = "kotlinx-atomicFu" }
@@ -66,7 +63,12 @@ kotlinInject-compiler = { module = "me.tatarka.inject:kotlin-inject-compiler-ksp
 kotlinInject-runtime = { module = "me.tatarka.inject:kotlin-inject-runtime", version.ref = "kotlinInject" }
 
 # not actually used; just here so renovate picks it up
+# noinspection UnusedVersionCatalogEntry
 ktlint = { module = "com.pinterest.ktlint:ktlint-bom", version.ref = "ktlint" }
+
+# just here so renovate picks it up
+# noinspection UnusedVersionCatalogEntry
+ktlintCustomRules = { module = "com.eygraber.ktlint.rules:ktlint-rules", version.ref = "ktlintCustomRules" }
 
 test-espresso = "androidx.test.espresso:espresso-core:3.7.0"
 test-compose-android-uiJunit = { module = "androidx.compose.ui:ui-test-junit4" }

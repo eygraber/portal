@@ -124,6 +124,7 @@ public class ComposePortalManager<KeyT>(
       enter = enterTransition,
       exit = exitTransition,
     ) {
+      @Suppress("UnnecessaryFullyQualifiedName")
       entry.portal.Render()
 
       if(entry.isDisappearing) {
