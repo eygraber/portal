@@ -24,6 +24,7 @@ class HomePortal(
 
   @Composable
   override fun Render() {
+    @Suppress("UnnecessaryFullyQualifiedName")
     view.Render()
   }
 }

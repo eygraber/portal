@@ -33,6 +33,7 @@ class MainPortal : ComposePortal<AppPortalKey>, ParentPortal, InjectablePortal<M
 
   @Composable
   override fun Render() {
+    @Suppress("UnnecessaryFullyQualifiedName")
     mainView.Render()
   }
 }

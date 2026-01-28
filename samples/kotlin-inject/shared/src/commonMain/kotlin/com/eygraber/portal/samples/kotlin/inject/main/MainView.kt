@@ -48,6 +48,7 @@ class MainView(
         ) {
           BottomNav()
         }
+        @Suppress("UnnecessaryFullyQualifiedName")
         appPortalManager.Render()
       }
     }
@@ -71,6 +72,7 @@ class MainView(
         .fillMaxWidth()
         .weight(.90F),
     ) {
+      @Suppress("UnnecessaryFullyQualifiedName")
       mainBottomNavPortalManager.Render()
     }
   }

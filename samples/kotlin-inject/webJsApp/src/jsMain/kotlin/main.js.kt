@@ -7,6 +7,7 @@ fun main() {
   val mainPortal = appComponent.mainPortal
 
   ComposeViewport {
+    @Suppress("UnnecessaryFullyQualifiedName")
     mainPortal.Render()
   }
 }

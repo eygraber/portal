@@ -32,13 +32,6 @@ gradleConventionsDefaults {
     )
   }
 
-  detekt {
-    plugins(
-      libs.detektEygraber.formatting,
-      libs.detektEygraber.style,
-    )
-  }
-
   kotlin {
     jvmTargetVersion = JvmTarget.JVM_17
     explicitApiMode = ExplicitApiMode.Strict
