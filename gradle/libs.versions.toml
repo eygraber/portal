@@ -19,7 +19,7 @@ kotlin = "2.3.0"
 
 kotlinInject = "0.9.0"
 
-kotest = "6.1.2"
+kotest = "6.1.3"
 
 kotlinx-coroutines = "1.10.2"
 kotlinx-atomicFu = "0.31.0"
