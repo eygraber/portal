@@ -24,7 +24,7 @@ kotest = "6.1.11"
 kotlinx-coroutines = "1.10.2"
 kotlinx-atomicFu = "0.32.1"
 
-ksp = "2.3.6"
+ksp = "2.3.7"
 
 ktlint = "1.8.0"
 ktlintCustomRules = "0.1.1"
